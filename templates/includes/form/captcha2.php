@@ -1,0 +1,2 @@
+<input name="captcha" type="hidden" value="<?=time()?>" />
+<script type="text/javascript">$(document).ready(function(){$.get('/ajax.php',{'file':'captcha'},function(data){if(data)$('input[name="captcha"]').val(data)})})</script>

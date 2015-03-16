@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF8"?><!DOCTYPE yml_catalog SYSTEM "shops.dtd"><yml_catalog date="2013-10-10 01:10"><shop><name>Магазин</name><company>Интернет магазин товаров</company><url>http://_abc/</url><currencies><currency id="RUR" rate="1"/></currencies><categories>
+<category id="1" parentId="0">Компьютеры и ноутбуки</category>
+<category id="2" parentId="1">Ноутбуки</category>
+<category id="3" parentId="10">Серверы</category>
+<category id="14" parentId="10">Начальный уровень</category>
+<category id="4" parentId="0">Телефоны</category>
+<category id="5" parentId="4">Сотовые телефоны</category>
+<category id="6" parentId="4">Радиотелефоны</category>
+<category id="7" parentId="0">Активный отдых и туризм</category>
+<category id="8" parentId="2">Нетбуки</category>
+<category id="9" parentId="0">Бытовая техника, интерьер</category>
+<category id="10" parentId="1">Компьютеры</category>
+<category id="11" parentId="2">Ультрабуки</category>
+<category id="12" parentId="2">Начальный уровень</category>
+<category id="13" parentId="2">Для работы и учебы</category>
+<category id="15" parentId="10">Для работы и учебы</category>
+<category id="16" parentId="0">Товары для детей</category>
+<category id="17" parentId="0">Дом, сад</category></categories><offers>
+<offer id="8" available="true"><url>http://_abc/katalog/13-dlya-raboty-i-ucheby/8-asus-n53sv/</url><price>905</price><currencyId>RUR</currencyId><categoryId>13</categoryId><picture>http://_abc/files/shop_products/8/img/11.jpg</picture><name>Asus N53SV</name><description>Вес: 1.0 кг.; Bluetooth: есть; Wi-Fi: Есть; </description></offer></offers></shop></yml_catalog>

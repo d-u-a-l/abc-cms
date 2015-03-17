@@ -1,17 +1,24 @@
 <?php
 
+/**
+ * динамические настройки сайта
+ * хранятся в /config.php
+ */
+
 $pattern = 'one_form';
 
 $get['id']='config';
 if ($get['u']!='edit') $post = $config;
-if ($get['u']=='edit') {	$content = "<?php\r\n";
+if ($get['u']=='edit') {
+	$content = "<?php\r\n";
 	foreach($post as $k=>$v)
 		$content.= '$config[\''.$k.'\']=\''.str_replace("'","\'",$v).'\';'."\r\n";
 	$content.= "?>";
-	$fp = fopen(ROOT_DIR.'functions/config.php', 'w');
+	$fp = fopen(ROOT_DIR.'config.php', 'w');
 	fwrite($fp,$content);
 	fclose($fp);
-	if($post['cache']==0) {		delete_all('cache',true);
+	if($post['cache']==0) {
+		delete_all('cache',true);
 	}
 	$data['error']	= '';
 	//print_r($data);

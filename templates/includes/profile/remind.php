@@ -4,7 +4,7 @@ if (isset($q['success'])) {
 	echo html_array('form/message',i18n('profile|successful_remind',true));
 } else {
 ?>
-<?=$config['scripts']['jquery_validate']?>
+<?=html_sources('return','jquery_validate')?>
 <?=$q['text']?>
 <?=isset($q['message']) ? html_array('form/message',$q['message']) : ''?>
 <form method="post" class="form validate">

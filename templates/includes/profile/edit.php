@@ -1,4 +1,4 @@
-<?=$config['scripts']['jquery_validate']?>
+<?=html_sources('return','jquery_validate')?>
 <?=isset($q['message']) ? html_array('form/message',$q['message']) : ''?>
 <form method="post" class="form validate" enctype="multipart/form-data">
 <?php

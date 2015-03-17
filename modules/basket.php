@@ -1,8 +1,10 @@
 <?php
 
-if ($u[2]=='success') {	$html['content'] = html_array('order/success');
+if ($u[2]=='success') {
+	$html['content'] = html_array('order/success');
 }
-elseif ($u[2]=='fail') {	$html['content'] = html_array('order/fail');
+elseif ($u[2]=='fail') {
+	$html['content'] = html_array('order/fail');
 }
 else {
 	//просмотр заказа по хешу
@@ -73,6 +75,7 @@ else {
 			}
 			$order['ot_name'] = $o['name'];
 			$order['ot_text'] = $o['text'];
+			require_once(ROOT_DIR.'functions/mail_func.php');	//функции почты
 			mailer('basket',$lang['id'],$order,$order['email']);
 			mailer('basket',$lang['id'],$order);
 			//$subject = $lang['basket_order_name'].' № '.$order['id'].' '.$lang['basket_order_from'].' '.date2($order['date'],'%d.%m.%Y');

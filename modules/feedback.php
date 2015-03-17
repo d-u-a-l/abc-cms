@@ -5,7 +5,7 @@ if ($u[2]) $error++;
 //обрабока формы
 if (count($_POST)>0) {
 	//загрузка функций для формы
-	require_once(ROOT_DIR.'functions/index_form.php');
+	require_once(ROOT_DIR.'functions/form_func.php');	//функции для работы со формами
 
 	//определение значений формы
 	$fields = array(
@@ -21,11 +21,14 @@ if (count($_POST)>0) {
 	$message = form_validate($fields,$post);
 
 	//если нет ошибок то отправляем сообщение
-	if (count($message)==0) {		unset($_SESSION['captcha'],$post['captcha']); //убиваем капчу чтобы второй раз не отправлялось		//прикрепленные файлы
+	if (count($message)==0) {
+		unset($_SESSION['captcha'],$post['captcha']); //убиваем капчу чтобы второй раз не отправлялось
+		//прикрепленные файлы
 		$files = array();
 		$post['files'] = array();
 		if (isset($_FILES['attaches']['name']) AND is_array($_FILES['attaches']['name'])) {
-			foreach ($_FILES['attaches']['name'] as $k=>$v) if ($v) {				$name = trunslit($v);
+			foreach ($_FILES['attaches']['name'] as $k=>$v) if ($v) {
+				$name = trunslit($v);
 				$files[$name] = $_FILES['attaches']['tmp_name'][$k];
 				$post['files'][] = array(
 					'name'=>$v,
@@ -37,13 +40,19 @@ if (count($_POST)>0) {
 		$post['files'] = count($post['files']) ? serialize($post['files']) : '';
 		$post['date'] = date('Y-m-d H:i:s');
 		$post['id'] = mysql_fn('insert','feedback',$post);
-		if ($post['files']) {			$i = 0;
-			foreach ($files as $k=>$v) {				$path = ROOT_DIR.'files/feedback/'.$post['id'].'/files/'.$i.'/';				mkdir($path,0755,true);				copy($v,$path.$k);
+		if ($post['files']) {
+			$i = 0;
+			foreach ($files as $k=>$v) {
+				$path = ROOT_DIR.'files/feedback/'.$post['id'].'/files/'.$i.'/';
+				mkdir($path,0755,true);
+				copy($v,$path.$k);
 				$i++;
 			}
-		}
+
+		}
 
 		//5-й параметр кому ответить
+		require_once(ROOT_DIR.'functions/mail_func.php');	//функции почты
 		mailer('feedback',$lang['id'],$post,false,$post['email'],false,$files);
 		$post['success'] = 1;
 		/*if (email(

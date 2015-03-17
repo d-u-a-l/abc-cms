@@ -90,6 +90,7 @@ $a18n = array(
 	'sender'		=> 'отправитель',
 	'shop'				=> 'магазин',
 	'shop_categories'	=> 'разделы',
+	'shop_products'		=> 'товары',
 	'shop_brands'		=> 'производители',
 	'shop_parameters'	=> 'параметры',
 	'shop_reviews'		=> 'отзывы',

@@ -18,13 +18,13 @@ if ($get['u']=='form') {
 	$modules['basket'] = mysql_select("SELECT url FROM pages WHERE module='basket' LIMIT 1",'string');
 }
 
-$fieldset['name']	= 'статус';
-$fieldset['login']	= 'пользователь';
-$fieldset['delivery_type']	= 'дип доставки';
-$fieldset['delivery_cost']	= 'стоимость';
-$fieldset['paid']	= 'оплачен';
-$fieldset['date_paid']	= 'дата оплаты';
-$fieldset['payment']	= 'способ оплаты';
+$a18n['name']	= 'статус';
+$a18n['login']	= 'пользователь';
+$a18n['delivery_type']	= 'дип доставки';
+$a18n['delivery_cost']	= 'стоимость';
+$a18n['paid']	= 'оплачен';
+$a18n['date_paid']	= 'дата оплаты';
+$a18n['payment']	= 'способ оплаты';
 
 $table = array(
 	'id'	=>	'date',
@@ -62,7 +62,8 @@ $filter[] = array('search');
 
 $delete = array();
 
-if ($get['id']>0) {	 $form[] = '<div><a target="_blank" href="/'.$modules['basket'].'/'.$get['id'].'/'.md5($get['id'].$post['date']).'/">Посмотреть заказ на сайте</a></div>';
+if ($get['id']>0) {
+	 $form[] = '<div><a target="_blank" href="/'.$modules['basket'].'/'.$get['id'].'/'.md5($get['id'].$post['date']).'/">Посмотреть заказ на сайте</a></div>';
 }
 
 $form[] = array('select td3','type',array(true,"SELECT ot.id,ot.name FROM order_types ot ORDER BY ot.rank"));

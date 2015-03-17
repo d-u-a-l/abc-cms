@@ -6,12 +6,7 @@ $size = (isset($_COOKIE['a_size']) AND in_array($_COOKIE['a_size'],array('b','m'
 <head>
 <title>Панель управления сайтом</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<?=$config['scripts']['jquery']?>
-<?=$config['scripts']['jquery_form']?>
-<?=$config['scripts']['jquery_uploader']?>
-<?=$config['scripts']['jquery_ui']?>
-<?=$config['scripts']['tinymce']?>
-<?=$config['scripts']['highslide']?>
+<?=html_sources('return','jquery jquery_form jquery_uploader jquery_ui tinymce highslide')?>
 <link  href="/admin/templates/reset.css" rel="stylesheet" type="text/css" />
 <link href="/admin/templates/style.css?<?=filemtime(ROOT_DIR.'admin/templates/style.css')?>" rel="stylesheet" type="text/css" />
 <script src="/admin/templates/dnd.js" type="text/javascript"></script>
@@ -53,7 +48,8 @@ $menu = head($modules_admin,$get['m']);
 			<div id="wrapper">
 				<?=$content?>
 				<?php
-				if (is_array($filter)) {					?>
+				if (is_array($filter)) {
+					?>
 				<div id="filter">
 					<?php
 					foreach ($filter as $k=>$v) {
@@ -68,7 +64,8 @@ $menu = head($modules_admin,$get['m']);
 				?>
 
 <?php
-if (!in_array($get['m'],array('backup','restore'))) {	?>
+if (!in_array($get['m'],array('backup','restore'))) {
+	?>
 			</div>
 
 			<div id="footer">

@@ -1,10 +1,12 @@
-<?=$config['scripts']['highslide_gallery']?>
+<?=html_sources('return','highslide_gallery']?>
 <?php
 $img = $q['img'] ? '/files/shop_products/'.$q['id'].'/img/m-'.$q['img'] : '/templates/images/no_img.png';
 $images = $q['imgs'] ? unserialize($q['imgs']) : false;
 $parameters = $q['parameters'] ? unserialize($q['parameters']) : false;
 $shop_parameters = false;
-if (is_array($parameters)) {	$prms=array();	foreach ($parameters as $k=>$v) if (@$v['display'] AND @$v['product']) $prms[]=$k;
+if (is_array($parameters)) {
+	$prms=array();
+	foreach ($parameters as $k=>$v) if (@$v['display'] AND @$v['product']) $prms[]=$k;
 	$shop_parameters = mysql_select("
 		SELECT * FROM shop_parameters
 		WHERE display=1 AND id IN('".implode("','",$prms)."')
@@ -18,9 +20,12 @@ $title = filter_var($q['name'],FILTER_SANITIZE_STRING);
 		<?php if ($q['img']) {?><a title="<?=$title?>" onclick="return hs.expand(this, config1)" href="/files/shop_products/<?=$q['id']?>/img/<?=$q['img']?>"><?php } ?>
 		<img src="<?=$img?>" alt="<?=$title?>" />
 		<?php if ($q['img']) {?></a><?php } ?>
-		<?php if ($images) {			$n = 0;
+		<?php if ($images) {
+			$n = 0;
 			$list = '';
-			foreach ($images as $k=>$v) if (@$v['display']==1) {				$n++;				$title2=filter_var($v['name'],FILTER_SANITIZE_STRING);
+			foreach ($images as $k=>$v) if (@$v['display']==1) {
+				$n++;
+				$title2=filter_var($v['name'],FILTER_SANITIZE_STRING);
 				$path = '/files/shop_products/'.$q['id'].'/imgs/'.$k.'/';
 				$list.= '<li><a title="'.$title2.'" onclick="return hs.expand(this, {slideshowGroup: \'group1\',transitions: [\'expand\', \'crossfade\']})" href="'.$path.$v['file'].'"><img src="'.$path.'p-'.$v['file'].'" alt="'.$title2.'" /></a></li>';
 
@@ -85,20 +90,28 @@ $title = filter_var($q['name'],FILTER_SANITIZE_STRING);
 	<?=html_array('shop/review_form',$q)?>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){	$('.shop_product_text .gallary .carousel').hover(
-		function () {			$('.shop_product_text .carousel .next, .shop_product_text .carousel .prev').show().css('display','block');
+$(document).ready(function(){
+	$('.shop_product_text .gallary .carousel').hover(
+		function () {
+			$('.shop_product_text .carousel .next, .shop_product_text .carousel .prev').show().css('display','block');
 		},
-		function () {			$('.shop_product_text .carousel .next, .shop_product_text .carousel .prev').hide();
+		function () {
+			$('.shop_product_text .carousel .next, .shop_product_text .carousel .prev').hide();
 		}
 	);
-	$('.shop_product_text .gallary .next,.shop_product_text .gallary .prev').click(function(){		var left = parseInt($('.shop_product_text .gallary ul').css('margin-left'));
+	$('.shop_product_text .gallary .next,.shop_product_text .gallary .prev').click(function(){
+		var left = parseInt($('.shop_product_text .gallary ul').css('margin-left'));
 		var width = parseInt($('.shop_product_text .gallary ul').width());
 		var margin = 121;
 		//alert (width+' '+left);
-		if ($(this).hasClass('next')) {			if (width+left<400) return false;
+		if ($(this).hasClass('next')) {
+			if (width+left<400) return false;
 			left = left-margin;
-		} else {			if (left>=0) return false;			left = left+margin;
-		}		$('.shop_product_text .gallary ul').animate({marginLeft:left+'px'},500);
+		} else {
+			if (left>=0) return false;
+			left = left+margin;
+		}
+		$('.shop_product_text .gallary ul').animate({marginLeft:left+'px'},500);
 		return false;
 	});
 });

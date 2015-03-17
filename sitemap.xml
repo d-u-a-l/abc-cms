@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url><loc>http://_abc/</loc></url>
 	<url><loc>http://_abc/glavnaya/</loc></url>
 	<url><loc>http://_abc/o-kompanii/</loc></url>
@@ -155,4 +155,4 @@
 	<url><loc>http://_abc/katalog/7-aktivnyi-otdyh-i-turizm/</loc></url>
 	<url><loc>http://_abc/katalog/16-tovary-dlya-detei/</loc></url>
 	<url><loc>http://_abc/katalog/17-dom-sad/</loc></url>
-	</urlset>
+</urlset>

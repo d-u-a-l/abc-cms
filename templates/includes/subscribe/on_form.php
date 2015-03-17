@@ -1,10 +1,12 @@
 <?php
-if (isset($q['success'])) {	?>
+if (isset($q['success'])) {
+	?>
 	<?=i18n('subscribe|on_success',true)?>
 	<?php
 }
-else {	?>
-<?=$config['scripts']['jquery_validate']?>
+else {
+	?>
+<?=html_sources('return','jquery_validate']?>
 <form class="form validate" action="" method="post">
 <?=html_array('form/input',array(
 	'name'	=>	'email',

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * основной файл обработки всех урл для сайта
+ */
+
 //чтобы не запрашивали напрямую index.php
 if ($_SERVER['REQUEST_URI']=='/index.php') {
 	header('HTTP/1.1 301 Moved Permanently');
@@ -8,9 +12,11 @@ if ($_SERVER['REQUEST_URI']=='/index.php') {
 
 session_start();
 
+// загрузка настроек *********************************************************
 define('ROOT_DIR', dirname(__FILE__).'/');
 require_once(ROOT_DIR.'_config.php');	//динамические настройки
 require_once(ROOT_DIR.'_config2.php');	//установка настроек
+
 // загрузка функций **********************************************************
 //require_once(ROOT_DIR.'functions/admin_func.php');	//функции админки
 require_once(ROOT_DIR.'functions/auth_func.php');	//функции авторизации
@@ -105,7 +111,6 @@ require_once(ROOT_DIR.$config['style'].'/includes/common/template.php');
 
 /*
 echo '<!--';
-echo defined('config_db') ? 'БД подключена!' : 'Нет подклюения к БД';
 print_r($config['queries']);
 echo '-->'; /**/
 

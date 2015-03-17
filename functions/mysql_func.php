@@ -85,108 +85,118 @@ function mysql_select($query,$type='rows',$cache=false) {
 	}
 }
 
-//запросы к БД кроме селект
+/**
+ * запросы к БД кроме селект
+ * @param string $type - тип запроса [inser,update,delete]
+ * @param string $tbl_name - название таблицы
+ * @param array $post - массив данных
+ * @param string $where -
+ * @return boolean|int|string - да/нет | ID инсера | запрос удаления
+ */
 function mysql_fn($type, $tbl_name, $post ,$where = '', $ignore = false) {
-	//если четвертый параметр - массив
-	if (!is_string($where)) {
-		$exceptions = $where;
-		$where = '';
+	global $config;
+	if ($config['mysql_connect']==false) {
+		mysql_connect_db();
 	}
-	else $exceptions = false;
-
-	//тело запроса INSERT множества записей
-	if ($type=='insert values') {
-		$into = implode('`,`',array_keys(current($post)));
-		foreach ($post as $q) {
-			$values = array();
-			foreach ($q as $v) $values[] = "'".mysql_real_escape_string($v)."'";
-			$sql[] = implode(',',$values);
+	if ($config['mysql_error']==false) {
+		//если четвертый параметр - массив
+		if (!is_string($where)) {
+			$exceptions = $where;
+			$where = '';
 		}
-		$sql = implode('),(',$sql);
-	}
-	//тело запроса INSERT одиночной записи или UPDATE
-	else {
-		//если есть исключения
-		if ($exceptions && is_array($exceptions)) {
-			foreach ($post as $k=>$v) {
-				if (!in_array($k,$exceptions)) $sql[] = "`".$k."` = '".mysql_real_escape_string($v)."'";
+		else $exceptions = false;
+
+		//тело запроса INSERT множества записей
+		if ($type == 'insert values') {
+			$into = implode('`,`', array_keys(current($post)));
+			foreach ($post as $q) {
+				$values = array();
+				foreach ($q as $v) $values[] = "'" . mysql_real_escape_string($v) . "'";
+				$sql[] = implode(',', $values);
 			}
-			$sql = isset($sql) ? implode(', ',$sql) : '';
+			$sql = implode('),(', $sql);
 		}
-		//если нет исключений
-		elseif (is_array($post)) {
-			foreach ($post as $k=>$v) $sql[] = "`".$k."` = '".mysql_real_escape_string($v)."'";
-			$sql = isset($sql) ? implode(', ',$sql) : '';
-		}
-	}
-
-	$ignore = $ignore ? "IGNORE" : "";
-	switch ($type) {
-		//запрос на вставку новой строки
-		case 'insert':
-			$query = "
-				INSERT ".$ignore." INTO `".$tbl_name."`
-				SET ".$sql.";
-			";
-			break;
-		//запрос на вставку новой строки с обновлением при совпадении unique ключа
-		case 'insert update':
-			$query = "
-				INSERT ".$ignore." INTO `".$tbl_name."`
-				SET ".$sql."
-				ON DUPLICATE KEY UPDATE ".$sql.";
-			";
-			break;
-		//запрос на вставку множества строк
-		case 'insert values':
-			$query = "
-				INSERT ".$ignore." INTO `".$tbl_name."` (`".$into."`)
-				VALUES (".$sql.")
-			";
-			break;
-		//запрос на обновление одной или нескольких строк
-		case 'update':
-			if ($id = intval(@$post['id'])) $where.= " AND id = '".$id."' ";
-			$query = "
-				UPDATE `".$tbl_name."`
-				SET ".$sql."
-				WHERE 1	".$where;
-			break;
-		//запрос на удаление одной или нескольких строк
-		case 'delete':
-			if (is_array($post)) $id = intval(@$post['id']);
-			else $id = intval($post);
-			if ($id OR $where) {
-				if ($id) $where.= " AND id = '".$id."' ";
-				$query = "
-					DELETE
-					FROM `".$tbl_name."`
-					WHERE 1	".$where;
+		//тело запроса INSERT одиночной записи или UPDATE
+		else {
+			//если есть исключения
+			if ($exceptions && is_array($exceptions)) {
+				foreach ($post as $k => $v) {
+					if (!in_array($k, $exceptions)) $sql[] = "`" . $k . "` = '" . mysql_real_escape_string($v) . "'";
+				}
+				$sql = isset($sql) ? implode(', ', $sql) : '';
+			} //если нет исключений
+			elseif (is_array($post)) {
+				foreach ($post as $k => $v) $sql[] = "`" . $k . "` = '" . mysql_real_escape_string($v) . "'";
+				$sql = isset($sql) ? implode(', ', $sql) : '';
 			}
-			break;
-		//по умолчанию возвращаем тело запроса
-		default:
-			return $sql;
-	}
-	//выполняем запрос
-	mysql_query($query); //echo $query;
+		}
 
-	if (($error = mysql_error()) == false) {
+		$ignore = $ignore ? "IGNORE" : "";
 		switch ($type) {
+			//запрос на вставку новой строки
 			case 'insert':
+				$query = "
+					INSERT " . $ignore . " INTO `" . $tbl_name . "`
+					SET " . $sql . ";
+				";
+				break;
+			//запрос на вставку новой строки с обновлением при совпадении unique ключа
 			case 'insert update':
-				return (mysql_affected_rows() > 0) ? mysql_insert_id() : false;
-			case 'update':
-			case 'delete':
+				$query = "
+					INSERT " . $ignore . " INTO `" . $tbl_name . "`
+					SET " . $sql . "
+					ON DUPLICATE KEY UPDATE " . $sql . ";
+				";
+				break;
+			//запрос на вставку множества строк
 			case 'insert values':
-				return (($rows = mysql_affected_rows()) > 0) ? $rows : false;
+				$query = "
+					INSERT " . $ignore . " INTO `" . $tbl_name . "` (`" . $into . "`)
+					VALUES (" . $sql . ")
+				";
+				break;
+			//запрос на обновление одной или нескольких строк
+			case 'update':
+				if ($id = intval(@$post['id'])) $where .= " AND id = '" . $id . "' ";
+				$query = "
+					UPDATE `" . $tbl_name . "`
+					SET " . $sql . "
+					WHERE 1	" . $where;
+				break;
+			//запрос на удаление одной или нескольких строк
+			case 'delete':
+				if (is_array($post)) $id = intval(@$post['id']);
+				else $id = intval($post);
+				if ($id OR $where) {
+					if ($id) $where .= " AND id = '" . $id . "' ";
+					$query = "
+						DELETE
+						FROM `" . $tbl_name . "`
+						WHERE 1	" . $where;
+				}
+				break;
+			//по умолчанию возвращаем тело запроса
+			default:
+				return $sql;
 		}
-		return false;
-	}
-	else {
-		trigger_error($error.' '.$query, E_USER_DEPRECATED);
-	}
+		//выполняем запрос
+		mysql_query($query); //echo $query;
 
+		if (($error = mysql_error()) == false) {
+			switch ($type) {
+				case 'insert':
+				case 'insert update':
+					return (mysql_affected_rows() > 0) ? mysql_insert_id() : false;
+				case 'update':
+				case 'delete':
+				case 'insert values':
+					return (($rows = mysql_affected_rows()) > 0) ? $rows : false;
+			}
+			return false;
+		} else {
+			trigger_error($error . ' ' . $query, E_USER_DEPRECATED);
+		}
+	}
 }
 
 //выборка с БД - вариант Саши

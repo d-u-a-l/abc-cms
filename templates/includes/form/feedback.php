@@ -2,9 +2,10 @@
 //если письмо отправилось
 if (isset($q['success'])) {
 	echo html_array('form/message',i18n('feedback|message_is_sent',true));
-} else {
-?>
-<?=$config['scripts']['jquery_validate']?>
+}
+else {
+	?>
+<?=html_sources('return','jquery_validate')?>
 <noscript><?=i18n('validate|not_valid_captcha2')?></noscript>
 <?=isset($q['message']) ? html_array('form/message',$q['message']) : ''?>
 <form method="post" class="form validate" enctype="multipart/form-data">

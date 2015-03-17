@@ -1,6 +1,17 @@
 <?php
 
-session_start();
+// загрузка функций **********************************************************
+//require_once(ROOT_DIR.'functions/admin_func.php');	//функции админки
+//require_once(ROOT_DIR.'functions/auth_func.php');	//функции авторизации
+//require_once(ROOT_DIR.'functions/common_func.php');	//общие функции
+//require_once(ROOT_DIR.'functions/file_func.php');	//функции для работы с файлами
+//require_once(ROOT_DIR.'functions/html_func.php');	//функции для работы нтмл кодом
+//require_once(ROOT_DIR.'functions/form_func.php');	//функции для работы со формами
+//require_once(ROOT_DIR.'functions/image_func.php');	//функции для работы с картинками
+//require_once(ROOT_DIR.'functions/lang_func.php');	//функции словаря
+//require_once(ROOT_DIR.'functions/mail_func.php');	//функции почты
+require_once(ROOT_DIR.'functions/mysql_func.php');	//функции для работы с БД
+//require_once(ROOT_DIR.'functions/string_func.php');	//функции для работы со строками
 
 $action = $_GET['action'];
 
@@ -12,13 +23,11 @@ if ($action=='add_product') {
 	if ($product = abs(intval(@$_GET['product']))) {
 		//количество
 		if ($count = abs(intval(@$_GET['count']))) {
-			require_once(ROOT_DIR.'config_db.php'); //доступ к ДБ
-			$result = mysql_query("
+			if ($q = mysql_select("
 				SELECT *
 				FROM shop_products
 				WHERE id = '".$product."'
-			");
-			if ($q = mysql_fetch_assoc($result)) {
+			",'row')) {
 				//массив товара для хранения в сессии
 				$p = array(
 					'id'	=> $q['id'],
@@ -49,8 +58,8 @@ if ($action=='add_product') {
 					'total'	=>	$_SESSION['basket']['total'],
 					'count'	=>	$_SESSION['basket']['count'],
 				);
-
-			} else $json['message'] = 'Такого товара не существует!';
+			}
+			else $json['message'] = 'Такого товара не существует!';
 
 		} else $json['message'] = 'Не указано количество товара!';
 

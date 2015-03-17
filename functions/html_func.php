@@ -9,7 +9,6 @@
  * @return html код селекта
  */
 function select($key,$query,$default = NULL,$template = '{name}') {
-	global $lang;
 	if (isset($default)) $content = $default ? '<option value="">'.$default.'</option>' : '<option value="">'.i18n('common|make_selection').'</option>';
 	else $content = '';
 	//1)список из массива - $query - массив со значениями для селектов
@@ -231,7 +230,7 @@ function html_sources($label='',$source='') {
 <script type="text/javascript" src="/plugins/jquery/i18n/jquery.ui.datepicker-'.$lang['localization'].'.js"></script>',
 	'jquery_form' 			=> '
 <script type="text/javascript" src="/plugins/jquery/jquery.form.min.js"></script>',
-	'jquery_uploader' 			=> '
+	'jquery_uploader' 		=> '
 <script type="text/javascript" src="/plugins/jquery/jquery.uploader.js"></script>',
 	'jquery_validate'		=> '
 <script type="text/javascript" src="/plugins/jquery/jquery-validation-1.8.1/jquery.validate.min.js"></script>

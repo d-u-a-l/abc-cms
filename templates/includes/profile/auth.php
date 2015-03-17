@@ -4,7 +4,7 @@ if (access('user auth')) {
 	echo '<a href="/'.$modules['profile'].'/" title="'.i18n('profile|go_to_profile').'">'.i18n('profile|go_to_profile').'</a>';
 
 } else {
-	echo $config['scripts']['jquery_validate'];
+	echo html_sources('return','jquery_validate');
 	echo isset($q['message']) ? html_array('form/message',$q['message']) : '';
 ?>
 <form method="post" class="form validate" action="/<?=$modules['login']?>/enter/" >
@@ -24,7 +24,7 @@ echo html_array('form/checkbox',array(
 	'units'	=>	i18n('profile|remember_me',true),
 	'name'	=>	'remember_me',
 ));
-echo html_array('form/captcha2');//скрытая капча
+echo html_array('form/captcha2');//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 echo html_array('form/button',array(
 	'name'	=>	i18n('profile|enter'),
 ));

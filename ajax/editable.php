@@ -1,10 +1,20 @@
 <?php
 
-session_start();
+//session_start();
 
-require_once(ROOT_DIR.'config_db.php');
-require_once(ROOT_DIR.'functions/common_func.php');
-require_once(ROOT_DIR.'functions/index_form.php'); //загрузка функций для формы
+// загрузка функций **********************************************************
+//require_once(ROOT_DIR.'functions/admin_func.php');	//функции админки
+require_once(ROOT_DIR.'functions/auth_func.php');	//функции авторизации
+require_once(ROOT_DIR.'functions/common_func.php');	//общие функции
+//require_once(ROOT_DIR.'functions/file_func.php');	//функции для работы с файлами
+//require_once(ROOT_DIR.'functions/html_func.php');	//функции для работы нтмл кодом
+require_once(ROOT_DIR.'functions/form_func.php');	//функции для работы со формами
+//require_once(ROOT_DIR.'functions/image_func.php');	//функции для работы с картинками
+require_once(ROOT_DIR.'functions/lang_func.php');	//функции словаря
+//require_once(ROOT_DIR.'functions/mail_func.php');	//функции почты
+require_once(ROOT_DIR.'functions/mysql_func.php');	//функции для работы с БД
+//require_once(ROOT_DIR.'functions/string_func.php');	//функции для работы со строками
+
 
 //аутентификация - создание массива с данными пользователя
 $user = user('auth');

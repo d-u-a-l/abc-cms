@@ -1,19 +1,30 @@
 <?php
 
-//ñîçäàíèå ìàññèâà $lang
-function lang($id,$type='id') {
-	switch ($type) {
-		case 'id':	$where = "id = ".intval($id);	break;
-		case 'url':	$where = "url = '".mysql_real_escape_string($id)."'";
-	}
-	if (isset($where))
-		$lang = mysql_select("SELECT * FROM languages WHERE ".$where." LIMIT 1",'row',60*60);
+/**
+ * Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð´Ð»Ñ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ñ ÑÐ·Ñ‹ÐºÐ°Ð¼Ð¸
+ */
+
+/**
+ * ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ð¼Ð°ÑÑÐ¸Ð²Ð° $lang
+ * @param int|string $str - Ð˜Ð” Ð¸Ð»Ð¸ ÑƒÑ€Ð» ÑÐ·Ñ‹ÐºÐ°
+ * @param string $type - ÑƒÑ€Ð» Ð¸Ð»Ð¸ Ð˜Ð” [url|id]
+ * @return array - Ð¼Ð°ÑÑÐ¸Ð² Ð´Ð°Ð½Ð½Ñ‹Ñ…
+ */
+function lang($str,$type='id') {
+	$where = $type=='id' ? "id = ".intval($str) : "url = '".mysql_res($str)."'";
+	$lang = mysql_select("SELECT * FROM languages WHERE ".$where." LIMIT 1",'row',60*60);
 	if ($lang==false)
 		$lang = mysql_select("SELECT * FROM languages WHERE display=1 ORDER BY rank DESC LIMIT 1",'row',60*60);
 	return $lang;//return array_merge($lang,unserialize($lang['dictionary']));
 }
 
-//âûáèðàåò ñëîâî èç ñëîâàðÿ ïî êëþ÷ó, îáîðà÷èâàåò â áëîê äëÿ ðåäàêòèðîâàíèÿ
+/**
+ * Ð²Ñ‹Ð±Ð¸Ñ€Ð°ÐµÑ‚ ÑÐ»Ð¾Ð²Ð¾ Ð¸Ð· ÑÐ»Ð¾Ð²Ð°Ñ€Ñ Ð¿Ð¾ ÐºÐ»ÑŽÑ‡Ñƒ, Ð¾Ð±Ð¾Ñ€Ð°Ñ‡Ð¸Ð²Ð°ÐµÑ‚ Ð² Ð±Ð»Ð¾Ðº Ð´Ð»Ñ Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ
+ * Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð±ÐµÑ€ÑƒÑ‚ÑÑ Ð¸Ð· /files/languages/{ID}/dictionary/ {ID} - Ð˜Ð” Ñ‚ÐµÐºÑƒÑ‰ÐµÐ³Ð¾ ÑÐ·Ñ‹ÐºÐ°
+ * @param string $str - ÐºÐ»ÑŽÑ‡ ÑÐ»Ð¾Ð²Ð°
+ * @param boolean $editable - Ð²ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ Ð±Ñ‹ÑÑ‚Ñ€Ð¾Ðµ Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²ÐµÐ½Ð¸Ðµ - Ñ„ÑƒÐ½Ñ†rÐ¸Ñ editable
+ * @return string - ÑÐ»Ð¾Ð²Ð¾
+ */
 function i18n ($str,$editable=false) {
 	global $lang;
 	$data = explode('|',$str);
@@ -28,7 +39,11 @@ function i18n ($str,$editable=false) {
 	else return (isset($lang[$data[0]][$data[1]]) && !isset($_GET['i18n'])) ? $lang[$data[0]][$data[1]] : str_replace('%s',$str, '{%s}');
 }
 
-//âûáèðàåò ñëîâî èç ñëîâàðÿ ïî êëþ÷ó, îáîðà÷èâàåò â áëîê äëÿ ðåäàêòèðîâàíèÿ
+/**
+ * Ð²Ñ‹Ð±Ð¸Ñ€Ð°ÐµÑ‚ ÑÐ»Ð¾Ð²Ð¾ Ð¸Ð· ÑÐ»Ð¾Ð²Ð°Ñ€Ñ Ð¿Ð¾ ÐºÐ»ÑŽÑ‡Ñƒ - Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð´Ð»Ñ Ð°Ð´Ð¼Ð¸Ð½Ð¿Ð°Ð½ÐµÐ»Ð¸
+ * @param string $str - ÐºÐ»ÑŽÑ‡ ÑÐ»Ð¾Ð²Ð°
+ * @return string - ÑÐ»Ð¾Ð²Ð¾
+ */
 function a18n ($str) {
 	global $a18n;
 	return (isset($a18n[$str])) ? $a18n[$str] : $str;

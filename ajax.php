@@ -1,11 +1,17 @@
 <?php
 
-//header('Content-type: text/html; charset=UTF-8');
+/**
+ * Основной уро для аджакс запросов типа /ajax.php?file={file}
+ * {file} - имя файла в папке /ajax/{file}.php
+ */
 
-//����� �������
-require_once('functions/global_conf.php');
-require_once(ROOT_DIR.'functions/config.php');	//����� �������
+session_start();
 
+define('ROOT_DIR', dirname(__FILE__).'/');
+require_once(ROOT_DIR.'_config.php');	//динамические настройки
+require_once(ROOT_DIR.'_config2.php');	//установка настроек
+
+//если запрос не из сайта то умирать
 //if (@$_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') die();
 
 $file = isset($_GET['file']) ? $_GET['file'] : '';

@@ -1,40 +1,57 @@
 <?php
 
-//удаление
-function html_delete($array = '') { //04.04.10 кнопка удаления записи из БД и всех её файлов
+/**
+ * функции админпанели
+ */
+
+/**
+ * кнопка удаления записи из БД и всех её файлов
+ * @param string $delete
+ * @return string
+ * @see $delete
+ */
+function html_delete($delete='') {
 	global $get,$a18n;
 	$content = '';
-	if ($get['id']>0 && is_array($array)) {
-		if (isset($array['confirm'])) {
-			if (is_array($array['confirm'])) foreach ($array['confirm'] as $k=>$v) {
+	if ($get['id']>0 && is_array($delete)) {
+		//если есть связанные записи
+		if (isset($delete['confirm'])) {
+			if (is_array($delete['confirm'])) foreach ($delete['confirm'] as $k=>$v) {
 				if (strpos($v, ' ')) { //запрос
-					$result = mysql_query($v); echo mysql_error(); //echo $v;
-					if (mysql_num_rows($result)>0) $content.= '[связанные '.a18n($k).'] ';
-
+					if (mysql_select($v,'row')) $content.= '[связанные '.a18n($k).'] ';
 				} else {
 					$query = 'SELECT `id` FROM `'.$k.'` WHERE `'.$v.'` = '.$get['id'];
-					$result = mysql_query($query); echo mysql_error(); //echo $v;
-					if (mysql_num_rows($result)>0)
-						if (array_key_exists($k,$a18n))
-							$content.= '<a href="admin.php?m='.$k.'&'.$v.'='.$get['id'].'">['.a18n($k).']</a> ';
-						else $content.= 'есть связи';
+					if (mysql_select($query,'row')) {
+						if (array_key_exists($k, $a18n))
+							$content .= '<a href="admin.php?m='.$k.'&'.$v.'='.$get['id'].'">['.a18n($k).']</a> ';
+						else $content .= 'есть связи';
+					}
 				}
 			}
 		}
+		//если есть связанные записи
 		if ($content) return 'удаление невозможно: '.$content;
 	}
 }
 
-//функция вывода строк таблицы
-function table_row($array,$q,$head = false) {
+
+/**
+ * функция вывода строк таблицы
+ * @param array $table - массив колонок таблицы
+ * @param array $q - массив данных ряда
+ * @param bool $head - вернуть шапку или ряд
+ * @return string - ряд <tr>
+ * @see $table
+ */
+function table_row($table,$q,$head = false) {
 	global $config,$url;
-	if (!isset($array['_edit'])) $array = array_merge(array('_edit'=>true),$array);
-	elseif ($array['_edit']==false) unset($array['_edit']);
-	if (!isset($array['_delete'])) $array['_delete'] = true;
-	elseif ($array['_delete']==false) unset($array['_delete']);
+	if (!isset($table['_edit'])) $table = array_merge(array('_edit'=>true),$table);
+	elseif ($table['_edit']==false) unset($table['_edit']);
+	if (!isset($table['_delete'])) $table['_delete'] = true;
+	elseif ($table['_delete']==false) unset($table['_delete']);
 	$content = '';
 	//ШАПКА ТАБЛИЦЫ
-	if ($head) foreach ($array as $k=>$v) {
+	if ($head) foreach ($table as $k=>$v) {
 		if ($k=='_tree') $content.= '<th class="colspan" style="padding:0 0 0 10px"><span class="sprite tree" title="дерево вложенности"></span></th>';
 		elseif ($k=='_sorting') $content.= '<th class="colspan"><span class="sprite sorting" title="сортировка"></span></th>';
 		elseif ($k=='_edit') $content.= '<th style="padding:0; text-align:center"><a class="sprite plus2 open" href="/admin.php?'.$url.'id=new" title="добавить новую запись"></a></th>';
@@ -63,7 +80,7 @@ function table_row($array,$q,$head = false) {
 		}
 	}
 	//РЯД ТАБЛИЦЫ
-	else foreach ($array as $k=>$v) {
+	else foreach ($table as $k=>$v) {
 		if ($v && !is_array($v)) {
 			preg_match_all('/{(.*?)}/',$v,$matches,PREG_PATTERN_ORDER);
 			foreach($matches[1] as $key=>$val) $matches[1][$key] = isset($q[$val]) ? $q[$val] : '';
@@ -91,24 +108,31 @@ function table_row($array,$q,$head = false) {
 	return $content;
 }
 
-//таблица
-function table ($array = '',$query = '') {
+
+/**
+ * функция формирования нтмл кода таблицы в админке
+ * @param array $table - массив колонок таблицы
+ * @param string $query - запрос
+ * @return string - нтмл код таблицы
+ * @see $table, table_row()
+ */
+function table ($table,$query='') {
 	global $url,$get,$filter;
 	$array_count	= array(20,50,100,'all');
 	$begin			= $get['b']>0 ? intval($get['b']).',' : '';
 	$count			= in_array($get['c'],$array_count) ? $get['c'] : $array_count[0];
-	$sorting		= explode(' ',$array['id']);
+	$sorting		= explode(' ',$table['id']);
 	foreach ($sorting as $s) {
 		$s = explode(':',$s);
 		$sort_array[$s[0]] = (isset($s[1]) && $s[1]=='desc') ? 'desc' : 'asc';
 	}
-	$tree = array_key_exists('_tree',$array);
-	$sorting = array_key_exists('_sorting',$array);
+	$tree = array_key_exists('_tree',$table);
+	$sorting = array_key_exists('_sorting',$table);
 	//ГЕНЕРАЦИЯ $query
 	if ($query=='') {
 		$query = "SELECT ";
 		if ($tree) $query.= $get['m'].'.level,'.$get['m'].'.parent,';
-		foreach ($array as $k=>$v) if ($k[0]!='_') $query.= '`'.$k.'`,';
+		foreach ($table as $k=>$v) if ($k[0]!='_') $query.= '`'.$k.'`,';
 		$query = substr($query,0, -1);
 		$query.= " FROM ".$get['m']." WHERE 1";
 		//если есть фильтр (например, для языка)
@@ -124,11 +148,11 @@ function table ($array = '',$query = '') {
 		$sort  = '';
 	//сортировка
 	} elseif ($sorting) {
-		$order = $get['m'].'.'.$array['_sorting'];
+		$order = $get['m'].'.'.$table['_sorting'];
 		$sort  = '';
 	//обычный список
 	} else {
-		$th['order'] = $order = ($get['o'] && array_key_exists($get['o'],$array)) ? $get['o'] : key($sort_array);
+		$th['order'] = $order = ($get['o'] && array_key_exists($get['o'],$table)) ? $get['o'] : key($sort_array);
 		if (!$get['s']) $get['s'] = $sort_array[$order];
 		$sort = ($get['s']=='desc') ? 'DESC' : 'ASC';
 		$th['sort_array'] = $sort_array;
@@ -142,20 +166,21 @@ function table ($array = '',$query = '') {
 	$content.= '<table cellspacing="1" cellpadding="0" class="table'.($tree ? ' tree' : '').($sorting ? ' sortable' : '').'" data-module="'.$get['m'].'">';
 	$content.= '<thead>';
 	$content.= '<tr data-id="new" class="head">';
-	$content.= table_row($array,$th,true); //шапка таблицы
+	$content.= table_row($table,$th,true); //шапка таблицы
 	$content.= '</tr>';
 	$content.= '</thead>';
 	$content.= '<tbody>';
 	$i = 0;
 	$result = mysql_query($query);
 	if ($error = mysql_error()) trigger_error($error.' '.$query, E_USER_DEPRECATED);
-	else {		while ($q = mysql_fetch_assoc($result)) {
+	else {
+		while ($q = mysql_fetch_assoc($result)) {
 			$i++;
 			$tr = fmod($i,2)==0 ? 'even' : 'odd';
 			if ($tree) $content.= '<tr class="'.$tr.'" data-parent="'.$q['parent'].'" data-level="'.$q['level'].'" data-id="'.$q['id'].'">';
-			elseif ($sorting) $content.= '<tr class="'.$tr.'" data-sorting="'.$q[$array['_sorting']].'" data-id="'.$q['id'].'">';
+			elseif ($sorting) $content.= '<tr class="'.$tr.'" data-sorting="'.$q[$table['_sorting']].'" data-id="'.$q['id'].'">';
 			else $content.= '<tr class="'.$tr.'" data-id="'.$q['id'].'">';
-			$content.= table_row($array,$q);
+			$content.= table_row($table,$q);
 			$content.= '</tr>';
 		}
 	}
@@ -178,7 +203,8 @@ function pagination ($query,$array_count,$count) {//04.02.10 pagination (SELECT 
 		$amount_list = ceil($num_rows/$count); //количство страниц
 		$page = ($begin+$count)/$count;
 		//меньше текущей страницы
-		for ($i=1; $i<$page; $i++) {			if (
+		for ($i=1; $i<$page; $i++) {
+			if (
 				$i==1
 				OR //меньше 10
 				($i+5>$page)
@@ -284,7 +310,8 @@ function form ($class,$key,$value,$param=array('attr'=>'','name'=>'')) {  //19.0
 	} elseif ($type=='checkbox') {
 		$checked = $value==1 ? 'checked="checked"' : '';
 		$content = '<input type="hidden" name="'.$key.'" value="0" /><label><input type="checkbox" name="'.$key.'" value="1" '.$checked.' '.$param['attr'].' /><span>'.$name.'</span>'.$help.'</label>';
-	} elseif ($type=='tinymce') {		$rand = rand(100000,999999);
+	} elseif ($type=='tinymce') {
+		$rand = rand(100000,999999);
 		$content = $label.'<div><textarea id="'.$rand.'" cols="1" rows="1" '.$param['attr'].' name="'.$key.'">'.$value.'</textarea></div><div class="clear"></div>';
 		$content.= '
 <script type="text/javascript">
@@ -418,7 +445,8 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 	$message = '';
 	$t = current(explode(' ',$type));
 	//обычная загрузка файлов если нет нтмл5
-	if ($config['uploader']==0) {		if ($t=='file') $t = 'mysql';
+	if ($config['uploader']==0) {
+		if ($t=='file') $t = 'mysql';
 		if ($t=='file_multi') $t = 'simple';
 	}
 	//обычная загрузка
@@ -455,7 +483,8 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 				}
 			}
 			closedir($handle);
-			foreach ($photos as $k=>$v) /*if (is_file($root.$k.'/'.$v['file']))*/ {				if ($k>$n) $n = $k;
+			foreach ($photos as $k=>$v) /*if (is_file($root.$k.'/'.$v['file']))*/ {
+				if ($k>$n) $n = $k;
 				$img = substr($v['file'],-3)=='pdf' ? '<span class="sprite pdf"></span>' : '<img src="/'.$path.'/'.$k.'/a-'.$v['file'].'" />';
 				$content.= '<li data-i="'.$k.'" title="для изменения последовательности картинок переместите блок в нужное место">';
 					$content.= '<a onclick="hs.expand(this);return false;" href="/'.$path.'/'.$k.'/'.$v['file'].'" class="img" alt="'.$v['file'].'"><span>'.$img.'</span></a>';
@@ -488,7 +517,8 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 							//загрузка с параметрами
 							if (is_array($param)) {
 								$param['a-'] = 'resize 100x100'; //для превью в админке
-								foreach ($param as $k=>$v) {									if ($v) {
+								foreach ($param as $k=>$v) {
+									if ($v) {
 										if (is_dir($path.'/'.$n) || mkdir ($path.'/'.$n,0755,true)) {
 											$prm = explode(' ',$v);
 											img_process($prm[0],$v1,$prm[1],$root.$n.'/'.$k.$file);
@@ -503,7 +533,8 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 								img_process('resize',$v1,'100x100',$root.$n.'/a-'.$file);	//для превью в админке
 								move_uploaded_file($v1,$root.$n.'/'.$file);
 							}
-							if (is_file($root.$n.'/'.$file)) {								$photos[$n] = array(
+							if (is_file($root.$n.'/'.$file)) {
+								$photos[$n] = array(
 									'file' => $file,
 									'name' => current(explode('.',$_FILES[$key]['name'][$k1],2)),
 									'display' => 1,
@@ -552,7 +583,8 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 					//загрузка с параметрами
 					if (is_array($param)) {
 						$param['a-'] = 'resize 100x100'; //для превью в админке
-						foreach ($param as $k=>$v) {							if ($v) {
+						foreach ($param as $k=>$v) {
+							if ($v) {
 								$prm = explode(' ',$v);
 								img_process($prm[0],$temp,$prm[1],$root.$k.$file);
 								//если есть водяной знак
@@ -634,7 +666,8 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 					//загрузка с параметрами
 					if (is_array($param)) {
 						$param['a-'] = 'resize 100x100'; //для превью в админке
-						foreach ($param as $k=>$v) {							if ($v) {
+						foreach ($param as $k=>$v) {
+							if ($v) {
 								$prm = explode(' ',$v);
 								img_process($prm[0],$temp_file,$prm[1],$root.$k.$file);
 								//если есть водяной знак
@@ -694,7 +727,8 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 			</div>';
 	}
 	//обычная загрузка
-	if ($t=='file_multi') {		//error_handler(1,serialize($_FILES),1,1);
+	if ($t=='file_multi') {
+		//error_handler(1,serialize($_FILES),1,1);
 		$photos = (isset($post[$key]) && $post[$key]) ? unserialize($post[$key]) : array();
 		$content = '
 			<div class="files '.$type.'" data-i="'.$key.'">
@@ -738,7 +772,8 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 								//загрузка с параметрами
 								if (is_array($param)) {
 									$param['a-'] = 'resize 100x100'; //для превью в админке
-									foreach ($param as $k=>$v) {										if ($v) {
+									foreach ($param as $k=>$v) {
+										if ($v) {
 											$prm = explode(' ',$v);
 											img_process($prm[0],$temp_file,$prm[1],$root.$n.'/'.$k.$file);
 											//если есть водяной знак
@@ -785,11 +820,14 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 			foreach ($photos as $k=>$v) {
 				if (@$v['file'] AND is_file($root.$k.'/'.$v['file'])) {
 					if (is_file($root.$k.'/a-'.$v['file'])) $img = '<img src="/'.$path.'/'.$k.'/a-'.$v['file'].'" />';
-					else {						$exc = end(explode('.',$v['file']));						$icon = '/admin/templates/icons/blank.png';
+					else {
+						$exc = end(explode('.',$v['file']));
+						$icon = '/admin/templates/icons/blank.png';
 						if (in_array($exc,array('sql','txt','doc','docx')))	$icon = '/admin/templates/icons/doc.png';
 						elseif (in_array($exc,array('xls','xlsx')))		$icon = '/admin/templates/icons/xls.png';
 						elseif (in_array($exc,array('pdf')))			$icon = '/admin/templates/icons/pdf.png';
-						elseif (in_array($exc,array('zip','rar')))		$icon = '/admin/templates/icons/zip.png';						$img = '<img src="'.$icon.'" />';
+						elseif (in_array($exc,array('zip','rar')))		$icon = '/admin/templates/icons/zip.png';
+						$img = '<img src="'.$icon.'" />';
 					}
 					$content.= '<li data-i="'.$k.'" title="для изменения последовательности картинок переместите блок в нужное место">';
 						$content.= '<div class="img"><span>&nbsp;</span>'.$img;

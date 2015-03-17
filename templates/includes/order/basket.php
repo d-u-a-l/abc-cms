@@ -47,7 +47,8 @@ if (isset($q['products']) && is_array($q['products']) && $q['total']>0) {
 	<h2><?=i18n('basket|delivery',true)?></h2>
 <?php
 $i = 0;
-if($deliveries = mysql_select("SELECT * FROM order_deliveries WHERE rank>0",'rows'))	foreach($deliveries as $k=>$v) {
+if($deliveries = mysql_select("SELECT * FROM order_deliveries WHERE rank>0",'rows'))
+	foreach($deliveries as $k=>$v) {
 		$i++;
 		$checked = (isset($q['delivery']) AND $q['delivery']==$v['id']) ? ' checked="checked"' : '';
 		$checked = $i==1 ? ' checked="checked"' : $checked;
@@ -91,7 +92,7 @@ if($deliveries = mysql_select("SELECT * FROM order_deliveries WHERE rank>0",'row
 	'name' =>	i18n('basket|order'),
 ));?>
 </form>
-<?=$config['scripts']['jquery_validate']?>
+<?=html_sources('return','jquery_validate')?>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('.basket_product_list input').change(function(){

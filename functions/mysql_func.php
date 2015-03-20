@@ -22,6 +22,7 @@ function mysql_connect_db() {
 
 /**
  * своя mysql_real_escape_string
+ * @param string $str - строка для экранирования
  * @return string - экранированное значение
  */
 function mysql_res ($str) {

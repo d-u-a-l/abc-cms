@@ -53,7 +53,7 @@ if ($config['dummy']==1 AND access('user admin')==false) {
 //редиректы
 if ($config['redirects']) {
 	$request_url = explode('?',$_SERVER['REQUEST_URI']); //print_r($request_url);
-	if ($redirect = mysql_select("SELECT * FROM redirects WHERE old_url='".mysql_real_escape_string($request_url[0])."'",'row')) {
+	if ($redirect = mysql_select("SELECT * FROM redirects WHERE old_url='".mysql_res($request_url[0])."'",'row')) {
 		header('HTTP/1.1 301 Moved Permanently');
 		header('location: http://'.$_SERVER['SERVER_NAME'].$redirect['new_url']);
 		die();

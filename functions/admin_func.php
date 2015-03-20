@@ -815,6 +815,8 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 						}
 					}
 				}
+
+
 				closedir($handle);
 			}
 			foreach ($photos as $k=>$v) {

@@ -39,10 +39,8 @@ $locales = array(
 	'vi'	=>	'Вьетнамский',
 );
 
-$multilingual = false;
-
 //многоязычный
-if ($multilingual) {
+if ($config['multilingual']) {
 	$table = array(
 		'id'			=>	'rank:desc name id',
 		'name'			=>	'',
@@ -96,7 +94,9 @@ else {
 	//$dictionary = unserialize(@$post['dictionary']);
 	$root = ROOT_DIR.'files/languages/'.$get['id'].'/dictionary';
 	if (is_dir($root) && $handle = opendir($root)) {
-		while (false !== ($file = readdir($handle))) {			if (strlen($file)>2)				include(ROOT_DIR.'files/languages/'.$get['id'].'/dictionary/'.$file);
+		while (false !== ($file = readdir($handle))) {
+			if (strlen($file)>2)
+				include(ROOT_DIR.'files/languages/'.$get['id'].'/dictionary/'.$file);
 		}
 	}
 }

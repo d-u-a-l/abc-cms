@@ -1,5 +1,7 @@
 <?php
 
+$config['multilingual'] = true; //многоязычный сайт
+
 $config['merchants'] = array(
 	1 => 'наличный рассчет',
 	2 => 'robokassa [все платежи]',

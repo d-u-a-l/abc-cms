@@ -51,9 +51,9 @@ if (count($_POST)>0) {
 
 		}
 
-		//5-й параметр кому ответить
+		//6-й параметр кому ответить
 		require_once(ROOT_DIR.'functions/mail_func.php');	//функции почты
-		mailer('feedback',$lang['id'],$post,false,$post['email'],false,$files);
+		mailer('feedback',$lang['id'],$post,false,false,$post['email'],$files);
 		$post['success'] = 1;
 		/*if (email(
 			$config['email'],								//отправитель

@@ -1,6 +1,6 @@
 <?php
 
-//îáðåçàíèå îáðàòíûõ ñëåøåâ â $_REQUEST äàííûõ
+//Ð¾Ð±Ñ€ÐµÐ·Ð°Ð½Ð¸Ðµ Ð¾Ð±Ñ€Ð°Ñ‚Ð½Ñ‹Ñ… ÑÐ»ÐµÑˆÐµÐ² Ð² $_REQUEST Ð´Ð°Ð½Ð½Ñ‹Ñ…
 function stripslashes_smart($post) {
 	if (get_magic_quotes_gpc()) {
 		if (is_array($post)) {
@@ -14,7 +14,7 @@ function stripslashes_smart($post) {
 	return $q;
 }
 
-//ñîçäàíèå óðë èç $_GET
+//ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ðµ ÑƒÑ€Ð» Ð¸Ð· $_GET
 function build_query($key = '') {
 	$get = $_GET;
 	if ($key) {

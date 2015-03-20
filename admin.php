@@ -17,7 +17,7 @@ require_once(ROOT_DIR.'functions/html_func.php');	//функции для раб
 require_once(ROOT_DIR.'functions/lang_func.php');	//функции словаря
 //require_once(ROOT_DIR.'functions/mail_func.php');	//функции почты
 require_once(ROOT_DIR.'functions/mysql_func.php');	//функции для работы с БД
-//require_once(ROOT_DIR.'functions/string_func.php');	//функции для работы со строками
+require_once(ROOT_DIR.'functions/string_func.php');	//функции для работы со строками
 
 $config['admin_lang'] = 'ru';
 require_once(ROOT_DIR.'admin/languages/'.$config['admin_lang'].'.php');	//язык админки

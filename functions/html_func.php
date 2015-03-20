@@ -54,6 +54,8 @@ function select($key,$query,$default = NULL,$template = '{name}') {
  * @param $template - строка с {i}
  * @param $data - массив со значениями для замены
  * @return - строка $template с заменой
+ * todo
+ * закинуть html_template сюдаже
  */
 function template($template,$data) {
 	preg_match_all('/{(.*?)}/',$template,$matches,PREG_PATTERN_ORDER);
@@ -78,7 +80,12 @@ function template($template,$data) {
 	return str_replace($matches[0],$matches[1],$template);
 }
 
-//замена {page/text} на шаблон
+
+/**
+ * замена {page/text} на шаблон
+ * @param string $text - html код с тектсом
+ * @return string - html код с тектсом c подключенным шаблоном
+ */
 function html_template($text) {
 	preg_match_all('/{(.*?)}/',$text,$matches,PREG_PATTERN_ORDER);
 	foreach($matches[1] as $k=>$v) {
@@ -87,26 +94,34 @@ function html_template($text) {
 	return str_replace($matches[0],$matches[1],$text);
 }
 
-//наполнение шаблона значенями массива
-function html_array($m,$q = '',$k = '') {
+/**
+ * //подключение шаблона - наполнение шаблона значенями массива
+ * @param string $path - путь к шаблону
+ * @param string|array $q - массив данных или строка
+ * @return string
+ */
+function html_array($path,$q = array()) {
 	global $config,$modules,$u,$user,$lang,$page;
-	$i = $num_rows = 1;
+	$i = $num_rows = 0;
 	ob_start(); // echo to buffer, not screen
-	include (ROOT_DIR.$config['style'].'/includes/'.$m.'.php');
+	include (ROOT_DIR.$config['style'].'/includes/'.$path.'.php');
 	return ob_get_clean(); // get buffer contents
 }
 
-//наполнение шаблона выборкой с БД
-function html_query($module, $query, $no_results = false, $cache = false, $cache_type = 'html') {
-	//$module - путь к файлу шаблона, через пробел путь к файлу пагинатора
-	//$query - sql запрос
-	//$no_results - строка в случае если нет результатов запроса
-	//$cache - время обновления кеша, если пусто то кеш не создается
-	//$cache_type - вид кеша - нтмл файл или массив json
+/**
+ * наполнение шаблона выборкой с БД
+ * @param string $path - путь к файлу шаблона, через пробел путь к файлу пагинатора
+ * @param $query - sql запрос
+ * @param bool|string $no_results - строка в случае если нет результатов запроса, если false то фраза по умолчанию  i18n('common|msg_no_results')
+ * @param bool $cache - время обновления кеша в секундах, если пусто то кеш не создается
+ * @param string $cache_type - html - генерируется нтмл файл, json - json массив в файле
+ * @return bool|string
+ */
+function html_query($path, $query, $no_results = false, $cache = 0, $cache_type = 'html') {
 	global $config,$lang,$modules,$user,$u,$page;
 	$content	= false;
 	$data		= array();
-	$m			= explode(' ',$module);
+	$m			= explode(' ',$path);
 	$time		= time() - $cache;
 	//если есть пагинатор подключить его, в нем к $query прибавляется LIMIT n,c
 	if (isset($m[1]) && file_exists(ROOT_DIR.$config['style'].'/includes/pagination/'.$m[1].'.php')) include (ROOT_DIR.$config['style'].'/includes/pagination/'.$m[1].'.php');
@@ -188,7 +203,13 @@ function html_query($module, $query, $no_results = false, $cache = false, $cache
 	return $content;
 }
 
-//функция формирует бредкрамб
+/**
+ * функция формирует бредкрамб
+ * @param string $query - SQL запрос
+ * @param string $template - шаблон урл, например, /shop/{id}-{url}/
+ * @param int $cache - время кеширования в секундах
+ * @return array
+ */
 function breadcrumb($query,$template = '/{url}/',$cache = false) {
 	$data = mysql_select($query,'rows',$cache);
 	if (is_array($data)) {
@@ -201,7 +222,16 @@ function breadcrumb($query,$template = '/{url}/',$cache = false) {
 	}
 }
 
-//возвращает атрибуты для редактируемого блока
+
+/**
+ * возвращает атрибуты для редактируемого блока
+ * @param string $edit -
+ * @param string $editable - тип редактора [editable_str,editable_text]
+ * @param string $class - значение атрибута класс
+ * @return string - атрибут класс
+ * todo
+ * можно не извращаться с класами и сделать на дата атрибутах
+ */
 function editable($edit,$editable='editable_str',$class='') {
 	global $lang;
 	$array = explode('|',$edit);
@@ -209,6 +239,12 @@ function editable($edit,$editable='editable_str',$class='') {
 	return $class ? ' class="'.$class.'"' : '';
 }
 
+/**
+ * подключение скриптов
+ * @param string $label - метка
+ * @param string $source - названия скриптов через пробел
+ * @return string
+ */
 function html_sources($label='',$source='') {
 	global $config,$lang;
 	$data = array(
@@ -266,4 +302,5 @@ function html_sources($label='',$source='') {
 	}
 	if ($label=='return') return $content;
 }
+
 ?>

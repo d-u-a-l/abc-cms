@@ -38,19 +38,20 @@ $table = array(
 	'menu2'		=> 'boolean',
 	'display'	=> 'display'
 );
-/*
-//раскоментировать если есть языки на сайте
-$languages = mysql_select("SELECT id,name FROM languages ORDER BY rank DESC",'array');
-$get['language'] = (isset($_REQUEST['language']) && intval($_REQUEST['language'])) ? $_REQUEST['language'] : key($languages);
-if ($get['language']==0) $get['language'] = key($languages);
-$query = "
-	SELECT pages.*
-	FROM pages
-	WHERE pages.language = '".$get['language']."'
-";
-$filter[] = array('language',$languages);
-$form[]= '<input name="language" type="hidden2" value="'.$get['language'].'" />';
-*/
+
+//только если многоязычный сайт
+if ($config['multilingual']) {
+	$languages = mysql_select("SELECT id,name FROM languages ORDER BY rank DESC", 'array');
+	$get['language'] = (isset($_REQUEST['language']) && intval($_REQUEST['language'])) ? $_REQUEST['language'] : key($languages);
+	if ($get['language'] == 0) $get['language'] = key($languages);
+	$query = "
+		SELECT pages.*
+		FROM pages
+		WHERE pages.language = '".$get['language']."'
+	";
+	$filter[] = array('language', $languages);
+	$form[] = '<input name="language" type="hidden" value="'.$get['language'].'" />';
+}
 
 $delete['confirm'] = array('pages'=>'parent');
 

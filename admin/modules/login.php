@@ -15,7 +15,7 @@ if (count($_POST)>0) $message = 'Вы ввели неверный логин и�
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link  href="/admin/templates/reset.css" rel="stylesheet" type="text/css" />
 <link href="/admin/templates/style.css?0" rel="stylesheet" type="text/css" />
-<?=$config['scripts']['jquery']?>
+<?= html_sources('return', 'jquery') ?>
 <style type="text/css">
 #auth {height:100%; width:348px; margin:auto}
 #auth .form {width:348px}

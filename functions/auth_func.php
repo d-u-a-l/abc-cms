@@ -5,7 +5,8 @@ function access($mode,$q = '') {
 	$user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
 	$mode = explode(' ',$mode);
 	//права администратора ********************************
-	if ($mode[0]=='admin') {		if (@$user['id']==1) return true;	//первый пользователь всегда с полным доступом
+	if ($mode[0]=='admin') {
+		if (@$user['id']==1) return true;	//первый пользователь всегда с полным доступом
 		//доступ к авторизации есть у всех
 		if ($q=='_login') return true;
 		elseif (@$user['access_admin']=='') return false;
@@ -37,7 +38,9 @@ function access($mode,$q = '') {
 		}
 	}
 	//права на редактирование
-	elseif ($mode[0]=='editable') {		global $config;		if ($config['editable']==0) return false; //глобальное выключение
+	elseif ($mode[0]=='editable') {
+		global $config;
+		if ($config['editable']==0) return false; //глобальное выключение
 		if (access('user auth')==false) return false;
 		if (@$user['access_editable']=='') return false;
 		if ($mode[1]=='scripts') return true; //глобальное редактирование
@@ -47,8 +50,19 @@ function access($mode,$q = '') {
 	return false;
 }
 
-//авторизация
-function user($type = '',$param = '') {	global $config;
+/**
+ * авторизация
+ * @param string $type - способ авторизации
+ * enter - вход через форму авторизации
+ * remind - вход через урл
+ * auth - авторизация по сессии или кукам
+ * re-auth - переавторизация для обновления данных текущей сессии
+ * update - обновление данных в базе и в текущей сесии
+ * @param string $param - используется только в update
+ * @return array|bool
+ */
+function user($type = '',$param = '') {
+	global $config;
 	//авторизироваться через форму
 	$remember_me = 0;
 	if ($type=='enter') {
@@ -158,7 +172,8 @@ function user($type = '',$param = '') {	global $config;
 }
 
 //хеш для авторизации по ссылке
-function user_hash ($q) {	return md5($q['id'].$q['email'].$q['remind'].$q['hash']);
+function user_hash ($q) {
+	return md5($q['id'].$q['email'].$q['remind'].$q['hash']);
 }
 
 

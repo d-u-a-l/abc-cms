@@ -20,7 +20,9 @@ $table = array(
 $delete = array();
 
 foreach ($modules_admin as $key => $value) {
-	if (is_array($value)) {		$list[] = array('id'=>'','name'=>$key,'level'=>1);		foreach ($value as $k=>$v) $list[]= array('id'=>$v,'name'=>$k,'level'=>2);
+	if (is_array($value)) {
+		$list[] = array('id'=>'','name'=>$key,'level'=>1);
+		foreach ($value as $k=>$v) $list[]= array('id'=>$v,'name'=>$k,'level'=>2);
 	}
 	else $list[] = array('id'=>$value,'name'=>$key,'level'=>1);
 }
@@ -39,7 +41,7 @@ $access_editable_array = array(
 $access_admin = (isset($post['access_admin']) && $post['access_admin']) ? unserialize($post['access_admin']) : array();
 $access_editable = (isset($post['access_editable']) && $post['access_editable']) ? unserialize($post['access_editable']) : array();
 
-$form[] = array('multicheckbox td4 f_right tr4','access_admin',array($access_admin,$list),array('name'=>'админпанель','style'=>'size="20"'));
+$form[] = array('multicheckbox td4 f_right tr4','access_admin',array($access_admin,$list),array('name'=>'админпанель'));
 $form[] = array('multicheckbox td4 f_right tr4','access_editable',array($access_editable,$access_editable_array),array('name'=>'быстрое редактирование (<a href="/admin.php?m=config">on/off</a>)','style'=>'size="20"'));
 $form[] = array('input td4','ut_name',true);
 $form[] = array('checkbox td4 line','access_delete',true);

@@ -95,10 +95,11 @@ if ($error>0) {
 	header("HTTP/1.0 404 Not Found");
 	$page['title'] = $page['name'] = i18n('common|str_no_page_name');
 	$html['module'] = 'error';
-} // редиректим при обращении на главную по url (TODO: надо только решить как быть, если адрес главной пуст или "/")
+}
+//редиректим при обращении на главную по url
 elseif (($page['module']=='index') && ($u[1])) {
-    header('HTTP/1.1 301 Moved Permanently');
-    die(header('location: /'));    
+	header('HTTP/1.1 301 Moved Permanently');
+	die(header('location: /'));
 }
 //301 редирект при неккоректном урл
 elseif($_SERVER['REQUEST_URI']) {

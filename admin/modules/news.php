@@ -6,7 +6,7 @@ $table = array(
 	'title'		=>	'',
 	'url'		=>	'',
 	'date'		=>	'date',
-	'display'	=>	'display'
+	'display'	=>	'boolean'
 );
 
 $query = "

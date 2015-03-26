@@ -1,5 +1,7 @@
 <?php
 
+$config['cms_version'] = '1.0.2';
+
 $config['multilingual'] = true; //многоязычный сайт
 
 $config['merchants'] = array(

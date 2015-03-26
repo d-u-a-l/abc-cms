@@ -51,8 +51,8 @@ function select($key,$query,$default = NULL,$template = '{name}') {
 
 /**
  * шаблонизатор - заменяет {i} на $data['i']
- * @param $template - строка с {i}
- * @param $data - массив со значениями для замены
+ * @param string $template - строка с {i}
+ * @param array $data - массив со значениями для замены
  * @return - строка $template с заменой
  * todo
  * закинуть html_template сюдаже
@@ -165,10 +165,7 @@ function html_query($path, $query, $no_results = false, $cache = 0, $cache_type 
 			}
 		//если в качестве второго параметра задан запрос к БД
 		} else {
-			if ($config['mysql_connect']==false) {
-				mysql_connect_db();
-			}
-			if ($config['mysql_error']==false) {
+			if (mysql_connect_db()) {
 				$config['queries'][] = $query;
 				$result = mysql_query($query); if ($i = mysql_error()) echo '<br />'.$i.'<br />'.$query;
 				if ($num_rows = mysql_num_rows($result)){
@@ -241,66 +238,92 @@ function editable($edit,$editable='editable_str',$class='') {
 
 /**
  * подключение скриптов
- * @param string $label - метка
+ * @param string $label - метка - можем сразу выводить скрипт, а можем собирать в метку для последующего вывода
  * @param string $source - названия скриптов через пробел
+ * css_reset - очистка всех стилей
+ * css_common - основные стили сайта
+ * script_common - основные скрипты сайта
+ * jquery - библиотека jquery
+ * jquery_cookie - библиотека jquery_cookie
+ * jquery_ui - библиотека jqueryUI
+ * query_ui_style - стили jqueryUI
+ * jquery_localization - локализация (для datepicker)
+ * jquery_form - отправка форм аджаксом
+ * jquery_uploader - загрзука файлов нтмл5
+ * jquery_validate - валидация форм
+ * jquery_multidatespicker - мультидатапикер
+ * highslide - просмотр изображений
+ * highslide_gallery - просмотр изображений (галерея)
+ * tinymce - текстовый редактор
+ * editable - быстрое редактирование
  * @return string
  */
-function html_sources($label='',$source='') {
-	global $config,$lang;
+function html_sources($label='',$source='')
+{
+	global $config, $lang;
 	$data = array(
-	'css_reset'=>
-'<link href="/'.$config['style'].'/css/reset.css" rel="stylesheet" type="text/css" />',
-	'css_common'=>
-'<link href="/'.$config['style'].'/css/common.css?'.filemtime(ROOT_DIR.$config['style'].'/css/common.css').'" rel="stylesheet" type="text/css" />',
-	'script_common'=>
-'<script type="text/javascript" src="/'.$config['style'].'/scripts/common.js?'.filemtime(ROOT_DIR.$config['style'].'/scripts/common.js').'"></script>',
-	'jquery'				=> '
+		'css_reset' =>
+			'<link href="/' . $config['style'] . '/css/reset.css" rel="stylesheet" type="text/css" />',
+		'css_common' =>
+			'<link href="/' . $config['style'] . '/css/common.css?' . filemtime(ROOT_DIR . $config['style'] . '/css/common.css') . '" rel="stylesheet" type="text/css" />',
+		'script_common' =>
+			'<script type="text/javascript" src="/' . $config['style'] . '/scripts/common.js?' . filemtime(ROOT_DIR . $config['style'] . '/scripts/common.js') . '"></script>',
+		'jquery' => '
 <script type="text/javascript" src="/plugins/jquery/jquery-1.11.1.min.js"></script>',
-	'jquery_cookie'			=> '
+		'jquery_cookie' => '
 <script type="text/javascript" src="/plugins/jquery/jquery.cookie.js"></script>',
-	'jquery_ui'				=> '
+		'jquery_ui' => '
 <script type="text/javascript" src="/plugins/jquery/jquery-ui-1.11.1.custom.min.js"></script>',
-	'jquery_ui_style'		=> '
+		'jquery_ui_style' => '
 <link rel="stylesheet" type="text/css" href="/plugins/jquery/redmond/jquery-ui-1.8.17.custom.css" />',
-	'jquery_localization' 	=> '
-<script type="text/javascript" src="/plugins/jquery/i18n/jquery.ui.datepicker-'.$lang['localization'].'.js"></script>',
-	'jquery_form' 			=> '
+		'jquery_localization' => '
+<script type="text/javascript" src="/plugins/jquery/i18n/jquery.ui.datepicker-' . $lang['localization'] . '.js"></script>',
+		'jquery_form' => '
 <script type="text/javascript" src="/plugins/jquery/jquery.form.min.js"></script>',
-	'jquery_uploader' 		=> '
+		'jquery_uploader' => '
 <script type="text/javascript" src="/plugins/jquery/jquery.uploader.js"></script>',
-	'jquery_validate'		=> '
+		'jquery_validate' => '
 <script type="text/javascript" src="/plugins/jquery/jquery-validation-1.8.1/jquery.validate.min.js"></script>
 <script type="text/javascript" src="/plugins/jquery/jquery-validation-1.8.1/additional-methods.min.js"></script>
-<script type="text/javascript" src="/plugins/jquery/jquery-validation-1.8.1/localization/messages_'.$lang['localization'].'.js"></script>',
-	'jquery_multidatespicker' => '
+<script type="text/javascript" src="/plugins/jquery/jquery-validation-1.8.1/localization/messages_' . $lang['localization'] . '.js"></script>',
+		'jquery_multidatespicker' => '
 <script type="text/javascript" src="/plugins/jquery/jquery-ui.multidatespicker.js"></script>',
-	'highslide'				=>	'
+		'highslide' => '
 <script type="text/javascript" src="/plugins/highslide/highslide.packed.js"></script>
 <link rel="stylesheet" type="text/css" href="/plugins/highslide/highslide.css" />
 <!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="/plugins/highslide/highslide-ie6.css" /><![endif]-->',
-	'highslide_gallery'	=>	'
+		'highslide_gallery' => '
 <script type="text/javascript" src="/plugins/highslide/highslide-with-gallery.js"></script>
-<script type="text/javascript" src="/'.$config['style'].'/scripts/highslide.js?1" charset="utf-8"></script>
+<script type="text/javascript" src="/' . $config['style'] . '/scripts/highslide.js?1" charset="utf-8"></script>
 <link rel="stylesheet" type="text/css" href="/plugins/highslide/highslide.css?1" />
 <!--[if lt IE 7]>
 <link rel="stylesheet" type="text/css" href="/plugins/highslide/highslide-ie6.css" />
 <![endif]-->',
-	'tinymce'=>'<script type="text/javascript" src="/plugins/tinymce/tinymce.min.js?3"></script>',
-	'editable'=>'<script type="text/javascript" src="/templates/scripts/editable.js?1"></script>',
+		'tinymce' => '<script type="text/javascript" src="/plugins/tinymce/tinymce.min.js?3"></script>',
+		'editable' => '<script type="text/javascript" src="/templates/scripts/editable.js?1"></script>',
 	);
 	$content = '';
-	$sources = explode(' ',$source);
-	foreach ($sources as $k=>$v) {
-		//если есть такой ресурс
-		if (isset($data[$v])) {
-			//если первый раз подключается то записываем в $content
-			if (!isset($config['sources'][$v])) {
-				$config['sources'][$v] = $data[$v];
-				if ($label=='return') $content.= $data[$v];
+	if ($source) {
+		$sources = explode(' ', $source);
+		foreach ($sources as $k => $v) {
+			//если есть такой ресурс
+			if (isset($data[$v])) {
+				//если первый раз подключается то записываем в $content
+				if (!isset($config['sources'][$v])) {
+					$config['sources'][$v] = $data[$v];
+					if ($label == 'return') $content .= $data[$v];
+				}
 			}
 		}
+		//если указано return то выводим возвращаем
+		if ($label=='return') return $content;
 	}
-	if ($label=='return') return $content;
+	//если $sourсe не указано то выводим метку
+	else {
+		$content = isset($config['sources'][$label]) ? $config['sources'][$label] : '';
+		return $content;
+	}
+
 }
 
 ?>

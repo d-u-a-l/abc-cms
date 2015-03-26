@@ -191,10 +191,14 @@ function table ($table,$query='') {
 	return $content;
 }
 
-//пагинатор
-function pagination ($query,$array_count,$count) {//04.02.10 pagination (SELECT * FROM * WHERE *; 100) - группирует результаты запроса по 100 на страницу
-	//$query - ("SELECT id,name FROM page ORDER BY rank DESC") - sql-запрос на вывод всего меню
-	//$count - число - количество записей на страницу
+/**
+ * пагинатор
+ * @param string $query - SQL запрос
+ * @param $array_count - массив количества (по 10,20,50)
+ * @param $count - количество записей на странице
+ * @return string - html код пагинатора
+ */
+function pagination ($query,$array_count,$count) {
 	$begin = intval(@$_GET['b']);
 	$num_rows = mysql_select($query,'num_rows');
 	if ($count=='all') $paginator[] = array(1,0);
@@ -254,13 +258,15 @@ function pagination ($query,$array_count,$count) {//04.02.10 pagination (SELECT 
 	return  $content;
 }
 
-//фильтр поиска
+/**
+ * фильтр, ситнаксис аналогичен select()
+ * @param $key - ключ $_GET
+ * @param string|array $query - название таблицы | SQL запрос | массив
+ * @param string $default - значение по умолчанию
+ * @param bool $clear - соединять значения других фильтров либо сбрасывать
+ * @return html - html код фильтра
+ */
 function filter ($key,$query='',$default='',$clear=false) {
-	//ситнаксис аналогичен select
-	//$key		- ключ из $_GET
-	//$query	- sql-запрос либо массив для селекта либо модуль
-	//$default	- значени по умолчанию
-	//$clear	- очищать урл
 	global $get;
 	if ($clear==false) $url=build_query($key);
 	else $url = 'm='.$_GET['m'];
@@ -274,12 +280,15 @@ function filter ($key,$query='',$default='',$clear=false) {
 	return $content;
 }
 
-//поля формы
-function form ($class,$key,$value,$param=array('attr'=>'','name'=>'')) {  //19.02.12 различные элементы формы для записи в БД
-	//$class  - класс поля
-	//$key   - ключ
-	//$value  - чистые или обработанные постданные
-	//$style - style=>'стиль для поля', name=>'имя блока', 'box'=>'стиль для блока'
+/**
+ * конструктор полей формы
+ * @param string $class - тип и класс поля
+ * @param string $key - ключ $_GET
+ * @param string $value - данные
+ * @param array $param array('attr'=>'id="field"','name'=>'название поля','help'=>'всплывающая подсказка')
+ * @return string
+ */
+function form ($class,$key,$value,$param=array('attr'=>'','name'=>'','help')) {
 	global $user,$get,$filter,$a18n,$config; //массив с названиями блоков
 	$name	= empty($param['name']) ? a18n($key) : $param['name'];//название по умолчанию указано в массиве $fieldset
 	$type	= current(explode(' ',$class));
@@ -297,20 +306,26 @@ function form ($class,$key,$value,$param=array('attr'=>'','name'=>'')) {  //19.0
 	$param['attr'] = isset($param['attr']) ? $param['attr'] : '';
 	if ($type=='input') {
 		$content = $label.'<div><input name="'.$key.'" '.$param['attr'].' value="'.htmlspecialchars($value).'" /></div>';
-	} elseif ($type=='select') {
+	}
+	elseif ($type=='select') {
 		$content = $label.'<div><select name="'.$key.'" '.$param['attr'].'>'.select($value[0],isset($value[1]) ? $value[1] : '',isset($value[2]) ? $value[2] : NULL).'</select></div>';
-	} elseif ($type=='textarea') {
+	}
+	elseif ($type=='textarea') {
 		$content = $label.'<div><textarea cols="1" rows="1" name="'.$key.'" '.$param['attr'].'>'.htmlspecialchars($value).'</textarea></div>';
-	} elseif ($type=='text') {
+	}
+	elseif ($type=='text') {
 		$content = $label.'<div '.$param['attr'].'>['.$value.']</div>';
-	} elseif ($type=='user') {
+	}
+	elseif ($type=='user') {
 		$value = (isset($value) && $value) ? $value : $user['id'];
 		$q = mysql_select("SELECT u.id,u.email login FROM users u WHERE u.id=".intval($value),'row');
 		$content = $label.'<input name="'.$key.'" type="hidden" value="'.$q['id'].'" /><div '.$param['attr'].'><a href="?m=users&id='.$q['id'].'">['.$q['login'].']</a></div>';
-	} elseif ($type=='checkbox') {
+	}
+	elseif ($type=='checkbox') {
 		$checked = $value==1 ? 'checked="checked"' : '';
 		$content = '<input type="hidden" name="'.$key.'" value="0" /><label><input type="checkbox" name="'.$key.'" value="1" '.$checked.' '.$param['attr'].' /><span>'.$name.'</span>'.$help.'</label>';
-	} elseif ($type=='tinymce') {
+	}
+	elseif ($type=='tinymce') {
 		$rand = rand(100000,999999);
 		$content = $label.'<div><textarea id="'.$rand.'" cols="1" rows="1" '.$param['attr'].' name="'.$key.'">'.$value.'</textarea></div><div class="clear"></div>';
 		$content.= '

@@ -2,11 +2,8 @@
 
 $news = false;
 
-if($u[3]) {
-	$error++;
-}
 //одна запись
-elseif ($u[2]) {
+if ($u[2]) {
 	$id = intval(explode2('-',$u[2]));
 	if ($u[3]=='' AND $news = mysql_select("
 		SELECT *

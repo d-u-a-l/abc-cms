@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_GET['type']) && $_GET['type']=='clear') mysql_query("TRUNCATE `logs`");
+if (isset($_GET['u']) && $_GET['u']=='clear') mysql_query("TRUNCATE `logs`");
 
 $config['logs']['type'] = array(
 	1	=>	'insert',
@@ -20,7 +20,8 @@ $query = "
 
 $filter[] = array('user',"SELECT u.id,u.email name FROM users u RIGHT JOIN logs l ON l.user = u.id GROUP BY u.id",'пользователь');
 $filter[] = array('type',$config['logs']['type'],'действие');
-$filter[] = '<a href="?m=logs&type=clear">Очистить</a>';
+
+$content = '<div style="float:right; padding:7px 0 0"><a href="?m=logs&u=clear" onclick="if(confirm(\'Подтвердите\')) {} else return false;">Очистить</a></div>';
 
 $table = array(
 	'_edit'=>false,

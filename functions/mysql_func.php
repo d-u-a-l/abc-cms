@@ -2,22 +2,36 @@
 
 /**
  * соединение с БД
- * @return boolean - подключено или нет
+ * @param string $server
+ * @param string $username
+ * @param string $password
+ * @param string $database
+ * @return bool - подключено или нет
  */
-function mysql_connect_db() {
+function mysql_connect_db($server='',$username='',$password='',$database='') {
 	global $config;
-	if ($connect=@mysql_connect($config['mysql_server'],$config['mysql_username'],$config['mysql_password'])) {
-		if (mysql_select_db($config['mysql_database'], $connect)) {
-			mysql_query("SET NAMES '".$config['mysql_charset']."'");
-			mysql_query("SET CHARACTER SET '".$config['mysql_charset']."'");
-			$config['mysql_connect'] = true;
-			return true;
+	if (@$config['mysql_connect']==false) {
+		//если подключение без параметров то используем данные из $config
+		if ($server=='') {
+			$server		= $config['mysql_server'];
+			$username	= $config['mysql_username'];
+			$password	= $config['mysql_password'];
+			$database	= $config['mysql_database'];
 		}
-		$config['mysql_error'] = 'cannot connect to database';
+		if ($connect = @mysql_connect($server,$username,$password)) {
+			if (mysql_select_db($database,$connect)) {
+				mysql_query("SET NAMES '" . $config['mysql_charset'] . "'");
+				mysql_query("SET CHARACTER SET '" . $config['mysql_charset'] . "'");
+				$config['mysql_connect'] = true;
+				return true;
+			}
+			$config['mysql_error'] = 'cannot connect to database';
+			return false;
+		}
+		$config['mysql_error'] = 'cannot connect to mysql server';
 		return false;
 	}
-	$config['mysql_error'] = 'cannot connect to mysql server';
-	return false;
+	else return true;
 }
 
 /**
@@ -26,10 +40,7 @@ function mysql_connect_db() {
  * @return string - экранированное значение
  */
 function mysql_res ($str) {
-	global $config;
-	if ($config['mysql_connect']==false) {
-		if (mysql_connect_db()) return mysql_real_escape_string($str);
-	}
+	if (mysql_connect_db()) return mysql_real_escape_string($str);
 	else return mysql_real_escape_string($str);
 	return false;
 }
@@ -39,6 +50,12 @@ function mysql_res ($str) {
  * выборка с БД
  * @param string $query - SQL запрос
  * @param string $type - тип данных ответа [string,num_rows,row,rows,rows_id,array]
+ * string - строка, одна ячейка из запроса SELECT name FROM ..
+ * num_rows - количество записей
+ * row - одна строка, массив - SELECT id,name,text .. LIMIT 1 => array('id'=>'12','name'=>'Название','text'=>'текст')
+ * rows - массив из row
+ * rows_id массив из row где ключем будет id
+ * array - массив $k->$v - SELECT id,name .. FROM LIMIT 1 => array(1=>'значение',2=>'значение')
  * @param int $cache - время жизни кеша в секундах
  * @return array|int|string - данные с базы
  */
@@ -51,10 +68,7 @@ function mysql_select($query,$type='rows',$cache=false) {
 		return json_decode($result,true);
 	} else {
 		$config['queries'][] = $query;
-		if ($config['mysql_connect']==false) {
-			mysql_connect_db();
-		}
-		if ($config['mysql_error']==false) {
+		if (mysql_connect_db()) {
 			$result = mysql_query($query);
 			if ($error = mysql_error()) {
 				trigger_error($error.' '.$query, E_USER_DEPRECATED);
@@ -96,10 +110,7 @@ function mysql_select($query,$type='rows',$cache=false) {
  */
 function mysql_fn($type, $tbl_name, $post ,$where = '', $ignore = false) {
 	global $config;
-	if ($config['mysql_connect']==false) {
-		mysql_connect_db();
-	}
-	if ($config['mysql_error']==false) {
+	if (mysql_connect_db()) {
 		//если четвертый параметр - массив
 		if (!is_string($where)) {
 			$exceptions = $where;
@@ -181,6 +192,7 @@ function mysql_fn($type, $tbl_name, $post ,$where = '', $ignore = false) {
 				return $sql;
 		}
 		//выполняем запрос
+		$config['queries'][] = $query;
 		mysql_query($query); //echo $query;
 
 		if (($error = mysql_error()) == false) {

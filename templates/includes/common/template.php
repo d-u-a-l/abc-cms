@@ -84,5 +84,6 @@ $page['keywords']		= isset($page['keywords']) ? filter_var($page['keywords'], FI
 <div id="footer">
 	<div class="box"><?=i18n('common|txt_footer')?></div>
 </div>
+<?=html_sources('footer')?>
 </body>
 </html>

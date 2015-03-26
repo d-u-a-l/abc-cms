@@ -538,7 +538,7 @@ function tpl_page($content = '', $buttons = ''){
 	$html.= $buttons;
 	$html.= '</div>
 <div id="footer">
-	<div>2013 &copy; abc-cms.com</div>
+	<div>'.date('Y').'' &copy; abc-cms.com</div>
 	<a href="/" target="_blank" title="перейти на сайт">перейти на сайт</a>
 </div>
 </td>
@@ -555,7 +555,8 @@ function tpl_main(){
 	$query = "SHOW TABLES";
 	$result = mysql_query($query);
 	$tables = array();
-	while ($q = mysql_fetch_array($result)) {		$tables[] = array('id'=>$q[0],'name'=>$q[0]);
+	while ($q = mysql_fetch_array($result)) {
+		$tables[] = array('id'=>$q[0],'name'=>$q[0]);
 	};
 	$content = '<br /><h2>Создание резервной копии БД</h2>';
 	$content.= '<form method="post" action="/admin.php?m=backup" >';
@@ -573,7 +574,8 @@ function tpl_main(){
 	return $content;
 }
 
-function tpl_process($title){	$content = '<br /><h2>Создается резервная копия БД</h2>';
+function tpl_process($title){
+	$content = '<br /><h2>Создается резервная копия БД</h2>';
 	$content.= '<div id="logarea" style="float:left; width:400px; border-right: 1px solid #333; "></div>';
 	$content.= '<div style="margin:0 0 0 420px">';
 	$content.= 'Статус таблицы:';

@@ -69,7 +69,7 @@ if (!in_array($get['m'],array('backup','restore'))) {
 			</div>
 
 			<div id="footer">
-				<div><?=date('Y')?> &copy; abc-cms.com</div>
+				<div><?=date('Y')?> &copy; abc-cms.com<br><span>v.<?=$config['cms_version']?></span></div>
 				<a href="/" target="_blank" title="<?=a18n('go_to_site')?>"><?=a18n('go_to_site')?></a>
 			</div>
 		</td>

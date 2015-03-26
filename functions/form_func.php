@@ -1,6 +1,21 @@
 <?php
 
-//функция возвращает массив обработанных данных
+/**
+ * функция возвращает массив обработанных данных
+ * @param array $fields - массив - конструктор значений ({key}->{value})
+ * допустимые значение value:
+ * text - текст без html тегов
+ * int - целое число больше 0
+ * ceil - целое число
+ * decimal - дробное число 12.02
+ * date - дата
+ * email - email
+ * boolean - 1 или 0
+ * string_int - числа через запятую 1,2,3
+ * min_max - два числа через дефис - 12-56
+ * @param array $post - массив данных $_POST или $_GET
+ * @return mixed
+ */
 function form_smart($fields,$post) {
 	foreach ($fields as $key=>$value) {
 		if (is_array($value)) {
@@ -47,8 +62,19 @@ function form_smart($fields,$post) {
 	return $data;
 }
 
+/**
+ * @param array $fields -
+ * @param array $fields - массив - конструктор значений ({key}->{value})
+ * допустимые значение value:
+ * required - обязательное поле
+ * login - [-A-Za-z0-9_]
+ * email - валидный емейл
+ * password - валидный пароль - больше 5 символов
+ * captcha - видимая каптча
+ * captcha2 - скрытая каптча
+ * @return array
+ */
 function form_validate($fields,$post) {
-	global $lang;
 	$message = array();
 	$required = 0;
 	foreach ($fields as $key=>$value) {

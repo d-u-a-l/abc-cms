@@ -630,7 +630,8 @@ ul.sortable li:hover {background: #FFFEDF;}
 
 /*ПОДВАЛ*/
 #footer {clear:both; padding:20px 0 10px; color:#999}
-#footer div {float:right}
+#footer div {float:right; text-align:right}
+#footer div span {font-size:11px}
 #footer a {font:12px Arial; color:#999}
 #footer a:hover {color:#000}
 

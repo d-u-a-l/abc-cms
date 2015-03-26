@@ -509,7 +509,7 @@ function tpl_page($content = '', $buttons = ''){
 	$html.= $buttons;
 	$html.= '</div>
 <div id="footer">
-	<div>2013 &copy; abc-cms.com</div>
+	<div>'.date('Y').' &copy; abc-cms.com</div>
 	<a href="/" target="_blank" title="перейти на сайт">перейти на сайт</a>
 </div>
 </td>
@@ -521,7 +521,9 @@ function tpl_page($content = '', $buttons = ''){
 	return $html;
 }
 
-function tpl_main(){	global $SK;	/*$content = '<br /><h2>Восстановление БД из резервной копии</h2>';
+function tpl_main(){
+	global $SK;
+	/*$content = '<br /><h2>Восстановление БД из резервной копии</h2>';
 	$content.= '<form method="post" action="/admin.php?m=restore" >';
 	$content.= '<div class="field select td4"><label><span>Файл</span></label><div><select name="file">'.$SK->vars['files'].'</select></div></div>';
 	$content.= '<div class="clear"></div><input type="submit" value="Восстановить из резервной копии" />';

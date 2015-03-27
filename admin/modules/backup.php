@@ -327,7 +327,7 @@ class dumper {
 		echo tpl_l("Размер файла: {$filesize}", C_RESULT);
 		echo tpl_l("Таблиц обработано: {$tabs}", C_RESULT);
 		echo tpl_l("Строк обработано:   " . fn_int($tabinfo[0]), C_RESULT);
-		echo "<SCRIPT>with (document.getElementById('save')) {style.display = ''; innerHTML = 'Скачать файл ({$filesize})'; href = '" . URL . $this->filename . "'; }document.getElementById('back').disabled = 0;</SCRIPT>";
+		echo "<SCRIPT>with (document.getElementById('save')) {style.display = ''; innerHTML = 'Скачать файл ({$filesize})'; href = '?m=backup&download=" . $this->filename . "'; }document.getElementById('back').disabled = 0;</SCRIPT>";
 		// Передача данных для глобальной статистики
 		//if (GS) echo "<SCRIPT>document.getElementById('GS').src = 'http://sypex.net/gs.php?b={$this->tabs},{$this->records},{$this->size},{$this->comp},108';</SCRIPT>";
 
@@ -538,7 +538,7 @@ function tpl_page($content = '', $buttons = ''){
 	$html.= $buttons;
 	$html.= '</div>
 <div id="footer">
-	<div>'.date('Y').'' &copy; abc-cms.com</div>
+	<div>'.date('Y').' &copy; abc-cms.com</div>
 	<a href="/" target="_blank" title="перейти на сайт">перейти на сайт</a>
 </div>
 </td>

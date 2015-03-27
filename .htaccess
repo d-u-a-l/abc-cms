@@ -12,7 +12,7 @@ Options -Indexes
 	#RewriteRule (.*) http://www.%{HTTP_HOST}/$1 [R=301,L]
 	RewriteRule ^sitemap.xml$ sitemap.php [L]
 	RewriteRule ^market.xml$ market.php [L]
-	RewriteRule ^admin/backup/([^/]*)$ admin.php?m=backup&download=$1 [L,QSA]
+	#RewriteRule ^admin/backup/([^/]*)$ admin.php?m=backup&download=$1 [L,QSA]
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteRule ^([^/]*)/?([^/]*)/?([^/]*)/?([^/]*)/?$ index.php?u[1]=$1&u[2]=$2&u[3]=$3&u[4]=$4 [L,QSA]

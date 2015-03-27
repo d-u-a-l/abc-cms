@@ -551,7 +551,7 @@ document.skb.action['.$SK->SET['last_action'].'].checked = 1;
 			if (substr($file, -3)=='php' OR substr($file, -4)=='html' OR $file=='..' OR $file=='.') continue;
 			$i++;
 			$content.= '<tr>';
-			$content.= '<td><a target="_blank" href="/admin/backup/'.$file.'">'.$file.'</a></td>';
+			$content.= '<td><a target="_blank" href="?m=backup&download='.$file.'">'.$file.'</a></td>';
 			$content.= '<td><a class="restore button green" href="?m=restore&file='.$file.'"  title="восстановить резервную копию"><span>Восстановить</span></a></td>';
 			$content.= '<td><a class="delete2 button red" href="?m=restore&delete='.$file.'" title="удалить резервную копию"><span>Удалить</span></a></td>';
 			$content.= '</tr>';

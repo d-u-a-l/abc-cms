@@ -612,8 +612,8 @@ ul.sortable li:hover {background: #FFFEDF;}
 .modules .seo {width:136px; height:136px; background-position:-680px -136px}
 .modules .synchro:hover {width:136px; height:136px; background-position:-816px -272px}
 .modules .synchro {width:136px; height:136px; background-position:-680px -272px}
-.modules>li {position:relative; display:block; width:145px; height:165px; overflow:hidden;
-	/*border:3px solid #C7C7C7; border-radius:10px;*/ padding:0px; float:left; margin:10px 40px 10px 10px;
+.modules>li {position:relative; display:block; width:137px; height:165px; overflow:hidden;
+	/*border:3px solid #C7C7C7; border-radius:10px;*/ padding:0px; float:left; margin:10px 48px 10px 10px;
 	background-repeat:no-repeat; background-position:center center; background-color:#fff; text-align:center}
 .modules ul {padding:0 0 0 0px}
 .modules a {text-decoration:none; color:#666; font-weight:bold;}
@@ -621,12 +621,21 @@ ul.sortable li:hover {background: #FFFEDF;}
 .modules a b {display:block; height:23px; text-align:center; width:136px; text-transform:uppercase}
 .modules li ul {margin:auto; padding:5px 1px 5px 5px; background:#4C4C4C; width:130px; height:126px; border-radius:10px; overflow:hidden;}
 .modules li ul li {display:block; padding:0 0 150px}
-.modules li ul li a {font:14px/16px Arial; display:block; text-align:left; font-weight:normal;
+.modules li ul li a {font:12px/14px Arial; display:block; text-align:left; font-weight:normal;
 	color:#fff; clear:both; /*text-shadow:1px 1px 1px #fff,-1px -1px 1px #fff; /*background:url('/admin/templates/bg.png?1');*/
 	margin:2px 0 0; padding:0 2px 0;}
 .modules li ul li a:hover {color:#D84142}
-.modules li div {width:145px; height:143px; margin:0 0 20px; background-repeat:no-repeat; background-position:center center}
+.modules li div {width:137px; height:143px; margin:0 0 20px; background-repeat:no-repeat; background-position:center center}
 .modules a.one {display:block; width:145px; height:160px; margin:0 0 20px; background-repeat:no-repeat; background-position:center bottom}
+
+/*АНИМАЦИЯ МЕНЮ НА ГЛАВНОЙ*/
+/*31.03.2015*/
+.modules li div span {transition: margin-left .3s ease-in;}
+.modules li ul {transition: margin-top .3s ease-out; margin-top: 0;}
+.modules li ul li {transition: padding-bottom .4s ease-out;}
+.modules li:hover div span { margin-left: 137px; }
+.modules li:hover ul { margin-top: -163px; }
+.modules li:hover ul li { padding-bottom: 0; }
 
 /*ПОДВАЛ*/
 #footer {clear:both; padding:20px 0 10px; color:#999}

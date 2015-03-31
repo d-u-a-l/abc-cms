@@ -20,7 +20,8 @@ $modules_imgs = array(
 );
 
 $content.= '<ul class="modules">';
-foreach ($modules_admin as $key => $value) {	if (is_array($value)) {
+foreach ($modules_admin as $key => $value) {
+	if (is_array($value)) {
 		foreach ($value as $k=>$v) {
 			if (access('admin module',$v)==false) unset($modules_admin[$key][$k]);
 		}
@@ -40,37 +41,17 @@ foreach ($modules_admin as $key => $value) {
 				}
 				$content.= '<li><a href="/admin.php?m='.$v.'">&bull; '.a18n($k).'</a></li>';
 			}
-			else {				$content.= '<li><a class="one" href="/admin.php?m='.$v.'"><b>'.a18n($key).'</b><span class="'.$modules_imgs[$key].'"></span></a>';
+			else {
+				$content.= '<li><a class="one" href="/admin.php?m='.$v.'"><b>'.a18n($key).'</b><span class="'.$modules_imgs[$key].'"></span></a>';
 				$content.= '</li>';
 			}
 		}
 		if ($i) $content.= '</ul></li>';
 	}
-	elseif (access('admin module',$value)) {		$content.= '<li><a class="one" href="/admin.php?m='.$value.'"><b>'.a18n($key).'</b><span class="'.$modules_imgs[$key].'"></span></a>';
+	elseif (access('admin module',$value)) {
+		$content.= '<li><a class="one" href="/admin.php?m='.$value.'"><b>'.a18n($key).'</b><span class="'.$modules_imgs[$key].'"></span></a>';
 		$content.= '</li>';
 	}
 }
 $content.= '<div class="clear"></div>';
 $content.= '</ul>';
-$content.= '
-<script type="text/javascript">
-$(document).ready(function(){
-	$(".modules>li").hover(
-		function(){
-			if ($("ul",this).length>0) {
-				$("ul",this).animate({marginTop:-165}, 300);
-				$("ul li",this).animate({paddingBottom:0}, 450);
-				$("div",this).animate({marginLeft:170}, 700);
-			}
-		},
-		function(){
-			$("ul",this).animate({marginTop:0}, 300);
-			$("ul li",this).animate({paddingBottom:150}, 450);
-			$("div",this).animate({marginLeft:0}, 500);
-		}
-	);
-});
-</script>';
-
-
-?>

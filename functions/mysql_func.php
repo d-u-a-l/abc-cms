@@ -95,7 +95,8 @@ function mysql_select($query,$type='rows',$cache=false) {
 					fclose($f);
 				}
 			}
-			return $data;
+			//возвращаем false если пустой массив (пустой результат запросов array,rows_id,rows)
+			return (is_array($data) AND count($data)==0) ? false : $data;
 		}
 	}
 }

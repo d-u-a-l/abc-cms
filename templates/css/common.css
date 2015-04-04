@@ -253,7 +253,9 @@ a:hover {color:#6e6d6d;}
 .shop_product_random {background:#fff; border-radius:3px; padding:10px;}
 .shop_product_random .img {display:block; width:150px; height:150px; background-repeat:no-repeat; background-position:center center; margin:auto;}
 .shop_product_random .img img {display:block; visibility: hidden;}
-.shop_product_random h2 {color:#fff; padding:5px 10px;	margin:-13px -10px 0; border-top-left-radius:3px; border-top-right-radius:3px;	background: -webkit-linear-gradient(top, #979797 0%,#979797 50%,#5F5F5F 50%,#5F5F5F 100%);
+.shop_product_random h2 {color:#fff; padding:5px 10px;
+	margin:-13px -10px 0; border-top-left-radius:3px; border-top-right-radius:3px;
+	background: -webkit-linear-gradient(top, #979797 0%,#979797 50%,#5F5F5F 50%,#5F5F5F 100%);
 	background: -moz-linear-gradient(top, #979797 0%,#979797 50%,#5F5F5F 50%,#5F5F5F 100%);
 	background: -o-linear-gradient(top, #979797 0%,#979797 50%,#5F5F5F 50%,#5F5F5F 100%);
 	background: -ms-linear-gradient(top, #979797 0%,#979797 50%,#5F5F5F 50%,#5F5F5F 100%);

@@ -18,7 +18,6 @@ $modules_imgs = array(
 	'config'	=> 'settings',
 	//'logs'			=> 'logs',
 );
-
 $content.= '<ul class="modules">';
 foreach ($modules_admin as $key => $value) {
 	if (is_array($value)) {
@@ -55,3 +54,5 @@ foreach ($modules_admin as $key => $value) {
 }
 $content.= '<div class="clear"></div>';
 $content.= '</ul>';
+
+?>

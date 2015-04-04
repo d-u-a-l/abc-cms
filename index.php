@@ -79,9 +79,7 @@ if ($page = mysql_select($query,'row',60*60)) {
 			FROM pages
 			WHERE left_key <= ".$page['left_key']."
 				AND right_key >= ".$page['right_key']."
-			ORDER BY left_k
-
-			ey DESC
+			ORDER BY left_key DESC
 		";
 		$breadcrumb['page'] = breadcrumb ($query,'/{url}/',60*60);
 

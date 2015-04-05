@@ -14,7 +14,7 @@ if ($get['u']=='edit') {
 	foreach($post as $k=>$v)
 		$content.= '$config[\''.$k.'\']=\''.str_replace("'","\'",$v).'\';'."\r\n";
 	$content.= "?>";
-	$fp = fopen(ROOT_DIR.'config.php', 'w');
+	$fp = fopen(ROOT_DIR.'_config.php', 'w');
 	fwrite($fp,$content);
 	fclose($fp);
 	if($post['cache']==0) {

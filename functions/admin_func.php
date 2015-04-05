@@ -528,7 +528,7 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 						if (is_uploaded_file($v1)) {//проверка записался ли файл на сервер во временную папку
 							$n++;
 							$file = strtolower(trunslit($_FILES[$key]['name'][$k1])); //название файла
-							include_once (ROOT_DIR.'functions/common_imgs.php');
+							include_once (ROOT_DIR.'functions/image_func.php');
 							//загрузка с параметрами
 							if (is_array($param)) {
 								$param['a-'] = 'resize 100x100'; //для превью в админке
@@ -594,7 +594,7 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 				if (is_dir($root)) delete_all($root,false);
 				if (is_dir($root) || mkdir ($root,0755,true)) { //создание папок для файла
 					$file = strtolower(trunslit($_FILES[$key]['name'])); //название файла
-					include_once (ROOT_DIR.'functions/common_imgs.php');
+					include_once (ROOT_DIR.'functions/image_func.php');
 					//загрузка с параметрами
 					if (is_array($param)) {
 						$param['a-'] = 'resize 100x100'; //для превью в админке
@@ -677,7 +677,7 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 				}
 				if (is_dir($root)) delete_all($root,false); //удаление старого файла
 				if ($temp_file && (is_dir($root) || mkdir ($root,0755,true))) { //создание папок для файла
-					include_once (ROOT_DIR.'functions/common_imgs.php');
+					include_once (ROOT_DIR.'functions/image_func.php');
 					//загрузка с параметрами
 					if (is_array($param)) {
 						$param['a-'] = 'resize 100x100'; //для превью в админке
@@ -783,7 +783,7 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 							}
 							if (is_dir($root.$n)) delete_all($root.$n,false); //удаление старого файла
 							if ($temp_file AND (is_dir($root.$n) || mkdir($root.$n,0755,true))) {
-								include_once (ROOT_DIR.'functions/common_imgs.php');
+								include_once (ROOT_DIR.'functions/image_func.php');
 								//загрузка с параметрами
 								if (is_array($param)) {
 									$param['a-'] = 'resize 100x100'; //для превью в админке

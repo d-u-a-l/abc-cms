@@ -1,6 +1,7 @@
 <?php
 
 require_once(ROOT_DIR.'functions/common_func.php');
+require_once(ROOT_DIR.'functions/string_func.php');
 
 //загузка файла во временную директорию
 $file = @$_FILES['temp'];

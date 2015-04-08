@@ -20,12 +20,14 @@ if ($get['u']=='shop_parameters') {
 }
 
 //поиск сопуствующи товаров
-if ($get['u']=='similar_search') {	$search = stripslashes_smart(@$_GET['value']);
+if ($get['u']=='similar_search') {
+	$search = stripslashes_smart(@$_GET['value']);
 	if ($i=intval($search)) $where = " id=".$i." ";
 	else $where = " LOWER(name) LIKE '%".mysql_real_escape_string(mb_strtolower($search,'UTF-8'))."%' OR LOWER(article) LIKE '%".mysql_real_escape_string(mb_strtolower($search,'UTF-8'))."%' ";
 	$query = "SELECT * FROM shop_products WHERE ".$where." LIMIT 10";
 	if ($products = mysql_select($query,'rows')) {
-		foreach ($products as $k=>$v) {			echo '<li data-id="'.$v['id'].'" title="Перетащите в правую колонку для сохранения">';
+		foreach ($products as $k=>$v) {
+			echo '<li data-id="'.$v['id'].'" title="Перетащите в правую колонку для сохранения">';
 			echo $v['img'] ? '<img src="/files/shop_products/'.$v['id'].'/img/a-'.$v['img'].'" />' : '<div></div>';
 			echo '<b>'.$v['article'].'</b><br />';
 			echo $v['name'].'<br />';
@@ -36,7 +38,8 @@ if ($get['u']=='similar_search') {	$search = stripslashes_smart(@$_GET['value']
 	die();
 }
 
-if ($get['u']=='edit') {	//$post['brand'] = is_array(@$post['brand'])? implode(',',$post['brand']):@$post['brand'];
+if ($get['u']=='edit') {
+	//$post['brand'] = is_array(@$post['brand'])? implode(',',$post['brand']):@$post['brand'];
 	//$post['categories'] = is_array(@$post['categories'])? implode(',',$post['categories']):@$post['categories'];
 }
 
@@ -96,6 +99,24 @@ $tabs = array(
 	3=>'Картинки',
 	4=>'Сопутсвующие товары'
 );
+//если мультиязычный то нужно добавляем вкладки языков кроме главного языка
+if ($config['multilingual']) {
+	$config['languages'] = mysql_select("SELECT id,name FROM languages ORDEr BY display DESC, rank DESC",'rows');
+	if ($get['u']=='edit') {
+		//перезапись названия в основной язык
+		$k = $config['languages'][0]['id'];
+		$post['name'.$k] = $post['name'];
+		$post['text'.$k] = $post['text'];
+	}
+	//вкладку с главным языком не показываем
+	foreach ($config['languages'] as $k => $v) if ($k>0) {
+		//вкладки
+		$tabs['1' . $v['id']] = $v['name'];
+		//поля
+		$form['1' . $v['id']][] = array('input td12', 'name' . $v['id'], @$post['name' . $v['id']], array('name' => $a18n['name']));
+		$form['1' . $v['id']][] = array('tinymce td12', 'text' . $v['id'], @$post['text' . $v['id']], array('name' => $a18n['text']));
+	}
+}
 
 $form[1][] = array('input td7','name',true);
 $form[1][] = array('checkbox','special',true);
@@ -113,15 +134,18 @@ $form[1][] = array('tinymce td12','text',true);
 $form[1][] = array('seo','seo url title keywords description',true);
 
 $form[2][] = '';
-if ($get['u']=='form' OR ($get['id']>0 AND $get['u']=='')) {	$parameters = mysql_select("SELECT parameters FROM shop_categories WHERE id=".intval(isset($post['category']) ? $post['category'] : 0),'string');
+if ($get['u']=='form' OR ($get['id']>0 AND $get['u']=='')) {
+	$parameters = mysql_select("SELECT parameters FROM shop_categories WHERE id=".intval(isset($post['category']) ? $post['category'] : 0),'string');
 	$parameters = $parameters ? unserialize($parameters) : array();
-	$shop_parameters = mysql_select("SELECT id,name,type,`values`,units FROM shop_parameters ORDER BY rank DESC",'rows_id');	$form[2][] = 'Параметры добавляются и редактируются в разделе <a href="?m=shop_parameters"><u>параметры</u></a>.';
+	$shop_parameters = mysql_select("SELECT id,name,type,`values`,units FROM shop_parameters ORDER BY rank DESC",'rows_id');
+	$form[2][] = 'Параметры добавляются и редактируются в разделе <a href="?m=shop_parameters"><u>параметры</u></a>.';
 	$form[2][] = '<br />Настройка сортировки и отображения параметров на сайте редактируется в разделе <a href="?m=shop_categories"><u>категории</u></a>.
 	<br />Здесь редактируются только значения параметров товара.<br /><br />';
 	$form[2][] = '<div id="shop_parameters">';
 	foreach ($parameters as $k=>$v) if (isset($v['display']) && $v['display']==1){
 		$name = $shop_parameters[$k]['name'].($shop_parameters[$k]['units'] ? ' ('.$shop_parameters[$k]['units'].')' : '');
-		if (array_key_exists($k,$shop_parameters)) {			if (!isset($post['p'.$k])) $post['p'.$k] = '';
+		if (array_key_exists($k,$shop_parameters)) {
+			if (!isset($post['p'.$k])) $post['p'.$k] = '';
 			if (in_array($shop_parameters[$k]['type'],array(1,3)))
 				$form[2][] = array('select td3','p'.$k,array($post['p'.$k],unserialize($shop_parameters[$k]['values']),''),array('name'=>$name));
 			else $form[2][] = array('input td3','p'.$k,$post['p'.$k],array('name'=>$name));
@@ -141,7 +165,8 @@ $form[4][] = '<ul id="similar_results" class="product_list"></ul>';
 $form[4][] = '<ul id="similar" class="product_list">';
 if (@$post['similar']) {
 	$query2 = "SELECT * FROM shop_products WHERE id IN (".$post['similar'].") LIMIT 10";
-	if ($products = mysql_select($query2,'rows_id')) {		$similar = explode(',',$post['similar']);
+	if ($products = mysql_select($query2,'rows_id')) {
+		$similar = explode(',',$post['similar']);
 		foreach ($similar as $k=>$v) if (isset($products[$v])) {
 			$form[4][] = '<li data-id="'.$products[$v]['id'].'" title="Перетащите в правую колонку для сохранения">';
 			$form[4][] = $products[$v]['img'] ? '<img src="/files/shop_products/'.$products[$v]['id'].'/img/a-'.$products[$v]['img'].'" />' : '<div></div>';
@@ -165,8 +190,11 @@ $content.= '
 </style>
 
 <script type="text/javascript">
-$(document).ready(function(){	//замена параметров при смене категории
-	$(document).on("change",".form select[name=category]",function(){		var category = $(this).val(),
+$(document).ready(function(){
+
+	//замена параметров при смене категории
+	$(document).on("change",".form select[name=category]",function(){
+		var category = $(this).val(),
 			id = $(".form").prop("id").replace(/[^0-9]/g,"");
 		$.get(
 			"/admin.php",
@@ -190,14 +218,17 @@ $(document).ready(function(){	//замена параметров при см�
 	});
 
 	similar_results();
-	$(document).on("form.open",".form",function(){		similar_results();
+	$(document).on("form.open",".form",function(){
+		similar_results();
 	});
 
 	//сортировка товаров
 	function similar_results () {
 		$("#similar_results, #similar" ).sortable({
 			connectWith: ".product_list",
-			stop: function() {				var similar = [];				$("#similar li").each(function(){
+			stop: function() {
+				var similar = [];
+				$("#similar li").each(function(){
 					similar.push($(this).data("id"));
 				});
 				$("input[name=similar]").val(similar);

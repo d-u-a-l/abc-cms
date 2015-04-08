@@ -9,7 +9,9 @@ $config['shop_parameters']['type'] = array(
 $decimal = array(0,1,2,3);
 
 $post['type'] = array_key_exists(isset($post['type']) ? $post['type'] : 0,$config['shop_parameters']['type']) ? $post['type'] : 1;
-if ($get['u']=='edit') {	if (in_array($post['type'],array(1))) {		if (isset($post['values']['select'])) {
+if ($get['u']=='edit') {
+	if (in_array($post['type'],array(1))) {
+		if (isset($post['values']['select'])) {
 			if (is_array($post['values']['select']))
 				foreach ($post['values']['select'] as $k=>$v) if ($v=='') unset($post['values']['select'][$k]);
 			$post['values'] = serialize($post['values']['select']);
@@ -24,13 +26,17 @@ if ($get['u']=='edit') {	if (in_array($post['type'],array(1))) {		if (isset($p
 		$post['values'] = (isset($post['values']['checkbox']) && $post['values']['checkbox']) ? serialize($post['values']['checkbox']) : '';
 	else $post['values'] = '';
 
-	if ($get['id']=='new') {		$get['id'] = mysql_fn('insert',$get['m'],$post);
+	if ($get['id']=='new') {
+		$get['id'] = mysql_fn('insert',$get['m'],$post);
 		if (in_array($post['type'],array(1,3)))
 			mysql_query('ALTER TABLE  `shop_products` ADD  `p'.$get['id'].'` INT UNSIGNED NOT NULL, ADD INDEX (  `p'.$get['id'].'` )');
 		elseif($post['type']==2)
 			mysql_query('ALTER TABLE  `shop_products` ADD  `p'.$get['id'].'` DECIMAL( 10,'.$post['values'].') NOT NULL, ADD INDEX (  `p'.$get['id'].'` )');
-	} else {		if (in_array($post['type'],array(1,3)))
-			mysql_query('ALTER TABLE  `shop_products` CHANGE  `p'.$get['id'].'` `p'.$get['id'].'` INT UNSIGNED NOT NULL');		elseif($post['type']==2)
+	}
+	else {
+		if (in_array($post['type'],array(1,3)))
+			mysql_query('ALTER TABLE  `shop_products` CHANGE  `p'.$get['id'].'` `p'.$get['id'].'` INT UNSIGNED NOT NULL');
+		elseif($post['type']==2)
 			mysql_query('ALTER TABLE  `shop_products` CHANGE  `p'.$get['id'].'`  `p'.$get['id'].'` DECIMAL( 10,'.$post['values'].') NOT NULL');
 	}
 }
@@ -111,17 +117,21 @@ $content = '
 .parameter_values li.field a {float:right; margin:2px 0 0}
 </style>
 <script type="text/javascript">
-$(document).ready(function(){	$(document).on("change","select[name=\'type\']",function(){
+$(document).ready(function(){
+	$(document).on("change","select[name=\'type\']",function(){
 		$(".parameter_values").hide();
 		var type = $(this).val();
 		if (type==1) $(".parameter_values[data-type=\'select\']").show();
 		if (type==2) $(".parameter_values[data-type=\'decimal\']").show();
 		if (type==3) $(".parameter_values[data-type=\'checkbox\']").show();
 		return false;
-	});	$(document).on("click",".parameter_values .plus",function(){		var content = $("#template_select").val();
+	});
+	$(document).on("click",".parameter_values .plus",function(){
+		var content = $("#template_select").val();
 		content = content.replace(/{[^}]*}/g,"");
 		$(this).next("ul").append(content);
-		$("ul.sortable").sortable();		return false;
+		$("ul.sortable").sortable();
+		return false;
 	});
 	$(document).on("click",".parameter_values .delete",function(){
 		$(this).parent("li").remove();

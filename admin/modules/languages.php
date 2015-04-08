@@ -69,26 +69,35 @@ else {
 	}
 }
 
-$fieldset['localization'] = 'localization';
+$a18n['localization'] = 'localization';
 
 //исключения
 if ($get['u']=='edit') {
 	//$post['dictionary'] = serialize($post['dictionary']);
-	if ($get['id']>0 AND (is_dir(ROOT_DIR.'files/languages/'.$get['id'].'/dictionary') || mkdir(ROOT_DIR.'files/languages/'.$get['id'].'/dictionary',0755,true)) ) {
-		foreach ($post['dictionary'] as $key=>$val) {
-			$str = '<?php'.PHP_EOL;
-			$str.= '$lang[\''.$key.'\'] = array('.PHP_EOL;
-			foreach ($val as $k=>$v) {
-				$str.= "	'".$k."'=>'".str_replace("'","\'",$v)."',".PHP_EOL;
+	if ($get['id'] > 0 AND (is_dir(ROOT_DIR . 'files/languages/' . $get['id'] . '/dictionary') || mkdir(ROOT_DIR . 'files/languages/' . $get['id'] . '/dictionary', 0755, true))) {
+		foreach ($post['dictionary'] as $key => $val) {
+			$str = '<?php' . PHP_EOL;
+			$str .= '$lang[\'' . $key . '\'] = array(' . PHP_EOL;
+			foreach ($val as $k => $v) {
+				$str .= "	'" . $k . "'=>'" . str_replace("'", "\'", $v) . "'," . PHP_EOL;
 			}
-			$str.= ');';
-			$str.= '?>';
-			$fp = fopen(ROOT_DIR.'files/languages/'.$get['id'].'/dictionary/'.$key.'.php', 'w');
-			fwrite($fp,$str);
+			$str .= ');';
+			$str .= '?>';
+			$fp = fopen(ROOT_DIR . 'files/languages/' . $get['id'] . '/dictionary/' . $key . '.php', 'w');
+			fwrite($fp, $str);
 			fclose($fp);
 		}
 	}
 	unset($post['dictionary']);
+	//если мультиязычный то нужно добавлять колонки в мультиязычные таблицы
+	if ($config['multilingual']) {
+		if ($get['id'] == 'new') {
+			$max = mysql_select("SELECT id FROM languages ORDER BY id DESC LIMIT 1",'string');
+			$get['id'] = mysql_fn('insert', $get['m'], $post);
+			mysql_query("ALTER TABLE `shop_products` ADD `name".$get['id']."` VARCHAR( 255 ) NOT NULL AFTER `name".$max."`");
+			mysql_query("ALTER TABLE `shop_products` ADD `text".$get['id']."` TEXT NOT NULL AFTER `text".$max."`");
+		}
+	}
 }
 else {
 	//$dictionary = unserialize(@$post['dictionary']);
@@ -100,6 +109,13 @@ else {
 		}
 	}
 }
+
+//правила удаления для многоязычного
+$delete['confirm'] = array('pages'=>'language');
+$delete['delete'] = array(
+	"ALTER TABLE `shop_products` DROP `name".$get['id']."`",
+	"ALTER TABLE `shop_products` DROP `text".$get['id']."`",
+);
 
 
 //вкладки

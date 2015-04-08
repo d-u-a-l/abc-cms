@@ -2,7 +2,7 @@
 
 $config['cms_version'] = '1.0.3';
 
-$config['multilingual'] = true; //многоязычный сайт
+$config['multilingual'] = false; //многоязычный сайт
 
 $config['merchants'] = array(
 	1 => 'наличный рассчет',

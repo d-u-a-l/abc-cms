@@ -1,6 +1,6 @@
 <?php
 
-$config['cms_version'] = '1.0.3';
+$config['cms_version'] = '1.0.4';
 
 $config['multilingual'] = false; //многоязычный сайт
 

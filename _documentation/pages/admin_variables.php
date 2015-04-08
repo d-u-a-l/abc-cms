@@ -1,4 +1,4 @@
-Переменные админпанели используютя в модулях админки /admin/modules/***.php
+Переменные админпанели используются в модулях админки /admin/modules/***.php
 <br>
 <br>
 
@@ -12,9 +12,9 @@
 	чтобы запись можно было всегда удалять эту переменную вообще не нужно инициализировать<br>
 	Переменная состоит из двух массивов<br>
 	- confirm - условия при которых невозможно будет удалить запись<br>
-	- delete - правила при которых будут удаляться другия связанные записи<br>
+	- delete - правила при которых будут удаляться другие связанные записи<br>
 	Примеры confirm:<br>
-	1) удалит только если запрос <kbd>SELECT * FROM product WHERE category = $get['id']</kbd> вернет пустой рещультат
+	1) удалит только если запрос <kbd>SELECT * FROM product WHERE category = $get['id']</kbd> вернет пустой результат
 	<pre>$delete['confirm'] = array('product'=>'category');</pre>
 	2) удалить можно будет только если запрос выдаст пустой результат
 	<pre>$delete['confirm'] = array('shop_category'=>"SELECT id FROM product WHERE category = ".$get['id']);</pre>
@@ -51,7 +51,7 @@
   'type',		// ключ - $_GET['shop_brand'] = $q['id']
   array(1=>'синий',2=>'красный'), //массив для формирования  option value="{key}" {value} /option
 );</pre>
-	4) 4-й параметр очищает урл если true (по умолчанию false и урл не будет очищаться, тоесть фильтры будут дополнять друг на друга)
+	4) 4-й параметр очищает урл если true (по умолчанию false и урл не будет очищаться, то есть фильтры будут дополнять друг на друга)
 	<pre>$filter[] = array('shop_category','shop_categories','-категории-',true);</pre>
 	5) поиск
 	<pre>$filter[] = array('search');</pre>
@@ -70,7 +70,7 @@
 	td7 - означает что инпут будет занимать 7/12 от всей ширины (12 это 100% ширины)<br>
 	name - атрибут name="about"<br>
 	true - означает что в него автоматически подставится значение $post['about'] - данные из нужной ячейки таблицы<br>
-	название поля будет слово со словаря с ключем about
+	название поля будет слово со словаря с ключом about
 	<br>
 	1.a) input c указанным значением, именем, атрибутом и подсказкой
 <pre>$form[] = array(
@@ -89,7 +89,7 @@
 	<pre>$form[] = array('checkbox line','display',true);</pre>
 	3) select - 3-й параметр массив для формирования option, синтаксис аналогичен функции select
 	<pre>$form[] = array('select td3','brand',array(true,"SELECT id,name FROM shop_brands ORDER BY name"));</pre>
-	4) textarea c заданой высотой
+	4) textarea c заданной высотой
 	<pre>$form[] = array('textarea td12','text',true),array('attr'=>'style="height:500px"'));</pre>
 	5) множественный чекбокс уплывающий вправо высотой 4 пункта
 <pre>$form[] = array(
@@ -121,7 +121,7 @@
 <pre>array(
 	1=>array( //основной ключ
 		'name'=>'весна', //название картинки
-		'file'=>'spring.pnh' //название файла
+		'file'=>'spring.php' //название файла
 		'display'=>1 //отображать
 	)
 )</pre>

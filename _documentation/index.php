@@ -18,7 +18,8 @@ $pages = array(
 		'admin_about'		=> 'Введение',
 		'admin_variables'	=> 'Переменные',
 		'admin_actions'		=> 'Действия',
-		'admin_module'		=> 'Пример'
+		'admin_module'		=> 'Пример',
+		'admin_multilang'	=> 'Мультиязычность'
 	),
 	'Сайт (front-end)'=>array(
 		'site_about'		=> 'Введение',

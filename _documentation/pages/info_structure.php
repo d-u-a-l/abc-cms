@@ -2,7 +2,7 @@
 .panel-collapse {padding:0 0 0 30px}
 </style>
 
-<span class="label label-default">_/</span> – полезные скрипты для инсталяции, обновления и исправления CMS<br>
+<span class="label label-default">_/</span> – полезные скрипты для инсталляции, обновления и исправления CMS<br>
 
 <a class="label label-warning" data-toggle="collapse" href="#f_admin">admin/</a> – админпанель сайта<br>
 <div id="f_admin" class="panel-collapse collapse">

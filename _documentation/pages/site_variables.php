@@ -1,4 +1,4 @@
-Переменные админпанели используютя в модулях админки /modules/***.php
+Переменные сайта используются в модулях сайта /modules/***.php
 <br>
 <br>
 
@@ -38,16 +38,16 @@ else $error++;</pre>
   'left_col' => 'левая колонка',
   'top_col' => 'верхний блок'
 );</pre>
-количество элемнтов $html зависит от архитектуры основного шаблона /templates/includes/template.php<br>
+количество элементов $html зависит от архитектуры основного шаблона /templates/includes/template.php<br>
 в большинстве случаев достаточно только $html['content'] для вывода основного блока на сайте (текстовая страница, список новостей, список товаров, корзина)<br>
 другие элементы добавляются если только верстка этого требует
 </div>
 
-<a class="label label-danger" data-toggle="collapse" href="#html">$lang</a> - массив с данными о языке<br>
-<div id="html" class="panel-collapse collapse bg-info">
-	массив $lang содержыт все данные о текущем языке<br>
+<a class="label label-danger" data-toggle="collapse" href="#lang">$lang</a> - массив с данными о языке<br>
+<div id="lang" class="panel-collapse collapse bg-info">
+	массив $lang содержит все данные о текущем языке<br>
 	инициализация
-<pre>$lang = lang(1)</pre>
+<pre>$lang = lang(1);</pre>
 	данные берутся из таблицы languages<br>
 	для мультиязычных сайтов инициализация будет по $u[0]
 <pre>lang($u[0],'url');</pre>

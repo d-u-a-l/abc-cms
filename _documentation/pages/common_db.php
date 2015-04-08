@@ -1,4 +1,4 @@
-Здесь описаны не все таблицы, которые идут в стандратном наборе, а только минимально необходимые для работы сайта
+Здесь описаны не все таблицы, которые идут в стандартном наборе, а только минимально необходимые для работы сайта
 <br>
 <a class="label label-danger" data-toggle="collapse" href="#languages">languages</a> - языки<br>
 <div id="languages" class="panel-collapse collapse bg-info">

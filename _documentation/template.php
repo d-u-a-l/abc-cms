@@ -39,7 +39,7 @@
 			<div class="col-sm-2 container">abc-cms</div>
 			<div class="col-sm-10">
 				<div class="pull-right"><?=@$config['cms_version']?'v'.$config['cms_version']:''?></div>
-				Полная техническа документация
+				Полная техническая документация
 			</div>
 		</div>
 	</div>

@@ -25,7 +25,7 @@ $user = user('auth');</pre>
 <div id="auth" class="panel-collapse collapse bg-info">
 	<pre>$user = user('auth')</pre>
 	Инициализация массива $user, в нем будут все данных пользователя<br>
-	Авторизация происходит либо по сесии либо по кукам
+	Авторизация происходит либо по сессии либо по кукам
 </div>
 
 <a class="label label-info" data-toggle="collapse" href="#re-auth">re-auth</a> - переавторизация для обновления данных текущей сессии<br>
@@ -35,7 +35,7 @@ $user = user('auth');</pre>
 	Например, если у нас была вызвана сложная функция оплаты, которая могла изменить количество денег на счету $user, то нужно сделать переавторизацию
 </div>
 
-<a class="label label-success" data-toggle="collapse" href="#update">update</a> - обновление данных в базе и в текущей сесии<br>
+<a class="label label-success" data-toggle="collapse" href="#update">update</a> - обновление данных в базе и в текущей сессии<br>
 <div id="update" class="panel-collapse collapse bg-info">
 <pre>$user['param_1'] = 1;
 $user['param_2'] = 1;

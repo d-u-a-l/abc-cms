@@ -25,7 +25,7 @@ if ($u[3]=='' AND $news = mysql_select("
 	WHERE id = '".$id."' AND display = 1
 ",'row')) {
 	$page = array_merge($page,$news);
-	//переадреация на корректный урл
+	//переадресация на корректный урл
 	if (explode2('-',$u[2],2)!=$page['url']) die(header('location: /'.$modules['news'].'/'.$page['id'].'-'.$page['url'].'/'));
 	$html['content'] = html_array('news/text',$page);
 	$breadcrumb['module'][] = array($page['name'],'/'.$modules['news'].'/'.$page['id'].'-'.$page['url'].'/');

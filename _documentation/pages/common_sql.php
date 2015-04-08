@@ -52,7 +52,7 @@
 )</pre>
 </div>
 
-<a class="label label-info" data-toggle="collapse" href="#rows_id">rows_id</a> массив из row где ключем будет id<br>
+<a class="label label-info" data-toggle="collapse" href="#rows_id">rows_id</a> массив из row где ключом будет id<br>
 <div id="rows_id" class="panel-collapse collapse bg-info">
 	<pre>$data = mysql_select("SELECT id FROM news",'rows_id')</pre>
 	Вернет все выбранные ряды

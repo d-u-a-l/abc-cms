@@ -26,9 +26,11 @@ function mysql_connect_db($server='',$username='',$password='',$database='') {
 				return true;
 			}
 			$config['mysql_error'] = 'cannot connect to database';
+			trigger_error($config['mysql_error'], E_USER_DEPRECATED);
 			return false;
 		}
 		$config['mysql_error'] = 'cannot connect to mysql server';
+		trigger_error($config['mysql_error'], E_USER_DEPRECATED);
 		return false;
 	}
 	else return true;
@@ -41,7 +43,7 @@ function mysql_connect_db($server='',$username='',$password='',$database='') {
  */
 function mysql_res ($str) {
 	if (mysql_connect_db()) return mysql_real_escape_string($str);
-	else return mysql_real_escape_string($str);
+	//else return mysql_real_escape_string($str);
 	return false;
 }
 

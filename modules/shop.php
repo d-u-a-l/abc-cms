@@ -51,7 +51,7 @@ if ($u[2] AND $id = intval(explode2('-',$u[2])) AND $category = mysql_select("SE
 		//список товаров если нет подкатегорий
 		else {
 			//загрузка функций для формы
-			require_once(ROOT_DIR.'functions/index_form.php');
+			require_once(ROOT_DIR.'functions/form_func.php');
 			//определение значений формы
 			$fields = array(
 				'brand'	=> 'string_int',
@@ -65,9 +65,11 @@ if ($u[2] AND $id = intval(explode2('-',$u[2])) AND $category = mysql_select("SE
 					SELECT * FROM shop_parameters
 					WHERE display=1 AND id IN('".implode("','",$prms)."')
 					ORDER BY rank DESC",'rows_id')) {
-					foreach ($shop_parameters as $k=>$v) {						if($v['type']==1) $fields['p'.$k] = 'string_int';
+					foreach ($shop_parameters as $k=>$v) {
+						if($v['type']==1) $fields['p'.$k] = 'string_int';
 						elseif($v['type']==2) $fields['p'.$k] = 'min_max';
-						elseif($v['type']==3) $fields['p'.$k] = 'boolean';						//else $fields['p'.$k] = 'int';
+						elseif($v['type']==3) $fields['p'.$k] = 'boolean';
+						//else $fields['p'.$k] = 'int';
 					}
 				}
 			}
@@ -83,12 +85,15 @@ if ($u[2] AND $id = intval(explode2('-',$u[2])) AND $category = mysql_select("SE
 				if ($price[1]>0) $where.= " AND sp.price<=".$price[1];
 			}
 			if ($page['parameters'] AND $shop_parameters) {
-				foreach ($shop_parameters as $k=>$v) {					//мультичекбокс
-					if ($v['type']==1) {						if($post['p'.$k]!='')
+				foreach ($shop_parameters as $k=>$v) {
+					//мультичекбокс
+					if ($v['type']==1) {
+						if($post['p'.$k]!='')
 							$where.= " AND sp.p".$k." IN (".$post['p'.$k].")";
 					}
 					//число от и до
-					elseif ($v['type']==2) {						if($post['p'.$k]!='0-0') {
+					elseif ($v['type']==2) {
+						if($post['p'.$k]!='0-0') {
 							$min_max = explode('-',$post['p'.$k]);
 							if ($min_max[0]>0) $where.= " AND sp.p".$k.">=".$min_max[0];
 							if ($min_max[1]>0) $where.= " AND sp.p".$k."<=".$min_max[1];

@@ -3,7 +3,7 @@
 //обрабока формы
 if (count($_POST)>0) {
 	//загрузка функций для формы
-	require_once(ROOT_DIR.'functions/index_form.php');
+	require_once(ROOT_DIR.'functions/form_func.php');
 	//определение значений формы
 	$fields = array(
 		'email'		=>	'required email',
@@ -22,7 +22,8 @@ if (count($_POST)>0) {
 			WHERE email = '".mysql_real_escape_string(strtolower($post['email']))."'
 			LIMIT 1
 		");
-		if (mysql_num_rows($result)==1) {			$q = mysql_fetch_array($result);
+		if (mysql_num_rows($result)==1) {
+			$q = mysql_fetch_array($result);
 			mailer('remind',$lang['id'],$q,$post['email']);
 			$post['success'] = 1;
 			/*if (email(

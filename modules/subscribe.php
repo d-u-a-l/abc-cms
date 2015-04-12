@@ -1,10 +1,15 @@
 <?php
 
 //Отписка
-if ($u[2]=='unsubscribe' AND $u[3] AND $u[4]) {	$query = "SELECT * FROM subscribers WHERE LOWER(email)='".mysql_real_escape_string(strtolower($u[3]))."' LIMIT 1";	if ($subscriber = mysql_select($query,'row')) {		//print_r($subscriber);
+if ($u[2]=='unsubscribe' AND $u[3] AND $u[4]) {
+	$query = "SELECT * FROM subscribers WHERE LOWER(email)='".mysql_real_escape_string(strtolower($u[3]))."' LIMIT 1";
+	if ($subscriber = mysql_select($query,'row')) {
+		//print_r($subscriber);
 		//echo md5($subscriber['email'].md5($subscriber['date']));
 		//echo $u[4];
-		if (md5($subscriber['email'].md5($subscriber['date']))==$u[4]) {			if (@$_POST['action']=='failure') {				$subscriber['display'] = 0;
+		if (md5($subscriber['email'].md5($subscriber['date']))==$u[4]) {
+			if (@$_POST['action']=='failure') {
+				$subscriber['display'] = 0;
 				mysql_fn('update','subscribers',array(
 					'id'=>$subscriber['id'],
 					'display'=>0
@@ -17,7 +22,8 @@ if ($u[2]=='unsubscribe' AND $u[3] AND $u[4]) {	$query = "SELECT * FROM subscri
 	}
 	else $subscriber = '';
 	//print_r($subscriber);
-	$html['content'] = html_array('subscribe/failure_form',$subscriber);
+	$html['content'] = html_array('subscribe/failure_form',$subscriber);
+
 }
 //Просмотр письма на сайте
 elseif ($u[2]>0 AND $u[3] AND $u[4]) {
@@ -28,7 +34,8 @@ elseif ($u[2]>0 AND $u[3] AND $u[4]) {
 		AND $subscribe_letter = mysql_select("SELECT * FROM subscribe_letters WHERE id=".intval($u[2]),'row')
 	) {
 		$subscribe_letter['receiver'] = $subscriber['email'];
-		$subscribe_letter['date'] = $subscriber['date'];		echo html_array('subscribe/letter',$subscribe_letter);
+		$subscribe_letter['date'] = $subscriber['date'];
+		echo html_array('subscribe/letter',$subscribe_letter);
 		die();
 	} else $error++;
 }
@@ -36,7 +43,7 @@ else {
 	//обрабока формы
 	if (count($_POST)>0) {
 		//загрузка функций для формы
-		require_once(ROOT_DIR.'functions/index_form.php');
+		require_once(ROOT_DIR.'functions/form_func.php');
 		//создание массива $post
 		$fields = array(
 			//'name'=>'required text',
@@ -52,11 +59,16 @@ else {
 		if (count($message)==0) {
 			$post['date']		= date("Y-m-d H:i:s");
 			$query = "SELECT * FROM subscribers WHERE LOWER(email)='".mysql_real_escape_string(strtolower($post['email']))."' LIMIT 1";
-			if ($subscriber = mysql_select($query,'row')) {				$post['success']=1;
-				if ($subscriber['display']==0) {					mysql_fn('update','subscribers',array('id'=>$subscriber['id'],'display'=>1));
+			if ($subscriber = mysql_select($query,'row')) {
+				$post['success']=1;
+				if ($subscriber['display']==0) {
+					mysql_fn('update','subscribers',array('id'=>$subscriber['id'],'display'=>1));
 				}
-			} else {				unset($post['captcha']);
-				$post['display'] = 1;				if ($id=mysql_fn('insert','subscribers',$post)) {					mailer('subscribe_on',$lang['id'],$post);
+			} else {
+				unset($post['captcha']);
+				$post['display'] = 1;
+				if ($id=mysql_fn('insert','subscribers',$post)) {
+					mailer('subscribe_on',$lang['id'],$post);
 					//email($post['email'],$config['email'],i18n('subscribe|on_letter_name'),html_array('subscribe/on_letter',$post));
 					$post['success']=1;
 				}

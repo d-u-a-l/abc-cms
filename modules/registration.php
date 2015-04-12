@@ -1,6 +1,10 @@
 <?php
 //обрабока формы
-if (count($_POST)>0) {	//загрузка функций для формы	require_once(ROOT_DIR.'functions/index_form.php');	//определение значений формы	$fields = array(
+if (count($_POST)>0) {
+	//загрузка функций для формы
+	require_once(ROOT_DIR.'functions/form_func.php');
+	//определение значений формы
+	$fields = array(
 		'password'	=> 'required password',
 		'password2'	=> 'required password2',
 		'email'		=> 'required email',
@@ -19,13 +23,15 @@ if (count($_POST)>0) {	//загрузка функций для формы	req
 	if ($post['password']!==$post['password2'])
 		$message[] = i18n('validate|not_match_passwords',true);
 	//регистарация
-	if (count($message)==0) {		$post['email']	= strtolower($post['email']);
+	if (count($message)==0) {
+		$post['email']	= strtolower($post['email']);
 		$post['date']	= $post['last_visit'] = date('Y-m-d H:i:s');
 		$post['hash']	= md5($post['email'].md5($post['password']));
 		$post['type']	= 0;
 		$password		= $post['password']; //пароль будет удален потому что такого поля нет в БД, но значение будет нужно при отправке сообщения пользователю
 		unset($post['password'],$post['password2'],$post['captcha']);
-		if ($post['id'] = mysql_fn('insert','users',$post)) {			//$post['avatar'] = file_upload ('users',$post['id'],'avatar',array('size'=>'100*100'));
+		if ($post['id'] = mysql_fn('insert','users',$post)) {
+			//$post['avatar'] = file_upload ('users',$post['id'],'avatar',array('size'=>'100*100'));
 			$_SESSION['user'] = $user = $post;
 			$post['password'] = $password;
 			mailer('registration',$lang['id'],$post,$post['email']);

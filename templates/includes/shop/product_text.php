@@ -1,4 +1,4 @@
-<?=html_sources('return','highslide_gallery']?>
+<?=html_sources('return','highslide_gallery')?>
 <?php
 $img = $q['img'] ? '/files/shop_products/'.$q['id'].'/img/m-'.$q['img'] : '/templates/images/no_img.png';
 $images = $q['imgs'] ? unserialize($q['imgs']) : false;

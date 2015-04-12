@@ -2,11 +2,17 @@
 
 session_start();
 
-require_once(ROOT_DIR.'functions/common_func.php');
-require_once(ROOT_DIR.'functions/common_conf.php');
-require_once(ROOT_DIR.'functions/index_conf.php');
-require_once(ROOT_DIR.'functions/index_func.php');
-require_once(ROOT_DIR.'functions/index_form.php'); //загрузка функций для формы
+//require_once(ROOT_DIR.'functions/admin_func.php');	//функции админки
+require_once(ROOT_DIR.'functions/auth_func.php');	//функции авторизации
+require_once(ROOT_DIR.'functions/common_func.php');	//общие функции
+//require_once(ROOT_DIR.'functions/file_func.php');	//функции для работы с файлами
+require_once(ROOT_DIR.'functions/html_func.php');	//функции для работы нтмл кодом
+require_once(ROOT_DIR.'functions/form_func.php');	//функции для работы со формами
+//require_once(ROOT_DIR.'functions/image_func.php');	//функции для работы с картинками
+require_once(ROOT_DIR.'functions/lang_func.php');	//функции словаря
+require_once(ROOT_DIR.'functions/mail_func.php');	//функции почты
+require_once(ROOT_DIR.'functions/mysql_func.php');	//функции для работы с БД
+require_once(ROOT_DIR.'functions/string_func.php');	//функции для работы со строками
 
 //определение значений формы
 $fields = array(
@@ -25,7 +31,6 @@ $message = form_validate($fields,$post);
 
 //если нет ошибок то отправляем сообщение
 if (count($message)==0) {
-	require_once(ROOT_DIR.'config_db.php'); //доступ к ДБ
 	if ($product = mysql_select("SELECT sp.*,sc.url category_url FROM shop_products sp, shop_categories sc WHERE sp.category=sc.id AND sp.id=".$post['product'],'row')) {
 		unset($_SESSION['captcha'],$post['captcha']); //убиваем капчу чтобы второй раз не отправлялось
 		$post['date'] = date('Y-m-d H:i:s');

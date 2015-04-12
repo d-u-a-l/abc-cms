@@ -1,12 +1,13 @@
 <?php
-require_once(ROOT_DIR.'functions/index_form.php');
+require_once(ROOT_DIR.'functions/form_func.php');
 
 //обрабока формы
 if (count($_POST)>0) {
 	//создание массива $post
 	$fields = array(
 		'password'		=> 'required password',
-	);	//создание массива $post
+	);
+	//создание массива $post
 	$post = form_smart($fields,stripslashes_smart($_POST)); //print_r($post);
 	//сообщения с ошибкой заполнения
 	$message = form_validate($fields,$post);
@@ -18,7 +19,8 @@ if (count($_POST)>0) {
 	unset($post['password']);
 
 	if (count($message)==0) {
-		if (mysql_fn('update','users',$post)) {			$_SESSION['user'] = $user = array_merge($user,$post);
+		if (mysql_fn('update','users',$post)) {
+			$_SESSION['user'] = $user = array_merge($user,$post);
 			$message[]= 'Изменения внесены успешно!';
 		}
 		else $message[]= 'Никаких изменений небыло внесено!';

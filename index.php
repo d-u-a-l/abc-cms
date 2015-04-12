@@ -5,9 +5,10 @@
  */
 
 //чтобы не запрашивали напрямую index.php
-if ($_SERVER['REQUEST_URI']=='/index.php') {
+if (strpos($_SERVER['REQUEST_URI'],'/index.php')!==false) { // проверяем есть ли вхождение строки   
 	header('HTTP/1.1 301 Moved Permanently');
-	die(header('location: http://'.$_SERVER['HTTP_HOST']));
+	// редиректим на адрес без '/index.php', будет выбивать на 404, либо главную
+        die(header('location: http://'.$_SERVER['HTTP_HOST'].str_replace('/index.php','',$_SERVER['REQUEST_URI'])));
 }
 
 session_start();

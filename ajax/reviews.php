@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 //require_once(ROOT_DIR.'functions/admin_func.php');	//функции админки
 require_once(ROOT_DIR.'functions/auth_func.php');	//функции авторизации
 require_once(ROOT_DIR.'functions/common_func.php');	//общие функции
@@ -13,6 +11,12 @@ require_once(ROOT_DIR.'functions/lang_func.php');	//функции словар�
 require_once(ROOT_DIR.'functions/mail_func.php');	//функции почты
 require_once(ROOT_DIR.'functions/mysql_func.php');	//функции для работы с БД
 require_once(ROOT_DIR.'functions/string_func.php');	//функции для работы со строками
+
+//основной язык
+$lang = lang(1);
+
+//список модулей на сайте
+$modules = mysql_select("SELECT url name,module id FROM pages WHERE module!='pages' AND language=".$lang['id']." AND display=1",'array',60*60);
 
 //определение значений формы
 $fields = array(

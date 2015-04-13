@@ -92,11 +92,12 @@
 	4) textarea c заданной высотой
 	<pre>$form[] = array('textarea td12','text',true),array('attr'=>'style="height:500px"'));</pre>
 	5) множественный чекбокс уплывающий вправо высотой 4 пункта
-<pre>$form[] = array(
-	'multicheckbox td4 f_right tr4',
-	'access_editable',
-	array(true,array(1=>'синий',2=>'зеленый')),
-);</pre>
+<pre>//исключение при редактировании модуля
+	if ($get['u'] == 'edit') {
+		$post['tags'] = @$post['tags'] ? implode(',', $post['tags']) : '';
+	}
+	$tags = mysql_select("SELECT id,name FROM quest_tags",'rows_id');
+	$form[] = array('multicheckbox td4 f_right tr4','tags',array(true,$tags),array('name'=>'теги'));</pre>
 	6) tinymce
 	<pre>$form[] = array('tinymce td12','text',true);</pre>
 	7) seo поля - 2-й параметр это перечисление всех полей

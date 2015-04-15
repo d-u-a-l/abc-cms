@@ -1,9 +1,22 @@
-<?
+<?php
+
+// загрузка настроек *********************************************************
+define('ROOT_DIR', dirname(__FILE__).'/../../');
+require_once(ROOT_DIR.'_config.php');	//динамические настройки
+require_once(ROOT_DIR.'_config2.php');	//установка настроек
 
 // загрузка функций **********************************************************
-require_once('../../functions/global_conf.php');	//общие функции
-require_once(ROOT_DIR.'functions/config.php');	//общие функции
+//require_once(ROOT_DIR.'functions/admin_func.php');	//функции админки
+//require_once(ROOT_DIR.'functions/auth_func.php');	//функции авторизации
 require_once(ROOT_DIR.'functions/common_func.php');	//общие функции
+//require_once(ROOT_DIR.'functions/file_func.php');	//функции для работы с файлами
+//require_once(ROOT_DIR.'functions/html_func.php');	//функции для работы нтмл кодом
+//require_once(ROOT_DIR.'functions/form_func.php');	//функции для работы со формами
+//require_once(ROOT_DIR.'functions/image_func.php');	//функции для работы с картинками
+//require_once(ROOT_DIR.'functions/lang_func.php');	//функции словаря
+//require_once(ROOT_DIR.'functions/mail_func.php');	//функции почты
+require_once(ROOT_DIR.'functions/mysql_func.php');	//функции для работы с БД
+//require_once(ROOT_DIR.'functions/string_func.php');	//функции для работы со строками
 
 // регистрационная информация (пароль #2)
 // registration info (password #2)
@@ -34,24 +47,29 @@ else {
 	// запись в файл информации о проведенной операции
 	// save order info to file
 	$query = "SELECT * FROM orders WHERE id=".intval($inv_id);
-	if ($order = mysql_select($query,'row')) {		if ($order['paid']==1) {			echo ' PAID';
+	if ($order = mysql_select($query,'row')) {
+		if ($order['paid']==1) {
+			echo ' PAID';
 			$str.= '; PAID';
 		}
-		else {			mysql_fn('update','orders',array(
+		else {
+			mysql_fn('update','orders',array(
 				'id'		=> $inv_id,
 				'paid'		=> 1,
 				'date_paid'	=> $date,
-				'payment'	=> 2 //functions/admin_conf.php $config['payments']
+				'payment'	=> 2 //admin/config.php $config['payments']
 			));
 			$file = 'success_'.date('Y-m').'.txt';
 			echo ' OK';
 		}
 	}
-	else {		echo ' ERROR';
+	else {
+		echo ' ERROR';
 	}
 }
 $str.= PHP_EOL;
 
+//запись лога
 $path = ROOT_DIR.'plugins/robokassa/logs/';
 if (is_dir($path) || mkdir ($path,0755,true)) {
 	$fp = fopen($path.$file, 'a');

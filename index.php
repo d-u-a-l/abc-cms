@@ -8,7 +8,7 @@
 if (strpos($_SERVER['REQUEST_URI'],'/index.php')!==false) { // проверяем есть ли вхождение строки   
 	header('HTTP/1.1 301 Moved Permanently');
 	// редиректим на адрес без '/index.php', будет выбивать на 404, либо главную
-        die(header('location: http://'.$_SERVER['HTTP_HOST'].str_replace('/index.php','',$_SERVER['REQUEST_URI'])));
+	die(header('location: http://'.$_SERVER['HTTP_HOST'].str_replace('/index.php','',$_SERVER['REQUEST_URI'])));
 }
 
 session_start();
@@ -34,9 +34,11 @@ require_once(ROOT_DIR.'functions/string_func.php');	//функции для ра
 //создание двомерного массива $u который передается через реврайтмод
 for ($i=0; $i<5; $i++) $u[$i] = isset($_GET['u'][$i]) ? stripslashes_smart($_GET['u'][$i]) : '';
 
-//основной язык
-$lang = lang(1);
-//lang($u[0],'url'); //для многоязычного сайта
+// если отсутвует указатель языка, то используем основной язык
+/*TODO: добавить выборку из БД на доступные языки, хранить их в кеше/сессии, что бы не дергать бд каждый раз
+ * и делать проверку на совпадение, если !in_array($u[0],$langs), то опять вызываем lang(1) иначе lang($u[0],'url')
+ */
+$lang = (isset($u[0]) && $u[0]) ? lang($u[0],'url') : lang(1);
 
 //список модулей на сайте
 $modules = mysql_select("SELECT url name,module id FROM pages WHERE module!='pages' AND language=".$lang['id']." AND display=1",'array',60*60);

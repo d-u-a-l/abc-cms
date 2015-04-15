@@ -17,7 +17,7 @@ $modules_site = array(
 	'subscribe'		=> 'Подписка'
 );
 
-$fieldset['menu2'] = 'меню 2';
+$a18n['menu2'] = 'меню 2';
 
 if ($get['u']=='form') {
 	if (empty($post['module'])) $post['module'] = 'pages';

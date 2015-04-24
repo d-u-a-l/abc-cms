@@ -81,7 +81,7 @@ var uploaderObject = function(params) {
         self.xhr.open("POST", params.url);
 
         var boundary = "xxxxxxxxx";
-        self.xhr.setRequestHeader("Content-Type", "multipart/form-data, boundary="+boundary);
+        self.xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary="+boundary);
         self.xhr.setRequestHeader("Cache-Control", "no-cache");
 
         var body = "--" + boundary + "\r\n";

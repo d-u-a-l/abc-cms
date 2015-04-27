@@ -85,7 +85,7 @@ function form_validate($fields,$post) {
 			$param = explode(' ',$value);
 			foreach ($param as $k=>$v) {
 				if ($v=='required' && $required==0) {
-					if ($post[$key]=='') {
+					if ($post[$key]==='') {
 						$required++;
 						$message[] = i18n('validate|no_required_fields');
 						//$message[] = $key;

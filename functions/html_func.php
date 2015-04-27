@@ -238,92 +238,69 @@ function editable($edit,$editable='editable_str',$class='') {
 
 /**
  * подключение скриптов
- * @param string $label - метка - можем сразу выводить скрипт, а можем собирать в метку для последующего вывода
- * @param string $source - названия скриптов через пробел
- * css_reset - очистка всех стилей
- * css_common - основные стили сайта
- * script_common - основные скрипты сайта
- * jquery - библиотека jquery
- * jquery_cookie - библиотека jquery_cookie
- * jquery_ui - библиотека jqueryUI
- * query_ui_style - стили jqueryUI
- * jquery_localization - локализация (для datepicker)
- * jquery_form - отправка форм аджаксом
- * jquery_uploader - загрзука файлов нтмл5
- * jquery_validate - валидация форм
- * jquery_multidatespicker - мультидатапикер
- * highslide - просмотр изображений
- * highslide_gallery - просмотр изображений (галерея)
- * tinymce - текстовый редактор
- * editable - быстрое редактирование
+ * @param string $label - метка - можем сразу выводить скрипт (return), а можем собирать в метку для последующего вывода (head|footer)
+ * @param string $source - названия скриптов через пробел, описаны в $config['sources'] в _config2.php
  * @return string
+ * $config['html_sources'] - глобальная перепенная для определения подключенных файлов
  */
-function html_sources($label='',$source='')
-{
+function html_sources($label='',$source='') {
 	global $config, $lang;
-	$data = array(
-		'css_reset' =>
-			'<link href="/' . $config['style'] . '/css/reset.css" rel="stylesheet" type="text/css" />',
-		'css_common' =>
-			'<link href="/' . $config['style'] . '/css/common.css?' . filemtime(ROOT_DIR . $config['style'] . '/css/common.css') . '" rel="stylesheet" type="text/css" />',
-		'script_common' =>
-			'<script type="text/javascript" src="/' . $config['style'] . '/scripts/common.js?' . filemtime(ROOT_DIR . $config['style'] . '/scripts/common.js') . '"></script>',
-		'jquery' => '
-<script type="text/javascript" src="/plugins/jquery/jquery-1.11.1.min.js"></script>',
-		'jquery_cookie' => '
-<script type="text/javascript" src="/plugins/jquery/jquery.cookie.js"></script>',
-		'jquery_ui' => '
-<script type="text/javascript" src="/plugins/jquery/jquery-ui-1.11.1.custom.min.js"></script>',
-		'jquery_ui_style' => '
-<link rel="stylesheet" type="text/css" href="/plugins/jquery/redmond/jquery-ui-1.8.17.custom.css" />',
-		'jquery_localization' => '
-<script type="text/javascript" src="/plugins/jquery/i18n/jquery.ui.datepicker-' . $lang['localization'] . '.js"></script>',
-		'jquery_form' => '
-<script type="text/javascript" src="/plugins/jquery/jquery.form.min.js"></script>',
-		'jquery_uploader' => '
-<script type="text/javascript" src="/plugins/jquery/jquery.uploader.js"></script>',
-		'jquery_validate' => '
-<script type="text/javascript" src="/plugins/jquery/jquery-validation-1.8.1/jquery.validate.min.js"></script>
-<script type="text/javascript" src="/plugins/jquery/jquery-validation-1.8.1/additional-methods.min.js"></script>
-<script type="text/javascript" src="/plugins/jquery/jquery-validation-1.8.1/localization/messages_' . $lang['localization'] . '.js"></script>',
-		'jquery_multidatespicker' => '
-<script type="text/javascript" src="/plugins/jquery/jquery-ui.multidatespicker.js"></script>',
-		'highslide' => '
-<script type="text/javascript" src="/plugins/highslide/highslide.packed.js"></script>
-<link rel="stylesheet" type="text/css" href="/plugins/highslide/highslide.css" />
-<!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="/plugins/highslide/highslide-ie6.css" /><![endif]-->',
-		'highslide_gallery' => '
-<script type="text/javascript" src="/plugins/highslide/highslide-with-gallery.js"></script>
-<script type="text/javascript" src="/' . $config['style'] . '/scripts/highslide.js?1" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css" href="/plugins/highslide/highslide.css?1" />
-<!--[if lt IE 7]>
-<link rel="stylesheet" type="text/css" href="/plugins/highslide/highslide-ie6.css" />
-<![endif]-->',
-		'tinymce' => '<script type="text/javascript" src="/plugins/tinymce/tinymce.min.js?3"></script>',
-		'editable' => '<script type="text/javascript" src="/templates/scripts/editable.js?1"></script>',
-	);
-	$content = '';
+	$content = array();
 	if ($source) {
 		$sources = explode(' ', $source);
-		foreach ($sources as $k => $v) {
+		foreach ($sources as $k=>$v) {
 			//если есть такой ресурс
-			if (isset($data[$v])) {
-				//если первый раз подключается то записываем в $content
-				if (!isset($config['sources'][$v])) {
-					$config['sources'][$v] = $data[$v];
-					if ($label == 'return') $content .= $data[$v];
+			if (isset($config['sources'][$v])) {
+				//если первый раз подключается то записываем в массив $config['sources']
+				if (!isset($config['html_sources'][$v])) {
+					$config['html_sources'][$v] = $config['sources'][$v];
+					if ($label == 'return') $content[] = $config['sources'][$v];
 				}
 			}
+			else {
+				trigger_error('не подключен скрипт в $config[\'sources\'] '.$v,E_USER_DEPRECATED);
+			}
 		}
-		//если указано return то выводим возвращаем
-		if ($label=='return') return $content;
 	}
 	//если $sourсe не указано то выводим метку
 	else {
-		$content = isset($config['sources'][$label]) ? $config['sources'][$label] : '';
-		return $content;
+		$content = isset($config['html_sources'][$label]) ? $config['html_sources'][$label] : array();
 	}
-
+	//если возвращаем результат то компилируем код
+	if (count($content)>0) {
+		$text = '';
+		foreach ($content as $key=>$val) {
+			if (is_array($val)) {
+				foreach ($val as $k=>$v) {
+					//заменяем {localization} на метку языка
+					$str = template($v, $lang);
+					if (file_exists(ROOT_DIR . trim($str, '?'))) {
+						//если есть знак вопроса то добавляем временную метку
+						$str .= substr($v, -1) == '?' ? filemtime(ROOT_DIR.trim($v,'?')) : '';
+						//js или css
+						$text .= strpos($v, '.js') ? '<script type="text/javascript" src="' . $str . '"></script>' : '<link href="' . $str . '" rel="stylesheet" type="text/css" />';
+					}
+					else {
+						trigger_error('нет файла '.$v,E_USER_DEPRECATED);
+					}
+				}
+			}
+			else {
+				//заменяем {localization} на метку языка
+				$str = template($val, $lang);
+				if (file_exists(ROOT_DIR.trim($str,'?'))) {
+					//если есть знак вопроса то добавляем временную метку
+					$str .= substr($val, -1) == '?' ? filemtime(ROOT_DIR.trim($val,'?')) : '';
+					//js или css
+					$text .= strpos($val, '.js') ? '<script type="text/javascript" src="' . $str . '"></script>' : '<link href="' . $str . '" rel="stylesheet" type="text/css" />';
+				}
+				else {
+					trigger_error('нет файла '.$val,E_USER_DEPRECATED);
+				}
+			}
+		}
+		return $text;
+	}
 }
 
 ?>

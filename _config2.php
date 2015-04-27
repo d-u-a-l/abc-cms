@@ -1,13 +1,51 @@
 <?php
 
 //database
-$config['mysql_server']		= 'localhost';
-$config['mysql_username']	= 'root';
-$config['mysql_password']	= '';
-$config['mysql_database']	= 'abc';
+$config['mysql_server']		= 'db4.unlim.com';
+$config['mysql_username']	= 'u11788_demo';
+$config['mysql_password']	= 'E.(s+y@CkW_l';
+$config['mysql_database']	= 'u11788_demo';
+//исключение для локальной версии
+if ($_SERVER['SERVER_ADDR']=='127.0.0.1') {
+	$config['mysql_server'] = 'localhost';
+	$config['mysql_username'] = 'root';
+	$config['mysql_password'] = '';
+	$config['mysql_database'] = 'abc';
+}
 $config['mysql_charset']	= 'UTF8';
 $config['mysql_connect']	= false; //по умолчанию база не подключена
 $config['mysql_error']		= false; //ошибка подключения к базе
+
+//массив всех подключаемых css и js файлов
+$config['sources'] = array(
+	'css_reset'					=> '/templates/css/reset.css',
+	'css_common'				=> '/templates/css/common.css?',
+	'script_common'				=> '/templates/scripts/common.js?',
+	'jquery'					=> '/plugins/jquery/jquery-1.11.1.min.js',
+	'jquery_cookie'				=> '/plugins/jquery/jquery.cookie.js',
+	'jquery_ui'					=> '/plugins/jquery/jquery-ui-1.11.1.custom.min.js',
+	'jquery_ui_style'			=> '/plugins/jquery/redmond/jquery-ui-1.8.17.custom.css',
+	'jquery_localization'		=> '/plugins/jquery/i18n/jquery.ui.datepicker-{localization}.js',
+	'jquery_form'				=> '/plugins/jquery/jquery.form.min.js',
+	'jquery_uploader'			=> '/plugins/jquery/jquery.uploader.js',
+	'jquery_validate'			=> array(
+		'/plugins/jquery/jquery-validation-1.8.1/jquery.validate.min.js',
+		'/plugins/jquery/jquery-validation-1.8.1/additional-methods.min.js',
+		'/plugins/jquery/jquery-validation-1.8.1/localization/messages_{localization}.js',
+	),
+	'jquery_multidatespicker'	=> '/plugins/jquery/jquery-ui.multidatespicker.js',
+	'highslide'					=> array(
+		'/plugins/highslide/highslide.packed.js',
+		'/plugins/highslide/highslide.css',
+	),
+	'highslide_gallery' 		=> array(
+		'/plugins/highslide/highslide-with-gallery.js',
+		'/templates/scripts/highslide.js',
+		'/plugins/highslide/highslide.css',
+	),
+	'tinymce'					=> '/plugins/tinymce/tinymce.min.js',
+	'editable'					=> '/templates/scripts/editable.js',
+);
 
 //timezone
 $config['timezone']			= 'Europe/Moscow';

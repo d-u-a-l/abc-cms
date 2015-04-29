@@ -28,8 +28,9 @@ class MOXMAN_Core_JsonRpcHandler implements MOXMAN_Http_IHandler {
 		$id = null;
 
 		try {
-			$json = MOXMAN_Util_Json::decode($request->get("json"));
-
+			//косяк с обратными слешами
+			if (get_magic_quotes_gpc()) $json = json_decode(stripslashes($request->get("json")));
+			else  $json = MOXMAN_Util_Json::decode($request->get("json"));
 			// Check if we should install
 			if ($json && $json->method != "install") {
 				$config = MOXMAN::getConfig()->getAll();

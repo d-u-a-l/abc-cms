@@ -192,4 +192,15 @@ function explode2($delimiter,$str,$number = 1,$count = 2) {
 	if (isset($array[$n])) return $array[$n];
 }
 
-?>
+/**
+ * ножественное число слова
+ * @param int $number - число
+ * @param string $str1 - строка один ...
+ * @param string $str2 - строка два ...
+ * @param string $str5 - строка пять ...
+ * @return string
+ */
+function plural($number, $str1, $str2, $str5)
+{
+    return $number % 10 == 1 && $number % 100 != 11 ? $str1 : ($number % 10 >= 2 && $number % 10 <= 4 && ($number % 100 < 10 || $number % 100 >= 20) ? $str2 : $str5);
+}

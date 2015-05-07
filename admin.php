@@ -19,7 +19,6 @@ require_once(ROOT_DIR.'functions/lang_func.php');	//функции словар�
 require_once(ROOT_DIR.'functions/mysql_func.php');	//функции для работы с БД
 require_once(ROOT_DIR.'functions/string_func.php');	//функции для работы со строками
 
-$config['admin_lang'] = 'en';
 require_once(ROOT_DIR.'admin/languages/'.$config['admin_lang'].'.php');	//язык админки
 
 //основной язык

@@ -2,6 +2,8 @@
 
 $config['cms_version'] = '1.0.4';
 
+$config['admin_lang'] = 'ru'; //язык админпанели
+
 $config['multilingual'] = false; //многоязычный сайт
 
 $config['merchants'] = array(

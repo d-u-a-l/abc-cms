@@ -100,7 +100,7 @@ if ($error>0) {
 	$html['module'] = 'error';
 }
 //редиректим при обращении на главную по url
-elseif (($page['module']=='index') && ($u[1])) {
+elseif (($html['module']=='index') && ($u[1])) {
 	header('HTTP/1.1 301 Moved Permanently');
 	die(header('location: /'));
 }

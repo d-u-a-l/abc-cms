@@ -5,8 +5,9 @@ require_once(ROOT_DIR.'config_db.php');//доступ к ДБ
 include_once (ROOT_DIR.'functions/common_imgs.php');
 include_once (ROOT_DIR.'functions/common_func.php');
 
-echo ROOT_DIR;
+//echo ROOT_DIR;
 
+mysql_connect_db();
 
 //список скл запросов
 $queries = array(
@@ -32,7 +33,9 @@ $langs = array(
 );
 
 $id = 1;
-foreach ($langs as $key=>$val) {	echo '<b>'.$key.'</b><br />';	print_r($val);
+foreach ($langs as $key=>$val) {
+	echo '<b>'.$key.'</b><br />';
+	print_r($val);
 	echo '<br /><br />';
 	$lang = array();
 	include(ROOT_DIR.'files/languages/'.$id.'/dictionary/'.$key.'.php');
@@ -130,8 +133,11 @@ $data = mysql_select("SELECT id,dictionary FROM languages WHERE id=1",'row');
 $dictionary = unserialize($data['dictionary']);
 //print_r($dictionary);
 $lang = array();
-foreach ($dictionary as $k=>$v) {	//echo '-'.$k.'-'.substr($k,5).'<br />';
-	$str = substr($k,0,4);	if ($str=='shop') {		$lang['shop'][substr($k,5)] = $v;
+foreach ($dictionary as $k=>$v) {
+	//echo '-'.$k.'-'.substr($k,5).'<br />';
+	$str = substr($k,0,4);
+	if ($str=='shop') {
+		$lang['shop'][substr($k,5)] = $v;
 	}
 	elseif ($str=='revi') {
 		$lang['shop'][$k] = $v;
@@ -151,7 +157,8 @@ foreach ($dictionary as $k=>$v) {	//echo '-'.$k.'-'.substr($k,5).'<br />';
 	elseif ($str=='feed') {
 		$lang['feedback'][substr($k,9)] = $v;
 	}
-	elseif ($str=='msg_') {		$lang['validate'][substr($k,4)] = $v;
+	elseif ($str=='msg_') {
+		$lang['validate'][substr($k,4)] = $v;
 	}
 	else $lang['common'][$k] = $v;
 
@@ -159,7 +166,8 @@ foreach ($dictionary as $k=>$v) {	//echo '-'.$k.'-'.substr($k,5).'<br />';
 foreach ($lang as $key=>$val) {
 	$str = '<?php'.PHP_EOL;
 	$str.= '$lang[\''.$key.'\'] = array('.PHP_EOL;
-	foreach ($val as $k=>$v) {		$str.= "	'".$k."'=>'".str_replace("'","\'",$v)."',".PHP_EOL;
+	foreach ($val as $k=>$v) {
+		$str.= "	'".$k."'=>'".str_replace("'","\'",$v)."',".PHP_EOL;
 	}
 	$str.= ');';
 	$str.= '?>';

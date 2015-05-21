@@ -15,5 +15,3 @@ $content = '<div style="margin:10px 0 0; padding:5px 10px; font:12px/14px Arial;
 $form[] = array('input td5','old_url',true);
 $form[] = array('input td5','new_url',true);
 $form[] = array('checkbox','display',true);
-
-?>

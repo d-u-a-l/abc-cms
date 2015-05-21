@@ -94,5 +94,3 @@ else {
 	$content.= '</form>';
 }
 unset($table);
-
-?>

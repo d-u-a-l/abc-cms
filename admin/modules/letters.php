@@ -51,6 +51,4 @@ $form[] = array('input td2','sender',true);
 $form[] = array('input td2','receiver',true);
 $form[] = array('input td2','date',true);
 $form[] = array('input td2','date_sent',true);
-$form[] = array('textarea td12','text',true,array('attr'=>'style="height:300px"',));
-
-?>
+$form[] = array('textarea td12','text',true,array('attr'=>'style="height:300px"'));

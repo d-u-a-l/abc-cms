@@ -49,5 +49,3 @@ $form[] = array('input td4','keyword',true);
 $form[] = array('input td4','url',true);
 $form[] = array('input td4','img',true);
 $form[] = array('input td1','limit',true);
-
-?>

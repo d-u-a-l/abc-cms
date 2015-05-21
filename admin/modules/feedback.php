@@ -32,5 +32,3 @@ $form[] = array('textarea td12','text',true);
 $form[] = array('textarea td12','comment',true);
 
 $form[] = array('file_multi','files','файлы','',array('name'=>'input'));
-
-?>

@@ -6,9 +6,9 @@ if (@$_GET['letter']) {
 	die(mysql_select("SELECT text FROM letters WHERE id=".intval($_GET['letter']),'string'));
 }
 
-$fieldset['subject']		= 'тема рассылки';
-$fieldset['sender']			= 'email отправителя';
-$fieldset['sender_name']	= 'имя отправителя';
+$a18n['subject']		= 'тема рассылки';
+$a18n['sender']			= 'email отправителя';
+$a18n['sender_name']	= 'имя отправителя';
 
 $filter[] = array ('search');
 $filter[] = array('sent',array(1=>'на очереди',2=>'отправленные'));

@@ -1,8 +1,8 @@
 <?php
 
-$fieldset['limit']		= 'лимит';
-$fieldset['img']		= 'картинка';
-$fieldset['keyword']	= 'ключевой запрос';
+$a18n['limit']		= 'лимит';
+$a18n['img']		= 'картинка';
+$a18n['keyword']	= 'ключевой запрос';
 
 //удаление всех страниц
 if ($get['u']=='delete_links') {

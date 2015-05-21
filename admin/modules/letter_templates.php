@@ -7,9 +7,13 @@ $template = array(
 
 $tabs = mysql_select("SELECT id,name FROM languages ORDER BY rank DESC",'array');
 
-if ($get['u']=='edit') {	if ($get['id']>0) {} else {
+if ($get['u']=='edit') {
+	if ($get['id']>0) {} else {
 		$get['id'] = mysql_fn('insert',$get['m'],array('template'=>$post['template']));
-	}	$path = ROOT_DIR.'files/letter_templates/'.$get['id'].'/';	if (is_dir($path) || mkdir($path,0755,true)) {		foreach ($tabs as $k=>$v) {
+	}
+	$path = ROOT_DIR.'files/letter_templates/'.$get['id'].'/';
+	if (is_dir($path) || mkdir($path,0755,true)) {
+		foreach ($tabs as $k=>$v) {
 			if (is_dir($path.$k) || mkdir($path.$k,0755,true)) {
 				$fp = fopen($path.$k.'/subject.php','w');
 				fwrite($fp,@$post['subject'.$k]);
@@ -22,10 +26,11 @@ if ($get['u']=='edit') {	if ($get['id']>0) {} else {
 	}
 	foreach ($tabs as $k=>$v) {
 		unset($post['subject'.$k],$post['text'.$k]);
-	}}
+	}
+}
 
-$fieldset['sender'] = 'отправитель';
-$fieldset['receiver'] = 'получатель';
+$a18n['sender'] = 'отправитель';
+$a18n['receiver'] = 'получатель';
 
 $table = array(
 	'id'		=>	'name id',
@@ -44,7 +49,8 @@ $query = "
 
 
 if ($get['u']=='form' AND $get['id']>0) {
-	foreach ($tabs as $k=>$v) {		$path = ROOT_DIR.'files/letter_templates/'.$get['id'].'/';
+	foreach ($tabs as $k=>$v) {
+		$path = ROOT_DIR.'files/letter_templates/'.$get['id'].'/';
 		$post['subject'.$k] = '';
 		if (is_file($path.$k.'/subject.php')) {
 			$handle = @fopen($path.$k.'/subject.php', "r");

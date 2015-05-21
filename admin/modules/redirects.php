@@ -1,7 +1,7 @@
 <?php
 
-$fieldset['new_url'] = 'новый url';
-$fieldset['old_url'] = 'старый url';
+$a18n['new_url'] = 'новый url';
+$a18n['old_url'] = 'старый url';
 
 $table = array(
 	'id'		=>	'id',

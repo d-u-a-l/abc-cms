@@ -1,7 +1,7 @@
 <?php
 
-$fieldset['display'] = 'просмотрено';
-$fieldset['name'] = 'имя';
+$a18n['display'] = 'просмотрено';
+$a18n['name'] = 'имя';
 
 $table = array(
 	'id'		=>	'date:desc name email',
@@ -32,6 +32,5 @@ $form[] = array('textarea td12','text',true);
 $form[] = array('textarea td12','comment',true);
 
 $form[] = array('file_multi','files','файлы','',array('name'=>'input'));
-
 
 ?>

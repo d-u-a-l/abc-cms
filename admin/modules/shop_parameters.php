@@ -43,7 +43,7 @@ if ($get['u']=='edit') {
 
 $delete['delete'] = array('ALTER TABLE `shop_products` DROP `p'.$get['id'].'`','ALTER TABLE shop_products DROP INDEX p'.$get['id'].'');
 
-$fieldset['type']			= 'тип';
+$a18n['type']			= 'тип';
 
 $table = array(
 	'id'	=>	'rank:desc name id',
@@ -140,5 +140,3 @@ $(document).ready(function(){
 });
 </script>
 ';
-
-?>

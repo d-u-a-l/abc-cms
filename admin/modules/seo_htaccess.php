@@ -23,5 +23,3 @@ $content.= form('textarea td12','text',$text,array('name'=>' ','attr'=>'style="h
 $content.= '<div class="clear"></div><a href="#" class="button red js_submit"><span>Сохранить</span></a>';
 $content.= '</form>';
 $content.= '<div class="clear"></div>';
-
-?>

@@ -79,7 +79,3 @@ $content.= <<<HTML
 	editor.setSize(null,$(window).height()-200);
 </script>
 HTML;
-
-
-
-?>

@@ -19,5 +19,3 @@ $form[] = array('select td4','merchant',array(true,$config['merchants']));
 $form[] = array('input td1 right','rank',true);
 $form[] = array('checkbox','display',true);
 $form[] = array('textarea td12','text',true);
-
-?>

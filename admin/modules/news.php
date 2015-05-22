@@ -22,5 +22,3 @@ $form[] = array('input td3','date',true);
 $form[] = array('checkbox','display',true);
 $form[] = array('tinymce td12','text',true);
 $form[] = array('seo','seo url title keywords description',true);
-
-?>

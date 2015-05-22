@@ -1,8 +1,8 @@
 <?php
 
-$fieldset['links'] = 'ссылки';
-$fieldset['yandex_index'] = 'yandex_index';
-$fieldset['exist'] = 'присутсвует на сайте';
+$a18n['links'] = 'ссылки';
+$a18n['yandex_index'] = 'yandex_index';
+$a18n['exist'] = 'присутсвует на сайте';
 
 $config['depend'] = array(
 	'seo_pages'=>array('links'=>'seo_links-pages'),
@@ -15,14 +15,17 @@ $delete['delete'] = "DELETE FROM `seo_links-pages` WHERE child = '".$get['id']."
 if ($get['u']=='show_links') {
 	$id = intval(@$_GET['id']);
 	if ($post = mysql_select("SELECT * FROM seo_pages WHERE id=".$id,'row')) {
-		if ($post['links'] AND $links = mysql_select("SELECT * FROM seo_links WHERE id IN (".$post['links'].")",'rows')) {			foreach($links as $k=>$v) {				echo '<a target="_blank" href="'.$v['url'].'">'.$v['name'].'</a><br />';
+		if ($post['links'] AND $links = mysql_select("SELECT * FROM seo_links WHERE id IN (".$post['links'].")",'rows')) {
+			foreach($links as $k=>$v) {
+				echo '<a target="_blank" href="'.$v['url'].'">'.$v['name'].'</a><br />';
 			}
 		}
 	}
 	die();
 }
 
-if ($get['u']=='post') {	//удаляем связь ссылок если выключаем лампочку
+if ($get['u']=='post') {
+	//удаляем связь ссылок если выключаем лампочку
 	if ($get['name']=='display' AND $get['value']==0) {
 		mysql_query("DELETE FROM `seo_links-pages` WHERE child = '".$get['id']."'");
 		mysql_fn('update',$get['m'],array('links'=>'','id'=>$get['id']));
@@ -71,7 +74,8 @@ if ($get['u']=='delete_pages') {
 }
 
 //генерация всех страниц на сайте
-if ($get['u']=='greate_pages') {	$modules = mysql_select("SELECT url name,module id FROM pages WHERE module!='pages' AND language=1 AND display=1",'array');
+if ($get['u']=='greate_pages') {
+	$modules = mysql_select("SELECT url name,module id FROM pages WHERE module!='pages' AND language=1 AND display=1",'array');
 	$urls = array();
 	$urls['pages'] = sitemap("SELECT name,url FROM pages WHERE display=1 AND module!='index' ORDER BY left_key",'/{url}/');
 	if (isset($modules['news']))
@@ -94,9 +98,11 @@ if ($get['u']=='greate_pages') {	$modules = mysql_select("SELECT url name,modul
 		if (is_array($val)) {
 			foreach ($val as $k=>$v) {
 				$content.= '<tr><td>'.$v[0].'</td><td><a href="http://'.$_SERVER['HTTP_HOST'].$v[1].'">http://'.$_SERVER['HTTP_HOST'].$v[1].'</a></td></tr>';
-				if ($id = mysql_select("SELECT id FROM seo_pages WHERE url='".mysql_real_escape_string($v[1])."'",'row')) {					mysql_fn('update','seo_pages',array('exist'=>1,'id'=>$id,'name'=>$v[0]));
+				if ($id = mysql_select("SELECT id FROM seo_pages WHERE url='".mysql_real_escape_string($v[1])."'",'row')) {
+					mysql_fn('update','seo_pages',array('exist'=>1,'id'=>$id,'name'=>$v[0]));
 				}
-				else {					$seo_page = array(
+				else {
+					$seo_page = array(
 						'display'	=> 1,
 						'exist'		=> 1,
 						'name'		=> $v[0],
@@ -139,7 +145,8 @@ if (isset($get['search']) && $get['search']!='') $where.= "
 		OR LOWER(seo_pages.url) like '%".mysql_real_escape_string(mb_strtolower($get['search'],'UTF-8'))."%'
 	)
 ";
-if (@$get['type']>0) {	if ($get['type']==1) $where.= " AND yandex_index=1";
+if (@$get['type']>0) {
+	if ($get['type']==1) $where.= " AND yandex_index=1";
 	if ($get['type']==2) $where.= " AND yandex_index=0";
 	if ($get['type']==3) $where.= " AND display=0";
 	if ($get['type']==4) $where.= " AND exist=0";
@@ -232,7 +239,8 @@ $content.= '
 </style>
 
 <script type="text/javascript">
-$(document).ready(function(){	//показать ссылки
+$(document).ready(function(){
+	//показать ссылки
 	$(document).on("click",".show_links",function() {
 		var id	= $(this).closest("tr").data("id"),
 			box = $(this).closest("td");
@@ -311,5 +319,3 @@ $(document).ready(function(){	//показать ссылки
 
 });
 </script>';
-
-?>

@@ -1,8 +1,6 @@
 <?php
 
-// NESTED SETS - ÈÇÌÅÍÅÍÈÅ ÄÅÐÅÂÀ
+// NESTED SETS - Ð˜Ð—ÐœÐ•ÐÐ•ÐÐ˜Ð• Ð”Ð•Ð Ð•Ð’Ð
 require_once(ROOT_DIR.'admin/modules/'.$get['m'].'.php');
 $result = nested_sets($get['m'],intval($_GET['id']),intval($_GET['select']),$_GET['insert'],$filter);
 if ($result!=true) echo $result;
-
-?>

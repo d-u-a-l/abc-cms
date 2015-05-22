@@ -26,12 +26,16 @@ if (file_exists(ROOT_DIR.'admin/modules/'.$module.'.php')) {
 	require_once(ROOT_DIR.'admin/modules/'.$module.'.php');
 }
 //удаление файла из подпапки (загрузка при помощи simple)
-if ($type=='file') {	$dir	= "files/$module/$id/$key/";	$path	= ROOT_DIR.$dir.$file;
+if ($type=='file') {
+	$dir	= "files/$module/$id/$key/";
+	$path	= ROOT_DIR.$dir.$file;
 	if (is_file($path)) {
-		if (unlink($path)) {			$message = '1';
+		if (unlink($path)) {
+			$message = '1';
 			if (is_dir(ROOT_DIR.$dir) && $handle = opendir(ROOT_DIR.$dir)) {
 				while (false !== ($folder = readdir($handle))) {
-					if ($folder!='.' && $folder!='..') {						if (is_dir(ROOT_DIR.$dir.$folder))
+					if ($folder!='.' && $folder!='..') {
+						if (is_dir(ROOT_DIR.$dir.$folder))
 							if (is_file(ROOT_DIR.$dir.$folder.'/'.$file))
 								unlink(ROOT_DIR.$dir.$folder.'/'.$file);
 					}
@@ -68,7 +72,8 @@ if ($type=='file') {	$dir	= "files/$module/$id/$key/";	$path	= ROOT_DIR.$dir.$
 	if (mysql_num_rows($result)==0) die('нет такой записи');
 	mysql_query("DELETE FROM `$module` WHERE `id` = $id LIMIT 1");
 	//nested sets - пересортировка
-	if (array_key_exists('level',$q)) {		$where = '';
+	if (array_key_exists('level',$q)) {
+		$where = '';
 		if (isset($filter) && is_array($filter)) foreach ($filter as $k=>$v) {
 			$where.= " AND `".$v[0]."` = ".intval($q[$v[0]]);
 		}
@@ -90,10 +95,13 @@ if ($type=='file') {	$dir	= "files/$module/$id/$key/";	$path	= ROOT_DIR.$dir.$
 	}
 	//проверка удаления
 	$result = mysql_query("SELECT * FROM `$module` WHERE `id` = $id LIMIT 1");
-	if (mysql_num_rows($result)<1) {		//$message = 'запись удалена!';		delete_all(ROOT_DIR."files/$module/$id");
+	if (mysql_num_rows($result)<1) {
+		//$message = 'запись удалена!';
+		delete_all(ROOT_DIR."files/$module/$id");
 		if (is_dir(ROOT_DIR."files/$module/$id")) $message = 'не удалось удалить папку';//$message = "все картинки, связанные с записью, удалены! [files/$module/$id]";
 		//удаление из связных таблиц
-		if (isset($delete['delete'])) {			if (is_array($delete['delete'])) foreach ($delete['delete'] as $k=>$v) mysql_query($v);
+		if (isset($delete['delete'])) {
+			if (is_array($delete['delete'])) foreach ($delete['delete'] as $k=>$v) mysql_query($v);
 			else mysql_query($delete['delete']);
 		}
 		//логирование
@@ -113,5 +121,3 @@ if ($type=='file') {	$dir	= "files/$module/$id/$key/";	$path	= ROOT_DIR.$dir.$
 
 echo $message;
 die();
-
-?>

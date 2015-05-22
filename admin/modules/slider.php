@@ -16,5 +16,3 @@ $form[] = array('input td12','url',true);
 $form[] = array('tinymce td12','text',true);
 
 $form[] = array('file td6','img','Основная картинка',array(''=>'resize 1000x1000','p-'=>'cut 750x314'));
-
-?>

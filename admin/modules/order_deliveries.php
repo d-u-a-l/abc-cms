@@ -17,5 +17,3 @@ $form[] = array('input td2 right','cost',true,array('name'=>'стоимость 
 $form[] = array('input td2 right','free',true,array('help'=>'укажите минимальную стоимость заказа для которого будет доставка бесплатной'));
 $form[] = array('checkbox','display',true);
 $form[] = array('textarea td12','text',true);
-
-?>

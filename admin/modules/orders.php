@@ -156,5 +156,3 @@ $(document).ready(function(){
 	});
 });
 </script>';
-
-?>

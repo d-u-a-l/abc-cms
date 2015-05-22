@@ -52,4 +52,5 @@ if (count($_POST)>0) $message = 'Вы ввели неверный логин и�
 </td></tr></table>
 </body>
 </html>
-<?php die()?>
+<?php
+die();

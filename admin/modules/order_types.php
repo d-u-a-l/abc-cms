@@ -28,5 +28,3 @@ $form[] = array('input td4','name',true);
 $form[] = array('input td1','rank',true);
 $form[] = array('checkbox','display',true);
 $form[] = array('textarea td12','text',true);
-
-?>

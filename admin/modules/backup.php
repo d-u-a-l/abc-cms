@@ -673,7 +673,3 @@ function SXD_errorHandler($errno, $errmsg, $filename, $linenum, $vars) {
 	echo tpl_enableBack();
 	die();
 }
-
-
-
-?>

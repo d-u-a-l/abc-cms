@@ -59,4 +59,3 @@ if ($get['u']=='form' OR $get['id']>0) {
 	}
 	$form[2][] = '</ul>';
 }
-?>

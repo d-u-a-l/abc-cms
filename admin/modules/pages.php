@@ -63,5 +63,3 @@ $form[] = array('checkbox','menu',true);
 $form[] = array('checkbox','menu2',true,array('help'=>'второе меню, обычно отображается в подвале сайта'));
 $form[] = array('tinymce td12','text',true);//,array('attr'=>'style="height:500px"'));
 $form[] = array('seo','seo url title keywords description',true);
-
-?>

@@ -57,7 +57,3 @@ if (is_file(ROOT_DIR.$path.$file)) {
 }
 
 $content.= '<div class="clear"></div>';
-
-
-
-?>

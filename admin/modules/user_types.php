@@ -6,9 +6,9 @@ if ($get['u']=='edit') {
 	$post['access_editable'] = @$post['access_editable'] ? serialize($post['access_editable']) : '';
 }
 
-$fieldset['ut_name']		= 'название';
-$fieldset['access_delete']	= 'доступ к удалению';
-$fieldset['access_ftp']		= 'доступ к ftp';
+$a18n['ut_name']		= 'название';
+$a18n['access_delete']	= 'доступ к удалению';
+$a18n['access_ftp']		= 'доступ к ftp';
 
 $table = array(
 	'id'			=>	'id',
@@ -46,15 +46,3 @@ $form[] = array('multicheckbox td4 f_right tr4','access_editable',array($access_
 $form[] = array('input td4','ut_name',true);
 $form[] = array('checkbox td4 line','access_delete',true);
 $form[] = array('checkbox td4 line','access_ftp',true);
-
-
-
-
-$help = "
-Статус пользователя определяет его права на сайте и в админпанели.
-<br />Можно создавать много разных статусов и наделять их разными привилегиями.
-<br />Набор привилегий зависит от версии ЦМС.
-";
-
-
-?>

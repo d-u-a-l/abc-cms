@@ -24,5 +24,3 @@ $table = array(
 $form[] = array('input td7','email',true);
 $form[] = array('input td3','date',true);
 $form[] = array('checkbox','display',true);
-
-?>

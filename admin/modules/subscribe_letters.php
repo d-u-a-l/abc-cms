@@ -1,10 +1,13 @@
 <?php
 
-if ($get['u']=='edit') {	if ($post['mailer']>0) {		$subscribers = mysql_select("SELECT * FROM subscribers WHERE display=1 ORDER BY id",'rows');
+if ($get['u']=='edit') {
+	if ($post['mailer']>0) {
+		$subscribers = mysql_select("SELECT * FROM subscribers WHERE display=1 ORDER BY id",'rows');
 		$now = date('Y-m-d H:i:s');
 		require_once(ROOT_DIR.'functions/index_func.php');
 		$modules['subscribe'] = mysql_select("SELECT url FROM pages WHERE module='subscribe'",'string');
-		if (is_array($subscribers)) foreach ($subscribers as $k=>$v){			$letter = array(
+		if (is_array($subscribers)) foreach ($subscribers as $k=>$v){
+			$letter = array(
 				'date'			=> $now,
 				'subject'		=> $post['subject'],
 				'sender'		=> $post['sender'],
@@ -21,9 +24,9 @@ if ($get['u']=='edit') {	if ($post['mailer']>0) {		$subscribers = mysql_select
 	unset($post['mailer']);
 }
 
-$fieldset['subject']		= 'тема рассылки';
-$fieldset['sender']			= 'email отправителя';
-$fieldset['sender_name']	= 'имя отправителя';
+$a18n['subject']		= 'тема рассылки';
+$a18n['sender']			= 'email отправителя';
+$a18n['sender_name']	= 'имя отправителя';
 
 $table = array(
 	'id'			=>	'id:desc date',
@@ -45,5 +48,3 @@ $form[] = array('select td4','mailer',array('',array(0=>'не рассылать
 	)
 );
 $form[] = array('textarea td12','text',true,array('attr'=>'style="height:300px"',));
-
-?>

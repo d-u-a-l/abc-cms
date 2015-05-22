@@ -1,11 +1,11 @@
 <?php
 
-// POST - ÁÛÑÒÐÎÅ ÐÅÄÀÊÒÈÐÎÂÀÍÈÅ
+// POST - Ð‘Ð«Ð¡Ð¢Ð ÐžÐ• Ð Ð•Ð”ÐÐšÐ¢Ð˜Ð ÐžÐ’ÐÐÐ˜Ð•
 require_once(ROOT_DIR.'admin/modules/'.$get['m'].'.php');
-//çàïðîñ áóäåò òîëüêî åñëè êëþ÷ íàõîäèòñÿ â ìàññèâå $fieldset
+//Ð·Ð°Ð¿Ñ€Ð¾Ñ Ð±ÑƒÐ´ÐµÑ‚ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ ÐµÑÐ»Ð¸ ÐºÐ»ÑŽÑ‡ Ð½Ð°Ñ…Ð¾Ð´Ð¸Ñ‚ÑÑ Ð² Ð¼Ð°ÑÑÐ¸Ð²Ðµ $fieldset
 //if (array_key_exists($get['name'],$fieldset)) {
 	if (mysql_fn('update',$get['m'],array($get['name']=>$get['value'],'id'=>$get['id']))) {
-	//ëîãèðîâàíèå äåéñòâèÿ
+	//Ð»Ð¾Ð³Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ
 		mysql_fn('insert','logs',array(
 			'user'		=>	$user['id'],
 			'date'		=>	date('Y-m-d H:i:s'),
@@ -15,5 +15,3 @@ require_once(ROOT_DIR.'admin/modules/'.$get['m'].'.php');
 		));
 	}
 //}
-
-?>

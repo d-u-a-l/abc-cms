@@ -7,7 +7,8 @@ $config['user_fields']['type'] = array(
 );
 
 if ($get['u']=='edit') {
-	if (in_array($post['type'],array(2))) {		if (isset($post['values']['select'])) {
+	if (in_array($post['type'],array(2))) {
+		if (isset($post['values']['select'])) {
 			if (is_array($post['values']['select']))
 				foreach ($post['values']['select'] as $k=>$v) if ($v=='') unset($post['values']['select'][$k]);
 			$post['values'] = serialize(@$post['values']['select']);
@@ -16,9 +17,9 @@ if ($get['u']=='edit') {
 	}
 	else $post['values'] = '';
 }
-$fieldset['type']		= 'тип';
-$fieldset['required']	= 'обязательное';
-$fieldset['hint']		= 'описание';
+$a18n['type']		= 'тип';
+$a18n['required']	= 'обязательное';
+$a18n['hint']		= 'описание';
 
 $table = array(
 	'id'		=>	'rank:desc name id',
@@ -94,5 +95,3 @@ $(document).ready(function(){
 });
 </script>
 ';
-
-?>

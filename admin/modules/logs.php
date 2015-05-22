@@ -32,6 +32,3 @@ $table = array(
 	'date'=>'text',
 	'_delete'=>false
 );
-
-
-?>

@@ -22,5 +22,3 @@ $form[] = array('checkbox td3','display',true);
 $form[] = array('seo','seo url title keywords description',true);
 $form[] = array('file','img','основное фото',array(''=>'','p-'=>'cut 213x148'));
 $form[] = array('file_multi','images','картинки',array(''=>'resize 700x700','p-'=>'cut 213x148'));
-
-?>

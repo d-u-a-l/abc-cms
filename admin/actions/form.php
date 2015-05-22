@@ -1,11 +1,11 @@
 <?php
 
-// FORM - ÇÀÃÐÓÇÊÀ ÔÎÐÌÛ ÐÅÄÀÊÒÈÐÎÂÀÍÈß
+// FORM - Ð—ÐÐ“Ð Ð£Ð—ÐšÐ Ð¤ÐžÐ ÐœÐ« Ð Ð•Ð”ÐÐšÐ¢Ð˜Ð ÐžÐ’ÐÐÐ˜Ð¯
 if ($post = mysql_select("SELECT * FROM ".$get['m']." WHERE id = '".intval($get['id'])."'",'row')) {
 	foreach ($filter as $f) {
 		if (isset($post[$f[0]])) $get[$f[0]] = $post[$f[0]];
 	}
-	//ñîçäàíèå ìàñèâà $post[depend]
+	//ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ð¼Ð°ÑÐ¸Ð²Ð° $post[depend]
 	if (isset($config['depend'][$get['m']])) {
 		foreach ($config['depend'][$get['m']] as $k=>$v) {
 			$result = mysql_query("SELECT parent FROM `$v` WHERE child = '".intval($get['id'])."'"); echo mysql_error();
@@ -14,7 +14,7 @@ if ($post = mysql_select("SELECT * FROM ".$get['m']." WHERE id = '".intval($get[
 			}
 		}
 	}
-//çíà÷åíèÿ ïî óìîë÷àíèþ äëÿ íîâîé çàïèñè
+//Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ Ð´Ð»Ñ Ð½Ð¾Ð²Ð¾Ð¹ Ð·Ð°Ð¿Ð¸ÑÐ¸
 } else {
 	$post = $get;
 	$post['date'] = date('Y-m-d H:i:s');
@@ -23,5 +23,3 @@ if ($post = mysql_select("SELECT * FROM ".$get['m']." WHERE id = '".intval($get[
 }
 require_once(ROOT_DIR.'admin/modules/'.$get['m'].'.php');
 require_once(ROOT_DIR.'admin/templates/admin_form.php');
-
-?>

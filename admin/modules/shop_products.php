@@ -45,8 +45,8 @@ if ($get['u']=='edit') {
 
 $brand = mysql_select("SELECT id,name FROM shop_brands ORDER BY name",'array');
 
-$fieldset['sb_name'] = 'производители';
-$fieldset['sc_name'] = 'категории';
+$a18n['sb_name'] = 'производители';
+$a18n['sc_name'] = 'категории';
 
 $table = array(
 	//'_sorting'	=>	'n',
@@ -238,5 +238,3 @@ $(document).ready(function(){
 
 });
 </script>';
-
-?>

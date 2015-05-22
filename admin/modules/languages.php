@@ -403,4 +403,3 @@ function lang_form($type,$key,$name) {
 	return array ($type,'dictionary['.$key.']',isset($dictionary[$key]) ? $dictionary[$key] : '',array('name'=>$name.' <b>'.$key.'</b>','title'=>$key));
 }
 */
-?>

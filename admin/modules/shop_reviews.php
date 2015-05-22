@@ -27,5 +27,3 @@ $form[] = array('input td1','product',true,array('help'=>'ID товара'));
 $form[] = array('input td1','rating',true);
 $form[] = array('checkbox','display',true);
 $form[] = array('tinymce td12','text',true);
-
-?>

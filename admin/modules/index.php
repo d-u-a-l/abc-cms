@@ -54,5 +54,3 @@ foreach ($modules_admin as $key => $value) {
 }
 $content.= '<div class="clear"></div>';
 $content.= '</ul>';
-
-?>

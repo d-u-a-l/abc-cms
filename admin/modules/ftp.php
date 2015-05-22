@@ -1,14 +1,17 @@
 <?php
 
-if ($get['u']=='ajax') {	echo get_file($get['dir']);
+if ($get['u']=='ajax') {
+	echo get_file($get['dir']);
 	die();
 }
 
-elseif ($get['u']=='file') {	$path = $_GET['path'];
+elseif ($get['u']=='file') {
+	$path = $_GET['path'];
 	$text = '';
 	$exc = substr($path, -3);
 	$message = $path;
-	if (is_file(ROOT_DIR.$path)) {		if (isset($_POST['text'])) {
+	if (is_file(ROOT_DIR.$path)) {
+		if (isset($_POST['text'])) {
 			$text = stripslashes_smart($_POST['text']);
 			$text = str_replace('  ','	',$text);
 			$fp = fopen(ROOT_DIR.$path,'w');
@@ -28,7 +31,8 @@ elseif ($get['u']=='file') {	$path = $_GET['path'];
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Панель управления сайтом</title>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" /><script type="text/javascript" src="/plugins/CodeMirror/js/codemirror.js"></script>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="/plugins/CodeMirror/js/codemirror.js"></script>
 <style>
 body {font:11px Arial; margin:0; padding:30px; background:#F9F9F9}
 .box {background:#fff; border: 1px solid silver;}
@@ -81,10 +85,16 @@ $content = '
 .ftp .open_folder > a {color:#000}
 </style>
 <script>
-$(document).ready(function(){	$(document).on("click",".dir",function(){		var div = $(this).parent("div");
-		if (div.hasClass("open_folder")) {			div.removeClass("open_folder");
+$(document).ready(function(){
+	$(document).on("click",".dir",function(){
+		var div = $(this).parent("div");
+		if (div.hasClass("open_folder")) {
+			div.removeClass("open_folder");
 			div.find("div").remove();
-		}		else {			div.addClass("open_folder");			var dir = $(this).attr("href");
+		}
+		else {
+			div.addClass("open_folder");
+			var dir = $(this).attr("href");
 			$.get(
 				"/admin.php", {"m":"ftp","u":"ajax","dir":dir},
 				function(data){
@@ -98,20 +108,27 @@ $(document).ready(function(){	$(document).on("click",".dir",function(){		var d
 </script>';
 $content.= '<div class="ftp">'.get_file ().'</div>';
 
-function get_file ($dir = '') {	$content = '';	if ($handle = opendir(ROOT_DIR.$dir)) {
-		while (false !== ($file = readdir($handle))) {			if ($file=='.'||$file=='..') continue;			if (is_dir(ROOT_DIR.$dir.'/'.$file)) $folders[] = $file;
+function get_file ($dir = '') {
+	$content = '';
+	if ($handle = opendir(ROOT_DIR.$dir)) {
+		while (false !== ($file = readdir($handle))) {
+			if ($file=='.'||$file=='..') continue;
+			if (is_dir(ROOT_DIR.$dir.'/'.$file)) $folders[] = $file;
 			else $files[] = $file;
 		}
 		closedir($handle);
 	}
-	if (isset($folders)) {		sort($folders, SORT_LOCALE_STRING);
+	if (isset($folders)) {
+		sort($folders, SORT_LOCALE_STRING);
 		foreach ($folders as $k=>$v) $content.= '<div>:.. <a class="dir" href="'.$dir.'/'.$v.'">'.$v.'/</a></div>';
 	}
-	if (isset($files)) {		sort($files, SORT_LOCALE_STRING);
+	if (isset($files)) {
+		sort($files, SORT_LOCALE_STRING);
 		$array = array('php','ess','.js','css','tml');
-		foreach ($files as $k=>$v) {			$path = in_array(substr($v, -3),$array) ? '/admin.php?m=ftp&u=file&path=' : '';			$content.= '<div><a target="_blank" href="'.$path.$dir.'/'.$v.'">'.$v.'</a></div>';
+		foreach ($files as $k=>$v) {
+			$path = in_array(substr($v, -3),$array) ? '/admin.php?m=ftp&u=file&path=' : '';
+			$content.= '<div><a target="_blank" href="'.$path.$dir.'/'.$v.'">'.$v.'</a></div>';
 		}
 	}
 	return $content;
 }
-?>

@@ -234,7 +234,8 @@ $(document).ready(function(){
 						for (var i in data.seo) form.find('input[name="'+i+'"]').val(data.seo[i]);
 					}
 					//успешный запрос
-					if (data.error==0) {						form.find('.error').hide();
+					if (data.error==0) {
+						form.find('.error').hide();
 						form.find('.success').show().fadeOut(3000);
 						if (data.tr) {
 							//обновить
@@ -448,14 +449,19 @@ $(document).ready(function(){
 		this.outerHTML = this.outerHTML;
 		upload(box,this.files[0]);
 	//изменение состояния общего файлового инпута file_multi
-	}).on('change','.files.file_multi .add_file input',function(){
+	}).on('change','.files.file_multi .add_file input, .files.file_multi_db .add_file input',function(){
 		upload_multi ($(this).closest('.files'),this.files);
 	//изменение состояния индивидуального файлового инпута file_multi
-	}).on('change','.files.file_multi li input[type=file]',function(){		var box = $(this).closest('li').find('.img');
+	}).on('change','.files.file_multi li input[type=file], .files.file_multi_db li input[type=file]',function(){
+		var box = $(this).closest('li').find('.img');
 		//удаляем инпут с подгруженным файлом и заменяем на пустой чтобы картинка не отправлялась при отправке формы
 		this.outerHTML = this.outerHTML;
 		upload(box,this.files[0]);
 
+	//удаление file_multi_db
+	}).on('click','.files.file_multi_db .delete',function(){
+		$(this).closest('li').remove();
+		return false;
 	//удаление file_multi
 	}).on('click','.files.file_multi .delete',function(){
 		$(this).closest('li').remove();
@@ -490,7 +496,7 @@ $(document).ready(function(){
 		$('#dialog').trigger('dialog.show').data(data);
 		return false;
 	//загрузка перемещением file
-	}).delegate('.files.file .img, .files.file_multi .img',{
+	}).delegate('.files.file .img, .files.file_multi .img, .files.file_multi_db .img',{
 		dragenter: function() {
 			//$(this).addClass('highlighted');
 			return false;

@@ -133,8 +133,14 @@ if (images) foreach ($images as $k=>$v) if (@$v['display']==1) {
 	$path = '/files/shop_products/123/imgs/'.$k.'/'.$v['file'];
 }
 </pre>
-
-
+	2) много файлов - сохраняются в отдельной таблице
+	<pre>$form[] = array('file_multi_db','shop_items','Дополнительные картинки',array(''=>'resize 1000x1000','p-'=>'resize 150x150'));</pre>
+	данные хранятся в в другой таблице shop_items, путь к картинке /files/shop_items/{id}/img/{file}
+	<br>вместо shop_items может быть написана любая другая таблица
+	<br>обязательные поля в таблице
+	<br>n - сортировка
+	<br>parent - ИД родителя
+	<br>img - ключ для картинки
 
 </div>
 

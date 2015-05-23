@@ -872,6 +872,162 @@ function form_file ($type,$key,$name,$param = '',$fields = array('name'=>'input'
 		$content.= '<div class="clear"></div>';
 		$content.= '</div>';
 	}
+	//закгрузка многих файлов с записью в другую таблицу
+	if ($t=='file_multi_db') {
+		//error_handler(1,serialize($post),1,1);
+		$photos = false;
+		if ($get['id']!='new') {
+			$photos = mysql_select("SELECT * FROM `" . $key . "` WHERE `parent`=" . $post['id'] . " ORDER BY n", 'rows');
+		}
+		$content = '
+			<div class="files '.$type.'" data-i="'.$key.'">
+				<div class="data">
+					<div class="img" title="Для загрузки картинки переместите её в эту область"><img src="/admin/templates/no_img.png?2" /></div>
+					<div class="name">'.$name.'</div>
+					<div class="desc">';
+		if (is_array($param)) foreach ($param as $k=>$v) $content.= '<div>'.a18n('img'.$k).' <span>'.$v.'</span></div>';
+		$content.= '
+					</div>
+					<a class="add_file button green" title="Выбрать файлы">
+						<span><span class="sprite plus"></span>выбрать</span>
+						<input type="file" multiple="multiple" title="выбрать файл" />
+					</a>
+					<div class="clear"></div>
+				</div>
+				<ul class="sortable">';
+
+		$path = 'files/'.$key.'/'; //папка от корня основной папки
+		$root = ROOT_DIR.$path; //папка от корня сервера
+
+		//загрузка файлов
+		if ($get['u']=='edit') {
+			$uploads = isset($_POST[$key]) ? stripslashes_smart($_POST[$key]) : array();
+			$i = 1; //сортировка для mysql
+			foreach ($uploads as $k=>$v) {
+				$uploads[$k]['n'] = $i++;
+			}
+			if ($photos) foreach ($photos as $k=>$v) {
+				//удаление отсутсвующих записей
+				if (!isset($uploads[$v['n']])) {
+					mysql_fn('delete',$key,$v['id']);
+					//удаляем файлы
+					delete_all($root.$v['id'], true);
+					unset($photos[$k]);
+				}
+				//обновление существующих
+				else {
+					$photos[$k]['name'] = $uploads[$v['n']]['name'];
+					$photos[$k]['display'] = $uploads[$v['n']]['display'];
+					$photos[$k]['n'] = $uploads[$v['n']]['n'];
+					unset($uploads[$v['n']]);
+					mysql_fn('update',$key,$photos[$k]);
+				}
+			}
+			//error_handler(1,serialize($post),1,1);
+			if ($uploads) foreach ($uploads as $n=>$val) {
+				//загрузка нового файла
+				if (@$val['temp']) {
+					$temp = ROOT_DIR . 'files/temp/' . @$val['temp'] . '/';
+					//если есть временная папка, то копируем картинку
+					if ($handle = opendir($temp)) {
+						$temp_file = ''; //название временного файла на сервере
+						while (false !== ($f = readdir($handle))) {
+							if (strlen($f) > 2 && is_file($temp . $f)) {
+								$file = strtolower(trunslit($f));
+								$temp_file = $temp . $f;
+								break;
+							}
+						}
+						//есть временный файл
+						if ($temp_file) {
+							$photos[$val['n']] = array(
+								'parent'=>$get['id'],
+								'n'=>$val['n'],
+								'name'=>$val['name'],
+								'display'=>$val['display'],
+								'img'=>$file,
+							);
+							$photos[$val['n']]['id'] = mysql_fn('insert',$key,$photos[$val['n']]);
+							$path2 = $photos[$val['n']]['id'].'/img';
+							//создание папки для картинок
+							if (is_dir($root . $path2) || mkdir($root . $path2, 0755, true)) {
+								include_once(ROOT_DIR . 'functions/image_func.php');
+								//загрузка с параметрами
+								if (is_array($param)) {
+									$param['a-'] = 'resize 100x100'; //для превью в админке
+									foreach ($param as $k => $v) {
+										if ($v) {
+											$prm = explode(' ', $v);
+											img_process($prm[0], $temp_file, $prm[1], $root . $path2 . '/' . $k . $file);
+											//если есть водяной знак
+											if (isset($prm[2])) img_watermark($root . $path2 . '/' . $k . $file, ROOT_DIR . 'templates/images/' . $prm[2], $root . $path2 . '/' . $k . $file, isset($prm[3]) ? $prm[3] : '');
+										} //простое копирование - сохранение оригинальных размеров
+										else copy($temp_file, $root . $path2 . '/' . $k . $file);
+									}
+								} //простая загрузка
+								else {
+									img_process('resize', $temp_file, '100x100', $root . $path2 . '/a-' . $file);    //для превью в админке
+									copy($temp_file, $root . $path2 . '/' . $file);
+								}
+							}
+						}
+						//удаляем временную папку
+						delete_all($temp, true);
+					}
+				}
+			}
+
+		}
+
+		//список загруженых файлов
+		if ($photos) {
+			$photos2 = array();
+			foreach ($photos as $k=>$v) {
+				$photos2[$v['n']] = $v;
+			}
+			ksort($photos2);
+			foreach ($photos2 as $k=>$v) {
+				$path2 = $v['id'].'/img/';
+				$img = '';
+				if ($v['img'] AND is_file($root.$path2.$v['img'])) {
+					if (is_file($root . $path2 . 'a-' . $v['img'])) $img = '<img src="/' . $path . $path2 . 'a-' . $v['img'] . '" />';
+					else {
+						$exc = end(explode('.', $v['img']));
+						$icon = '/admin/templates/icons/blank.png';
+						if (in_array($exc, array('sql', 'txt', 'doc', 'docx'))) $icon = '/admin/templates/icons/doc.png';
+						elseif (in_array($exc, array('xls', 'xlsx'))) $icon = '/admin/templates/icons/xls.png';
+						elseif (in_array($exc, array('pdf'))) $icon = '/admin/templates/icons/pdf.png';
+						elseif (in_array($exc, array('zip', 'rar'))) $icon = '/admin/templates/icons/zip.png';
+						$img = '<img src="' . $icon . '" />';
+					}
+				}
+				//$img = $root.$path2.$v['img'];
+				$content.= '<li data-i="'.$v['n'].'" title="для изменения последовательности картинок переместите блок в нужное место">';
+				$content.= '<div class="img"><span>&nbsp;</span>'.$img;
+				$content.= '<input name="'.$key.'['.$v['n'].'][temp]" type="hidden" value="" />';
+				$content.= '<input name="'.$key.'['.$v['n'].'][img]" value="'.$v['img'].'" /></div>';
+				$content.= '<input type="file" name="'.$key.'['.$v['n'].'][img]" />';
+				$content.= '<a href="#" class="sprite delete"></a>';
+				$content.= '<div>'.$v['img'].'</div>';
+				foreach ($fields as $fname=>$ftype) {
+					$n = a18n($fname);
+					switch ($ftype) {
+						case 'checkbox':
+							$checked = (isset($v[$fname]) && $v[$fname]==1) ? ' checked="checked"' : '';
+							$content.= '<br /><label><input name="'.$key.'['.$v['n'].']['.$fname.']" type="checkbox" value="1"'.$checked.' /><span>'.$n.'</span></label>';
+							break;
+						default:
+							$content.= '<input class="input" name="'.$key.'['.$v['n'].']['.$fname.']" value="'.@$v[$fname].'" placeholder="'.$n.'" title="'.$n.'" />';
+					}
+				}
+				$content.= '</li>';
+
+			}
+		}
+		$content.= '</ul>';
+		$content.= '<div class="clear"></div>';
+		$content.= '</div>';
+	}
 	return $content;
 }
 

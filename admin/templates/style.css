@@ -508,6 +508,29 @@ h2 {clear:both; font: bold 15px Arial; margin: 0; padding:10px 0;}
 .files.file_multi ul li label input {float:left; margin:3px 5px 0 0}
 .files.file_multi ul li input[type=file] {display:none}
 .files.file_multi ul li .img input {display:none}
+
+.files.file_multi_db {clear:none; float:left; padding:5px 0px 5px; width:892px}
+.files.file_multi_db.td6 {width:444px}
+.files.file_multi_db .data {}
+.files.file_multi_db .data .img {float:left; margin:0px 10px 0 0; border:1px solid gray; width:100px; height:100px; background:#fff; }
+.files.file_multi_db .data .img:hover {background:#50CA8D}
+.files.file_multi_db .data .img img {max-width:100px; max-height:100px; vertical-align:middle;}
+.files.file_multi_db .data .img span {display:inline-block; text-indent:-9999px; line-height:98px; }
+.files.file_multi_db .data .name {font-weight:bold;}
+.files.file_multi_db .data .desc span {color:#999}
+.files.file_multi_db ul {padding:5px 0 0;}
+.files.file_multi_db ul li {height:102px;}
+.files.file_multi_db ul li div {font-weight:bold; padding:0 0 2px;}
+.files.file_multi_db ul li .img {float:left; margin: 0 10px 0 0; display:block; width:100px; height:100px; text-align:center; padding:0;
+	border:1px solid gray; background-color:#fff; position:relative}
+.files.file_multi_db ul li .img img {vertical-align:middle; max-width:100px; max-height:100px;}
+.files.file_multi_db ul li .img span {display:inline-block; text-indent:-9999px; line-height:98px;}
+.files.file_multi_db ul li .delete {float:right}
+.files.file_multi_db ul li .input {width:630px; clear:both; border:1px solid #B3B3B3; margin:0 0 2px; padding:0 0 0 4px; height:28px; color:#333; font:14px/15px Arial;}
+.files.file_multi_db ul li label input {float:left; margin:3px 5px 0 0}
+.files.file_multi_db ul li input[type=file] {display:none}
+.files.file_multi_db ul li .img input {display:none}
+
 .files .add_file {position:relative; margin:3px 0 0; overflow:hidden;}
 .files .add_file>span {padding:2px; margin:0; height:16px; cursor:pointer;}
 .files .add_file input {position:absolute; right:-10px; top:-10px; font-size:100px; opacity:0;}

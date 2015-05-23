@@ -2,7 +2,7 @@
 
 // EDIT - РЕДАКТИРОВАНИЕ ЗАПИСИ
 //создание массива post и его бработка
-$post = stripslashes_smart($_POST);
+$post = stripslashes_smart($_POST); //error_handler(1,serialize($post),1,1);
 $data = array();
 //генерация SEO-полей
 if (isset($post['seo'])) {
@@ -27,10 +27,17 @@ require_once(ROOT_DIR.'admin/modules/'.$get['m'].'.php');
 if (is_array($form)) {
 	if (count($tabs)>0) {
 		foreach ($form as $k=>$v)
-			foreach ($v as $k1=>$v1) if (is_array($v1) && preg_match('/simple|file_multi/',$v1[0])) $post[$v1[1]] = isset($post[$v1[1]]) ? serialize($post[$v1[1]]) : '';
+			foreach ($v as $k1=>$v1) {
+				if (is_array($v1) && preg_match('/simple|file_multi/',$v1[0])) $post[$v1[1]] = isset($post[$v1[1]]) ? serialize($post[$v1[1]]) : '';
+				//удаляем данные о file_multi_db
+				if (is_array($v1) && $v1[0]=='file_multi_db' AND isset($post[$v1[1]])) unset($post[$v1[1]]);
+			}
 	} else {
-		foreach ($form as $k=>$v)
-			if (is_array($v) && preg_match('/simple|file_multi/',$v[0])) $post[$v[1]] = isset($post[$v[1]]) ? serialize($post[$v[1]]) : '';
+		foreach ($form as $k => $v) {
+			if (is_array($v) && preg_match('/simple|file_multi/', $v[0])) $post[$v[1]] = isset($post[$v[1]]) ? serialize($post[$v[1]]) : '';
+			//удаляем данные о file_multi_db
+			if (is_array($v) && $v[0]=='file_multi_db' AND isset($post[$v[1]])) unset($post[$v[1]]);
+		}
 	}
 }
 

@@ -40,6 +40,7 @@ $modules_admin = array(
 
 	'catalog' => array(
 		'shop_products'	=> 'shop_products',
+		//'shop_items'	=> 'shop_items',
 		'shop_categories'	=> 'shop_categories',
 		'shop_brands'	=> 'shop_brands',
 		'shop_parameters'	=> 'shop_parameters',

@@ -156,7 +156,8 @@ if ($get['u']=='form' OR ($get['id']>0 AND $get['u']=='')) {
 
 $form[3][] = array('file td6','img','Основная картинка',array(''=>'resize 1000x1000','m-'=>'resize 400x400','p-'=>'resize 150x150'));
 $form[3][] = array('file_multi','imgs','Дополнительные картинки',array(''=>'resize 1000x1000','p-'=>'resize 150x150'));
-//$form[3][] = array('simple','images','Дополнительные картинки',array(''=>'resize 1000x1000','preview'=>'resize 150x150'));
+
+//$form[3][] = array('file_multi_db','shop_items','Дополнительные картинки',array(''=>'resize 1000x1000','preview'=>'resize 150x150'));
 
 
 $form[4][] = array('input td6','','',array('name'=>'Поиск товаров по названию, артикулу, ID','attr'=>'id="similar_search"'));

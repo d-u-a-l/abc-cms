@@ -3,17 +3,30 @@
 error_reporting(E_ALL);
 //error_reporting(0);
 
-require_once('../functions/global_conf.php');
-require_once(ROOT_DIR.'functions/config.php');
-require_once(ROOT_DIR.'functions/common_func.php');
-require_once(ROOT_DIR.'functions/common_conf.php');
+// загрузка настроек *********************************************************
+define('ROOT_DIR', dirname(__FILE__).'/../');
+require_once(ROOT_DIR.'_config.php');	//динамические настройки
+require_once(ROOT_DIR.'_config2.php');	//установка настроек
+
+// загрузка функций **********************************************************
+//require_once(ROOT_DIR.'functions/admin_func.php');	//функции админки
+//require_once(ROOT_DIR.'functions/auth_func.php');	//функции авторизации
+//require_once(ROOT_DIR.'functions/common_func.php');	//общие функции
+//require_once(ROOT_DIR.'functions/file_func.php');	//функции для работы с файлами
+require_once(ROOT_DIR.'functions/html_func.php');	//функции для работы нтмл кодом
+//require_once(ROOT_DIR.'functions/form_func.php');	//функции для работы со формами
+require_once(ROOT_DIR.'functions/image_func.php');	//функции для работы с картинками
+//require_once(ROOT_DIR.'functions/lang_func.php');	//функции словаря
+//require_once(ROOT_DIR.'functions/mail_func.php');	//функции почты
+//require_once(ROOT_DIR.'functions/mysql_func.php');	//функции для работы с БД
+//require_once(ROOT_DIR.'functions/string_func.php');	//функции для работы со строками
 
 //путь файла спрайта
 $sprite_file = 'admin/templates/sprite.png';
-//$sprite_file = 'templates/images/sprite.png';
+$sprite_file = 'templates/images/sprite.png';
 //путь где лежат картинки
 $sprite_img = 'admin/templates/sprite';
-//$sprite_img = 'templates/sprite';
+$sprite_img = 'templates/sprite';
 //префикс
 $prefix = '';//'.sprite .';
 
@@ -40,15 +53,22 @@ if ($handle = opendir(ROOT_DIR.$sprite_img.'/')) {
 	closedir($handle);
 }
 $sqrt[1] = $sqrt[0] = ceil(sqrt($area*1.5));
-if ($sqrt[0]<$width) {	$sqrt[0] = $width;
+if ($sqrt[0]<$width) {
+	$sqrt[0] = $width;
 	$sqrt[1] = ceil($area*1.5/$width);
 }
-elseif ($sqrt[1]<$height) {	$sqrt[1] = $height;
-	$sqrt[0] = ceil($area*1.5/$height);}
+elseif ($sqrt[1]<$height) {
+	$sqrt[1] = $height;
+	$sqrt[0] = ceil($area*1.5/$height);
+}
 
 //сортировка по площади
-foreach ($sprite as $k=>$v) {	$coef = 0;
-	$key = $k;	foreach ($sprite as $k1=>$v1) {		if ($v1['coef2']>$coef) {			$coef = $v1['coef2'];
+foreach ($sprite as $k=>$v) {
+	$coef = 0;
+	$key = $k;
+	foreach ($sprite as $k1=>$v1) {
+		if ($v1['coef2']>$coef) {
+			$coef = $v1['coef2'];
 			$key = $k1;
 		}
 	}
@@ -64,8 +84,7 @@ ul {list-style:none; background:#00FF00}
 li {display:inline-block; float:left}
 .sprite {display:inline-block; font-size:0px; background-image: url('/<?=$sprite_file?>'); }
 </style>
-<?=$config['scripts']['jquery']?>
-<?=$config['scripts']['jquery_ui']?>
+<?=html_sources('return','jquery jquery_ui')?>
 <?php
 echo '<ul style="width:'.$sqrt[0].'px;">';
 foreach ($sprite as $k=>$v) {
@@ -79,13 +98,15 @@ foreach ($sprite as $k=>$v) {
 
 <?php
 $sprite = $style = $css = '';
-if (count($_POST)>0) { //echo 1;	$css.= ".sprite {display:inline-block; font-size:0px; background-image: url('/<?=$sprite_file?>?".time()."'); }<br />";
+if (count($_POST)>0) { //echo 1;
+	$css.= ".sprite {display:inline-block; font-size:0px; background-image: url('/'.$sprite_file.'?".time()."'); }<br />";
 	$size_box = explode(',',$_POST['box']); //print_r($size_box);
 	//print_r($_POST['sprite']);
 	if (is_file(ROOT_DIR.$sprite_file)) unlink(ROOT_DIR.$sprite_file);
 	foreach ($_POST['sprite'] as $k=>$v) { //echo 1;
 		if (file_exists(ROOT_DIR.$sprite_img.'/'.$k)) {
-			if (!is_file(ROOT_DIR.$sprite_file)) {				$file = ROOT_DIR.$sprite_file;
+			if (!is_file(ROOT_DIR.$sprite_file)) {
+				$file = ROOT_DIR.$sprite_file;
 				$img = imageCreatetruecolor($size_box[0],$size_box[1]);
 				imageInterlace($img,1); // Добавляем постепенную загрузку
 				$transparent = imagecolorallocatealpha($img, 0, 0, 0, 127); // Добавляем прозрачность
@@ -93,7 +114,8 @@ if (count($_POST)>0) { //echo 1;	$css.= ".sprite {display:inline-block; font-si
 				imagesavealpha($img,true); // Включаем обработку альфа канала
 				imagepng($img,$file);
 				imageDestroy($img);
-			}			$file1 = ROOT_DIR.$sprite_file;
+			}
+			$file1 = ROOT_DIR.$sprite_file;
 			$file2 = ROOT_DIR.$sprite_img.'/'.$k;
 			$file3 = ROOT_DIR.$sprite_file;
 			$size1 = getimagesize($file1);
@@ -128,7 +150,8 @@ if (count($_POST)>0) { //echo 1;	$css.= ".sprite {display:inline-block; font-si
 }
 ?><div style="background:#00FF00"><img src="/<?=$sprite_file?>?<?=time()?>" /></div>
 <script type="text/javascript">
-$(document).ready(function(){	$('ul').sortable();
+$(document).ready(function(){
+	$('ul').sortable();
 	$('ul li img').each(function(){
 		name	= $(this).attr('alt');
 		offset	= $(this).offset();
@@ -140,7 +163,8 @@ $(document).ready(function(){	$('ul').sortable();
 <?php
  /*
 echo '<table>';
-foreach ($sprite as $k=>$v) {	echo '<tr>';
+foreach ($sprite as $k=>$v) {
+	echo '<tr>';
 	echo '<td style="background:gray"><img src="sprite/'.$v['name'].'" /></td>';
 	echo '<td>'.$v['name'].'</td>';
 	echo '<td>'.$v['width'].'x'.$v['height'].'</td>';

@@ -6,7 +6,7 @@ $config['mysql_username']	= 'u11788_demo';
 $config['mysql_password']	= 'E.(s+y@CkW_l';
 $config['mysql_database']	= 'u11788_demo';
 //исключение для локальной версии
-if ($_SERVER['SERVER_ADDR']=='127.0.0.1') {
+if ($_SERVER['REMOTE_ADDR']=='127.0.0.1' AND $_SERVER['SERVER_ADDR']=='127.0.0.1') {
 	$config['mysql_server'] = 'localhost';
 	$config['mysql_username'] = 'root';
 	$config['mysql_password'] = '';

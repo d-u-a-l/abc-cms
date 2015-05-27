@@ -4,7 +4,7 @@ if ($get['u']=='edit') {
 	if ($post['mailer']>0) {
 		$subscribers = mysql_select("SELECT * FROM subscribers WHERE display=1 ORDER BY id",'rows');
 		$now = date('Y-m-d H:i:s');
-		require_once(ROOT_DIR.'functions/index_func.php');
+		require_once(ROOT_DIR.'functions/html_func.php');
 		$modules['subscribe'] = mysql_select("SELECT url FROM pages WHERE module='subscribe'",'string');
 		if (is_array($subscribers)) foreach ($subscribers as $k=>$v){
 			$letter = array(

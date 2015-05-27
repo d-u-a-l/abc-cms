@@ -42,7 +42,8 @@ $table = array(
 //только если многоязычный сайт
 if ($config['multilingual']) {
 	$languages = mysql_select("SELECT id,name FROM languages ORDER BY rank DESC", 'array');
-	$get['language'] = (isset($_REQUEST['language']) && intval($_REQUEST['language'])) ? $_REQUEST['language'] : key($languages);
+	//приоритет пост над гет
+	if (isset($post['language'])) $get['language'] = $post['language'];
 	if ($get['language'] == 0) $get['language'] = key($languages);
 	$query = "
 		SELECT pages.*

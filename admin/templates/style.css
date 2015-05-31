@@ -555,8 +555,9 @@ ul.sortable li:hover {background: #FFFEDF;}
 .s-size .files ul li {float:left; width:420px; clear:none;}
 .s-size .files ul li .input {width:250px; height:22px; font:11px/13px Arial;}
 .s-size .bookmarks {height:31px;}
-.s-size .bookmarks li {height:19px; padding:6px 10px 0px;}
-.s-size .bookmarks li.active {height:20px;}
+.s-size .bookmarks li { height: 26px; padding: 0; }
+.s-size .bookmarks li a { line-height: 26px; display: block; padding: 0 10px; }
+.s-size .bookmarks li.active { height: 26px; }
 
 .m-size div.field {min-height:48px;}
 .m-size .form {font-size:12px;}
@@ -573,8 +574,9 @@ ul.sortable li:hover {background: #FFFEDF;}
 .m-size .files ul li {float:left; width:420px; clear:none;}
 .m-size .files ul li .input {width:250px; height:25px; font:12px/14px Arial;}
 .m-size .bookmarks {height:36px;}
-.m-size .bookmarks li {height:21px; padding:9px 10px 0px;}
-.m-size .bookmarks li.active {height:22px;}
+.m-size .bookmarks li { height: 31px; padding: 0; }
+.m-size .bookmarks li a{ line-height: 31px; display: block; padding: 0 10px;}
+.m-size .bookmarks li.active { height: 31px; }
 
 .b-size div.field {min-height:57px;}
 .b-size .form {font-size:13px;}
@@ -591,8 +593,9 @@ ul.sortable li:hover {background: #FFFEDF;}
 .b-size .files ul li {float:none; clear:both;}
 .b-size .files ul li .input {width:630px; height:28px; font:14px/15px Arial;}
 .b-size .bookmarks {height:41px;}
-.b-size .bookmarks li {height:24px; padding:11px 10px 0px;}
-.b-size .bookmarks li.active {height:25px;}
+.b-size .bookmarks li { height: 36px; padding: 0; }
+.b-size .bookmarks li a { line-height: 36px; display: block; padding: 0 10px; }
+.b-size .bookmarks li.active { height: 36px; }
 
 /*ЭЛЕМЕНТЫ ФОРМЫ*/
 .form .seo-optimization {clear:both; padding:2px 0 0px}
